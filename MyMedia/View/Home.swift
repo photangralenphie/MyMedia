@@ -32,6 +32,11 @@ struct Home: View {
 					.navigationTitle("Favorites")
 			}
 			
+			Tab("Search", systemImage: "magnifyingglass") {
+				Text("Search")
+					.navigationTitle("Search")
+			}
+			
 			TabSection("Movies") {
 				Tab("All Movies", systemImage: "movieclapper") {
 					Text("All Movies")

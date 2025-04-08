@@ -10,21 +10,37 @@ import SwiftUI
 struct TVGrid: View {
 	
 	let tvShows: [TvShow]
-	let layout = Array(repeating: GridItem(.flexible(minimum: 200, maximum: 300)), count: 3)
+	let layout = [GridItem(.adaptive(minimum: 300), spacing: 20, alignment: .top)]
+
+	@State private var searchText: String = ""
+	
+	var filteredTvShows: [TvShow] {
+		if searchText.isEmpty { return tvShows }
+		
+		return tvShows.filter {
+			$0.title
+				.lowercased()
+				.contains(searchText.lowercased())
+		}
+	}
 	
     var body: some View {
 		NavigationStack {
 			ScrollView {
 				LazyVGrid(columns: layout) {
-					ForEach(tvShows) { tvShow in
+					ForEach(filteredTvShows) { tvShow in
 						NavigationLink {
 							TVDetail(tvShow: tvShow)
 						} label: {
 							TVCell(tvShow:	tvShow)
 						}
+						.buttonStyle(PlainButtonStyle())
+						.padding(.bottom)
 					}
 				}
+				.padding()
 			}
+			.searchable(text: $searchText, placement: .automatic, prompt: "Search")
 			.navigationTitle("TV Shows")
 		}
     }
