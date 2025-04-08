@@ -7,13 +7,12 @@
 
 import SwiftUI
 import SwiftData
+import AVKit
 
 @main
 struct MyMediaApp: App {
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
+        let schema = Schema([ TvShow.self ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
@@ -25,8 +24,19 @@ struct MyMediaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Home()
         }
         .modelContainer(sharedModelContainer)
+		
+		WindowGroup(for: URL.self) { url in
+			if let url = url.wrappedValue {
+				VideoPlayerView(url: url)
+					.frame(idealWidth: 960, idealHeight: 540)
+			}
+		}
+		.defaultSize(width: 960, height: 540)
+		.windowStyle(.hiddenTitleBar)
+		.commandsRemoved()
+		.defaultLaunchBehavior(.suppressed)
     }
 }
