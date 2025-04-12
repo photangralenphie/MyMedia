@@ -40,7 +40,6 @@ struct ArtworkView: View {
 						Text("(\(String(watchable.year)))")
 							.font(.title)
 					}
-
 				}
 		}
 	}

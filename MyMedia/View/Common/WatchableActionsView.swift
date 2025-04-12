@@ -27,7 +27,12 @@ struct WatchableActionsView: View {
 			Divider()
 			
 			Button("Open in Subler") { }
-			Button("Play with default Player") { }
+			
+			if case let tvshow as TvShow = watchable, tvshow.episodes.count == 0 {
+				// Show button only if tvshow has episodes
+			} else {
+				Button("Play with default Player", action: playWithDefaultPlayer)
+			}
 		}
     }
 	
@@ -60,5 +65,9 @@ struct WatchableActionsView: View {
 		withAnimation {
 			watchable.isPinned.toggle()
 		}
+	}
+	
+	func playWithDefaultPlayer() {
+		NSWorkspace.shared.open(watchable.url)
 	}
 }

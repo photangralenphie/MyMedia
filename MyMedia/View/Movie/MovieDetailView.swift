@@ -44,7 +44,9 @@ struct MovieDetailView: View {
 					Spacer()
 				}
 				
-				if let description = movie.longDescription {
+				if let description = getDescription() {
+					Text("Summary")
+						.bold()
 					Text(description)
 						.foregroundStyle(.secondary)
 				}
@@ -72,5 +74,17 @@ struct MovieDetailView: View {
 	
 	func popNavigation() {
 		dismiss()
+	}
+	
+	func getDescription() -> String? {
+		if movie.longDescription != nil {
+			return movie.longDescription
+		}
+		
+		if movie.shortDescription != nil {
+			return movie.shortDescription
+		}
+		
+		return nil
 	}
 }

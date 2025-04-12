@@ -14,8 +14,8 @@ struct TvShowDetailView: View {
 	private let titleAndData: String
 	private let episodes: [[Episode]]
 	
-	@Environment(\.openWindow) private var openWindow
 	@Environment(\.dismiss) private var dismiss
+
 	
 	init(tvShow: TvShow) {
 		self.tvShow = tvShow
@@ -88,9 +88,7 @@ struct TvShowDetailView: View {
 							
 							Text(formatRuntime(minutes: episode.runtime))
 							
-							Button("Play"){
-								openWindow(value: episode.url)
-							}
+							PlayButton(watchable: episode)
 						}
 						.padding(.vertical, 5)
 					}
@@ -124,4 +122,6 @@ struct TvShowDetailView: View {
 	func popNavigation() {
 		dismiss()
 	}
+	
+
 }

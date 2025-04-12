@@ -38,5 +38,9 @@ struct MyMediaApp: App {
 		.windowStyle(.hiddenTitleBar)
 		.commandsRemoved()
 		.defaultLaunchBehavior(.suppressed)
+		
+		Settings {
+			SettingsView()
+		}
     }
 }

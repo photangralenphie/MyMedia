@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DD3ECE9B2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */; };
 		DD3ECE9C2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DD4AE38F2DAA92C0006DB62C /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD4AE38E2DAA92C0006DB62C /* AwesomeSwiftyComponents */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD4AE38F2DAA92C0006DB62C /* AwesomeSwiftyComponents in Frameworks */,
 				DD3ECE9B2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,6 +116,7 @@
 			);
 			name = MyMedia;
 			packageProductDependencies = (
+				DD4AE38E2DAA92C0006DB62C /* AwesomeSwiftyComponents */,
 			);
 			productName = MyMedia;
 			productReference = DD956C812D95D6EA0033A363 /* MyMedia.app */;
@@ -144,6 +147,7 @@
 			mainGroup = DD956C782D95D6EA0033A363;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				DD3ECED12DAA8F8C00C0E1F3 /* XCLocalSwiftPackageReference "../AwesomeSwiftyComponents" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DD956C822D95D6EA0033A363 /* Products */;
@@ -388,6 +392,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		DD3ECED12DAA8F8C00C0E1F3 /* XCLocalSwiftPackageReference "../AwesomeSwiftyComponents" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../AwesomeSwiftyComponents;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD4AE38E2DAA92C0006DB62C /* AwesomeSwiftyComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD3ECED12DAA8F8C00C0E1F3 /* XCLocalSwiftPackageReference "../AwesomeSwiftyComponents" */;
+			productName = AwesomeSwiftyComponents;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DD956C792D95D6EA0033A363 /* Project object */;
 }

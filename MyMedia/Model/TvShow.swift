@@ -26,6 +26,11 @@ class TvShow: Watchable {
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
 	
+	var url: URL {
+		// DON'T CALL IF TVSHOW HASN'T GOT ANY EPISODES
+		episodes.filter { !$0.isWatched }.first?.url ?? episodes.first!.url
+	}
+	
 	init(title: String, year: Int, genre: String?, showDescription: String?, artwork: Data?) {
 		self.title = title
 		self.year = year
