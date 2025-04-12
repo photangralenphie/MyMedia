@@ -7,17 +7,18 @@
 
 import SwiftUI
 
-struct TVGrid: View {
+struct Grid: View {
 	
-	let tvShows: [TvShow]
+	let watchable: [any Watchable]
 	let layout = [GridItem(.adaptive(minimum: 300), spacing: 20, alignment: .top)]
+	let navTitle: LocalizedStringKey
 
 	@State private var searchText: String = ""
 	
-	var filteredTvShows: [TvShow] {
-		if searchText.isEmpty { return tvShows }
+	var filteredWatchables: [any Watchable] {
+		if searchText.isEmpty { return watchable }
 		
-		return tvShows.filter {
+		return watchable.filter {
 			$0.title
 				.lowercased()
 				.contains(searchText.lowercased())
@@ -28,11 +29,18 @@ struct TVGrid: View {
 		NavigationStack {
 			ScrollView {
 				LazyVGrid(columns: layout) {
-					ForEach(filteredTvShows) { tvShow in
+					ForEach(filteredWatchables, id: \.id) { watchable in
 						NavigationLink {
-							TVDetail(tvShow: tvShow)
+							switch watchable {
+								case let tvShow as TvShow:
+									TVDetail(tvShow: tvShow)
+								case let movie as Movie:
+									MovieDetail(movie: movie)
+								default:
+									Text("Episodes are not supported in Grid view")
+							}
 						} label: {
-							TVCell(tvShow:	tvShow)
+							GridCell(watchable: watchable)
 						}
 						.buttonStyle(PlainButtonStyle())
 						.padding(.bottom)
@@ -41,7 +49,7 @@ struct TVGrid: View {
 				.padding()
 			}
 			.searchable(text: $searchText, placement: .automatic, prompt: "Search")
-			.navigationTitle("TV Shows")
+			.navigationTitle(navTitle)
 		}
     }
 }

@@ -12,7 +12,7 @@ import AVKit
 @main
 struct MyMediaApp: App {
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([ TvShow.self ])
+		let schema = Schema([ TvShow.self, Movie.self ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
@@ -24,7 +24,7 @@ struct MyMediaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Home()
+            HomeView()
         }
         .modelContainer(sharedModelContainer)
 		

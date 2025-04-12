@@ -1,5 +1,5 @@
 //
-//  TVDetail.swift
+//  TvShowDetailView.swift
 //  MyMedia
 //
 //  Created by Jonas Helmer on 31.03.25.
@@ -8,14 +8,14 @@
 import SwiftUI
 import AVKit
 
-struct TVDetail: View {
+struct TvShowDetailView: View {
 	
 	let tvShow: TvShow
 	private let titleAndData: String
 	private let episodes: [[Episode]]
 	
-	@Environment(\.modelContext) private var moc
 	@Environment(\.openWindow) private var openWindow
+	@Environment(\.dismiss) private var dismiss
 	
 	init(tvShow: TvShow) {
 		self.tvShow = tvShow
@@ -27,15 +27,9 @@ struct TVDetail: View {
 	
     var body: some View {
 		List {
-			VStack(spacing: 20) {
+			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .bottom, spacing: 20) {
-					if let imageData = tvShow.artwork, let nsImageFromData = NSImage(data: imageData)  {
-						Image(nsImage: nsImageFromData)
-							.resizable()
-							.scaledToFit()
-							.frame(width: 300)
-							.clipShape(.rect(cornerRadius: 20))
-					}
+					ArtworkView(watchable: tvShow)
 					VStack(alignment: .leading, spacing: 5) {
 						Text(tvShow.title)
 							.font(.largeTitle)
@@ -99,21 +93,6 @@ struct TVDetail: View {
 							}
 						}
 						.padding(.vertical, 5)
-//						Text(episode.releaseDate.description)
-//						Text(episode.dateAdded.description)
-//						Text(episode.episode.description)
-//						Text(episode.season.description)
-//
-//						Text(episode.episodeLongDescription  ?? "short desc")
-//						Text(episode.cast?.description ?? "cast")
-//						Text(episode.screenwriters?.description ?? "screenwriters")
-//						Text(episode.directors?.description ?? "directors")
-//						Text(episode.producers?.description ?? "producers")
-//						Text(episode.runtime.description)
-//						Text(episode.studio ?? "studio")
-//						Text(episode.network ?? "network")
-//						Text(episode.rating ?? "rating")
-//						Text(episode.languages.description)
 					}
 				} header: {
 					Text("Season \(season.first!.season)")
@@ -124,30 +103,12 @@ struct TVDetail: View {
 			}
 		}
 		.toolbar {
-			Menu("Actions") {
-				Button(tvShow.isWatched ? "Mark Unwatched" : "Mark Watched"){
-					tvShow.isWatched.toggle()
-				}
-				
-				Button("Add to Favorites"){
-					
-				}
-				
-				Button("Pin"){
-					
-				}
-				
-				Divider()
-				
-				Button("Delete"){
-					moc.delete(tvShow)
-				}
-			}
+			WatchableActionsView(watchable: tvShow, onDelete: popNavigation)
 		}
 		.navigationTitle(titleAndData)
     }
 	
-	func formatRuntime(minutes: Int) -> String {
+	func formatRuntime(minutes: Int) -> LocalizedStringKey {
 		let hours = minutes / 60
 		let mins = minutes % 60
 		
@@ -158,5 +119,9 @@ struct TVDetail: View {
 		} else {
 			return "\(mins) min"
 		}
+	}
+	
+	func popNavigation() {
+		dismiss()
 	}
 }

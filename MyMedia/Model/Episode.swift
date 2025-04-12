@@ -1,46 +1,12 @@
 //
-//  Item.swift
+//  Episode.swift
 //  MyMedia
 //
-//  Created by Jonas Helmer on 27.03.25.
+//  Created by Jonas Helmer on 12.04.25.
 //
 
 import Foundation
 import SwiftData
-import AppKit
-
-protocol Watchable: Identifiable {
-	var id: UUID { get }
-	var title: String { get }
-	var dateAdded: Date { get }
-	var year: Int { get }
-	var isWatched: Bool { get set }
-	var artwork: Data? { get }
-}
-
-@Model
-class TvShow: Watchable {
-	var id = UUID()
-	var dateAdded = Date.now
-	var title: String
-	var year: Int
-	var genre: String?
-	var showDescription: String?
-	@Relationship(deleteRule: .cascade) var episodes: [Episode] = []
-	var artwork: Data?
-	var isWatched: Bool {
-		get { episodes.allSatisfy(\.isWatched) }
-		set { episodes.forEach { $0.isWatched = newValue } }
-	}
-	
-	init(title: String, year: Int, genre: String?, showDescription: String?, artwork: Data?) {
-		self.title = title
-		self.year = year
-		self.genre = genre
-		self.showDescription = showDescription
-		self.artwork = artwork
-	}
-}
 
 @Model
 class Episode: Watchable {
@@ -67,6 +33,9 @@ class Episode: Watchable {
 	var rating: String?
 	var languages: [String]
 	var url: URL
+	
+	var isFavorite: Bool = false
+	var isPinned: Bool = false
 	
 	init(artwork: Data?, season: Int, episode: Int, title: String, runtime: Int, releaseDate: Date, episodeShortDescription: String?, episodeLongDescription: String?, cast: [String]?, producers: [String]?, directors: [String]?, screenwriters: [String]?, studio: String?, network: String?, rating: String?, languages: [String], url: URL) {
 		self.artwork = artwork

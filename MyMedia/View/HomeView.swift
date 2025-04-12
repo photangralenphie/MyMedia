@@ -1,5 +1,5 @@
 //
-//  Home.swift
+//  HomeView.swift
 //  MyMedia
 //
 //  Created by Jonas Helmer on 31.03.25.
@@ -8,12 +8,13 @@
 import SwiftUI
 import SwiftData
 
-struct Home: View {
+struct HomeView: View {
 	
 	@Environment(\.modelContext) private var moc
 	@Query private var tvShows: [TvShow]
+	@Query private var movies: [Movie]
 	@State private var isImporting: Bool = false
-	@State private var error: Error?
+	@State private var errorMessage: Error?
 	
     var body: some View {
 		TabView {
@@ -23,13 +24,13 @@ struct Home: View {
 			}
 			
 			Tab("Unwatched", systemImage: "eye.slash") {
-				Text("Unwatched")
-					.navigationTitle("Unwatched")
+				let unwatched: [any Watchable] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
+				GridView(watchable: unwatched, navTitle: "Unwatched")
 			}
 			
 			Tab("Favorites", systemImage: "star.fill") {
-				Text("Favorites")
-					.navigationTitle("Favorites")
+				let favorites: [any Watchable] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
+				GridView(watchable: favorites, navTitle: "Favorites")
 			}
 			
 			Tab("Search", systemImage: "magnifyingglass") {
@@ -39,8 +40,7 @@ struct Home: View {
 			
 			TabSection("Movies") {
 				Tab("All Movies", systemImage: "movieclapper") {
-					Text("All Movies")
-						.navigationTitle("All Movies")
+					GridView(watchable: movies, navTitle: "Movies")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
 					Text("Genres")
@@ -51,7 +51,7 @@ struct Home: View {
 			
 			TabSection("TV Shows") {
 				Tab("All TV Shows", systemImage: "tv") {
-					TVGrid(tvShows: tvShows)
+					GridView(watchable: tvShows, navTitle: "TV Shows")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
 					Text("Genres")
@@ -59,29 +59,28 @@ struct Home: View {
 				}
 			}
 			
-			TabSection("Pinned") {
-				Tab("Show 1", systemImage: "tv") {
-					Text("Show 1")
-						.navigationTitle("Show 1")
-				}
-				Tab("Movie 1", systemImage: "movieclapper") {
-					Text("Movie 1")
-						.navigationTitle("Movie 1")
-				}
-				Tab("Show 2", systemImage: "tv") {
-					Text("Show 2")
-						.navigationTitle("Show 2")
-				}
-				Tab("Movie 2", systemImage: "movieclapper") {
-					Text("Movie 2")
-						.navigationTitle("Movie 2")
+			let pinned: [any Watchable] = tvShows.filter({ $0.isPinned }) + movies.filter({ $0.isPinned })
+			if !pinned.isEmpty {
+				TabSection("Pinned") {
+					ForEach(pinned, id: \.id) { watchable in
+						Tab(watchable.title, systemImage: watchable is Movie ? "movieclapper" : "tv") {
+							switch watchable {
+								case let tvShow as TvShow:
+									TvShowDetailView(tvShow: tvShow)
+								case let movie as Movie:
+									MovieDetailView(movie: movie)
+								default:
+									Text("Episodes are not yet supported as Pins.")
+							}
+						}
+					}
 				}
 			}
 		}
 		.tabViewStyle(.sidebarAdaptable)
 		.fileImporter(isPresented: $isImporting, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFiles)
-		.alert("An Error occurred while importing.", isPresented: $error.isNotNil()) {
-			Button("Ok"){ error = nil }
+		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
+			Button("Ok"){ errorMessage = nil }
 		}
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
@@ -101,7 +100,7 @@ struct Home: View {
 					}
 					
 				} catch(let importError) {
-					error = importError
+					errorMessage = importError
 				}
 			case .failure(let error):
 				print("Error picking file: \(error.localizedDescription)")
@@ -111,21 +110,4 @@ struct Home: View {
 	private func addItem() {
 		isImporting.toggle()
 	}
-}
-
-extension Binding {
-	func isNotNil<T>() -> Binding<Bool> where Value == T? {
-		Binding<Bool>(
-			get: { self.wrappedValue != nil },
-			set: { newValue in
-				if !newValue { self.wrappedValue = nil }
-			}
-		)
-	}
-}
-
-
-#Preview {
-    Home()
-		.modelContainer(for: TvShow.self, inMemory: true)
 }

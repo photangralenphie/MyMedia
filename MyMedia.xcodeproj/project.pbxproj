@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DD956CAC2D95EC100033A363 /* MP42Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD956CA92D95EB500033A363 /* MP42Foundation.framework */; };
-		DD956CAD2D95EC100033A363 /* MP42Foundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DD956CA92D95EB500033A363 /* MP42Foundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DD3ECE9B2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */; };
+		DD3ECE9C2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DD956CA82D95EB500033A363 /* PBXContainerItemProxy */ = {
+		DD3ECE972DAA4E1A00C0E1F3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = DD956CA32D95EB500033A363 /* MP42Foundation.xcodeproj */;
+			containerPortal = DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = A9B9C1ED182391DF00416A4E;
 			remoteInfo = MP42Foundation;
@@ -28,7 +28,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DD956CAD2D95EC100033A363 /* MP42Foundation.framework in Embed Frameworks */,
+				DD3ECE9C2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,8 +36,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MP42Foundation.xcodeproj; path = MP42Foundation/MP42Foundation.xcodeproj; sourceTree = "<group>"; };
 		DD956C812D95D6EA0033A363 /* MyMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD956CA32D95EB500033A363 /* MP42Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MP42Foundation.xcodeproj; path = ../Subler/MP42Foundation/MP42Foundation.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -53,18 +53,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD956CAC2D95EC100033A363 /* MP42Foundation.framework in Frameworks */,
+				DD3ECE9B2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DD3ECE912DAA4E1A00C0E1F3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD3ECE932DAA4E1A00C0E1F3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		DD956C782D95D6EA0033A363 = {
 			isa = PBXGroup;
 			children = (
 				DD956C832D95D6EA0033A363 /* MyMedia */,
-				DD956C992D95EA410033A363 /* Frameworks */,
+				DD3ECE912DAA4E1A00C0E1F3 /* Frameworks */,
 				DD956C822D95D6EA0033A363 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,22 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				DD956C812D95D6EA0033A363 /* MyMedia.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		DD956C992D95EA410033A363 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DD956CA32D95EB500033A363 /* MP42Foundation.xcodeproj */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DD956CA42D95EB500033A363 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DD956CA92D95EB500033A363 /* MP42Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,8 +150,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = DD956CA42D95EB500033A363 /* Products */;
-					ProjectRef = DD956CA32D95EB500033A363 /* MP42Foundation.xcodeproj */;
+					ProductGroup = DD3ECE932DAA4E1A00C0E1F3 /* Products */;
+					ProjectRef = DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -162,11 +162,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		DD956CA92D95EB500033A363 /* MP42Foundation.framework */ = {
+		DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = MP42Foundation.framework;
-			remoteRef = DD956CA82D95EB500033A363 /* PBXContainerItemProxy */;
+			remoteRef = DD3ECE972DAA4E1A00C0E1F3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
