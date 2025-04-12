@@ -13,13 +13,7 @@ struct GridCellView: View {
 	
     var body: some View {
 		VStack(alignment: .leading) {
-			if let imageData = watchable.artwork, let nsImageFromData = NSImage(data: imageData)  {
-				Image(nsImage: nsImageFromData)
-					.resizable()
-					.scaledToFill()
-					.frame(width: 300, height: 150)
-					.clipShape(.rect(cornerRadius: 20))
-			}
+			ArtworkView(watchable: watchable )
 			
 			Text(watchable.title) + Text(" (\(String(watchable.year)))")
 			
