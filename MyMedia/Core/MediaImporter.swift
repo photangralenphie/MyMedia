@@ -11,6 +11,7 @@ import MP42Foundation
 
 enum ImportError: LocalizedError {
 	case fileNotAccessible
+	case noMetadataFound
 	case missingMetadata(type: String)
 	case unknown(message: String)
 
@@ -19,11 +20,28 @@ enum ImportError: LocalizedError {
 			case .fileNotAccessible: return "Could not access file."
 			case .missingMetadata(let type): return metadataError(metadataType: type)
 			case .unknown(let message): return "Unknown Error while reading file: \(message)."
+			case .noMetadataFound: return "No metadata found in file. Please add metadata before importing."
 		}
 	}
 	
 	private func metadataError(metadataType: String) -> String {
 		return "No \(metadataType) found in metadata."
+	}
+}
+
+enum HDVideoQuality: Int, Codable {
+	case sd = 0
+	case hd720p = 1
+	case hd1080p = 2
+	case uhd4k = 3
+	
+	var badgeTitle: String {
+		switch self {
+			case .sd: return "SD"
+			case .hd720p: return "Standard HD"
+			case .hd1080p: return "Full HD"
+			case .uhd4k: return "4K"
+		}
 	}
 }
 
@@ -35,6 +53,11 @@ class MediaImporter {
 		
 		guard let file = file else { return }
 		let kind = file.metadata.metadataItemsFiltered(byIdentifier: MP42MetadataKeyMediaKind).first
+		
+		if kind == nil {
+			throw ImportError.noMetadataFound
+		}
+		
 		if(kind?.dataType == MP42MetadataItemDataType.integer && kind?.numberValue == 9){
 			try readMovieMetadata(file: file, moc: moc)
 		}
@@ -94,9 +117,10 @@ class MediaImporter {
 		let coDirectors = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyCodirector)
 		let screenwriters = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyScreenwriters)
 		let studio = file.tryGetStringMetaDataValue(for: MP42MetadataKeyStudio)
-		let network = file.tryGetStringMetaDataValue(for: MP42MetadataKeyTVNetwork)
 		let rating = file.tryGetStringMetaDataValue(for: MP42MetadataKeyRating)
 		let languages = file.tracks.filter { $0.mediaType == kMP42MediaType_Audio }.map(\.language)
+		let resolutionIndex = try file.getIntMetaDataValue(for: MP42MetadataKeyHDVideo)
+		let resolution = HDVideoQuality(rawValue: resolutionIndex)
 		
 		if file.url == nil {
 			throw ImportError.missingMetadata(type: "URL")
@@ -119,7 +143,7 @@ class MediaImporter {
 			coDirectors: coDirectors,
 			screenwriters: screenwriters,
 			studio: studio,
-			network: network,
+			hdVideoQuality: resolution,
 			rating: rating,
 			languages: languages,
 			url: url

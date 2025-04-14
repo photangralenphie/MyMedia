@@ -86,7 +86,7 @@ struct TvShowDetailView: View {
 							
 							Spacer()
 							
-							Text(formatRuntime(minutes: episode.runtime))
+							Text(MetadataUtil.formatRuntime(minutes: episode.runtime))
 							
 							PlayButton(watchable: episode)
 						}
@@ -106,22 +106,7 @@ struct TvShowDetailView: View {
 		.navigationTitle(titleAndData)
     }
 	
-	func formatRuntime(minutes: Int) -> LocalizedStringKey {
-		let hours = minutes / 60
-		let mins = minutes % 60
-		
-		if hours > 0 && mins > 0 {
-			return "\(hours) hr, \(mins) min"
-		} else if hours > 0 {
-			return "\(hours) hr"
-		} else {
-			return "\(mins) min"
-		}
-	}
-	
 	func popNavigation() {
 		dismiss()
 	}
-	
-
 }

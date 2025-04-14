@@ -80,14 +80,14 @@ struct HomeView: View {
 		}
 		.tabViewStyle(.sidebarAdaptable)
 		.fileImporter(isPresented: $isImporting, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFiles)
-		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
-			Button("Ok"){ errorMessage = nil }
-		}
+//		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
+//			Button("Ok"){ errorMessage = nil }
+//		} message: {
+//			Text(errorMessage!.localizedDescription)
+//		}
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
-				Button(action: addItem) {
-					Label("Add Item", systemImage: "plus")
-				}
+				Button("Add Item", systemImage: "plus", action: addItem)
 			}
 		}
     }

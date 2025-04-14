@@ -24,52 +24,151 @@ struct MovieDetailView: View {
 	var body: some View {
 		List {
 			VStack(alignment: .leading, spacing: 20) {
-				HStack(alignment: .bottom, spacing: 20) {
+				HStack(alignment: .center, spacing: 20) {
 					ArtworkView(watchable: movie)
+					
 					VStack(alignment: .leading, spacing: 5) {
+						Spacer()
+						
 						Text(movie.title)
 							.font(.largeTitle)
 							.bold()
 						
 						Group {
-							Text(String(movie.year))
+							HStack {
+								Text(movie.releaseDate.formatted(date: .abbreviated, time: .omitted))
+								
+								if let genre = movie.genre {
+									Text("·")
+									Text(genre)
+								}
+							}
+								
+							if let studio = movie.studio {
+								Text(studio)
+							}
 							
-							if let genre = movie.genre {
-								Text(genre)
+							Text(MetadataUtil.formatRuntime(minutes: movie.runtime))
+							
+							HStack {
+								if let hdVideoQuality = movie.hdVideoQuality?.badgeTitle {
+									BadgeView(text: hdVideoQuality, style: .filled)
+								}
+								
+								if let rating = MetadataUtil.getRating(ratingString: movie.rating) {
+									BadgeView(text: rating, style: .outlined)
+								}
+								
+								Text(MetadataUtil.flagEmojis(for: movie.languages))
 							}
 						}
 						.foregroundStyle(.secondary)
+						.bold()
 					}
+					
+					Spacer()
+					
+					PlayButton(watchable: movie)
+				}
+			}
+			.listRowSeparator(.hidden)
+			
+			if let description = getDescription() {
+				VStack(alignment: .leading) {
+					Text("SUMMARY")
+						.bold()
+						.foregroundStyle(.secondary)
+						.font(.caption)
+						.padding(.bottom, 1)
+					
+					Text(description)
+				}
+				.padding(.vertical)
+			}
+			
+			HStack(alignment: .top, spacing: 0) {
+				if let cast = movie.cast {
+					VStack(alignment: .leading) {
+						Text("CAST")
+							.bold()
+							.padding(.bottom, 2)
+							.font(.caption)
+							.foregroundStyle(.secondary)
+						Text(cast.joined(separator: "\n"))
+					}
+					.frame(minWidth: 150)
 					
 					Spacer()
 				}
 				
-				if let description = getDescription() {
-					Text("Summary")
-						.bold()
-					Text(description)
-						.foregroundStyle(.secondary)
+				
+				if let directors = movie.directors {
+					VStack(alignment: .leading) {
+						Text("DIRECTOR")
+							.bold()
+							.padding(.bottom, 2)
+							.font(.caption)
+							.foregroundStyle(.secondary)
+						Text(directors.joined(separator: "\n"))
+						
+						if let coDirectors = movie.coDirectors {
+							Text("CO-DIRECTOR")
+								.bold()
+								.padding(.bottom, 2)
+								.font(.caption)
+								.foregroundStyle(.secondary)
+							Text(coDirectors.joined(separator: "\n"))
+						}
+					}
+					.frame(minWidth: 150)
+					
+					Spacer()
+				}
+				
+				
+				if let screenwriters = movie.screenwriters {
+					VStack(alignment: .leading) {
+						Text("SCREENWRITER")
+							.bold()
+							.padding(.bottom, 1)
+							.font(.caption)
+							.foregroundStyle(.secondary)
+						Text(screenwriters.joined(separator: "\n"))
+					}
+					.frame(minWidth: 150)
+					
+					Spacer()
+				}
+				
+				
+				if let producers = movie.producers {
+					VStack(alignment: .leading) {
+						Text("PRODUCERS")
+							.bold()
+							.padding(.bottom, 1)
+							.font(.caption)
+							.foregroundStyle(.secondary)
+						Text(producers.joined(separator: "\n"))
+						
+						if let executiveProducers = movie.executiveProducers {
+							Text("EXECUTIVE PRODUCERS")
+								.bold()
+								.padding(.bottom, 1)
+								.font(.caption)
+								.foregroundStyle(.secondary)
+							
+							Text(executiveProducers.joined(separator: "\n"))
+						}
+					}
+					.frame(minWidth: 150)
 				}
 			}
-			.listRowSeparator(.hidden)
+			.padding(.vertical)
 		}
 		.toolbar {
 			WatchableActionsView(watchable: movie, onDelete: popNavigation)
 		}
 		.navigationTitle(titleAndData)
-	}
-	
-	func formatRuntime(minutes: Int) -> String {
-		let hours = minutes / 60
-		let mins = minutes % 60
-		
-		if hours > 0 && mins > 0 {
-			return "\(hours) hr, \(mins) min"
-		} else if hours > 0 {
-			return "\(hours) hr"
-		} else {
-			return "\(mins) min"
-		}
 	}
 	
 	func popNavigation() {

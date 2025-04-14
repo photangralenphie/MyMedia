@@ -32,12 +32,12 @@ class Movie: Watchable {
 	var coDirectors: [String]?
 	var screenwriters: [String]?
 	var studio: String?
-	var network: String?
+	var hdVideoQuality: HDVideoQuality?
 	var rating: String?
 	var languages: [String]
 	var url: URL
 	
-	init(artwork: Data?, title: String, genre: String?, runtime: Int, releaseDate: Date, shortDescription: String?, longDescription: String?, cast: [String]?, producers: [String]?, executiveProducers: [String]?, directors: [String]?, coDirectors: [String]?, screenwriters: [String]?, studio: String?, network: String?, rating: String?, languages: [String], url: URL) {
+	init(artwork: Data?, title: String, genre: String?, runtime: Int, releaseDate: Date, shortDescription: String?, longDescription: String?, cast: [String]?, producers: [String]?, executiveProducers: [String]?, directors: [String]?, coDirectors: [String]?, screenwriters: [String]?, studio: String?, hdVideoQuality: HDVideoQuality?, rating: String?, languages: [String], url: URL) {
 		self.artwork = artwork
 		self.title = title
 		self.genre = genre
@@ -52,7 +52,7 @@ class Movie: Watchable {
 		self.coDirectors = coDirectors
 		self.screenwriters = screenwriters
 		self.studio = studio
-		self.network = network
+		self.hdVideoQuality = hdVideoQuality
 		self.rating = rating
 		self.languages = languages
 		self.url = url

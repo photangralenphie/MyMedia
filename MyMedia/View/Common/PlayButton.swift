@@ -16,8 +16,8 @@ struct PlayButton: View {
 	@Environment(\.openWindow) private var openWindow
 	
     var body: some View {
-		Button("Play", systemImage: "play") { play(watchable: watchable) }
-			.buttonStyle(iOSBorderedForMacOS())
+		Button("Play", systemImage: "play.fill") { play(watchable: watchable) }
+			.buttonStyle(iOSBorderedProminentForMacOS())
     }
 	
 	func play(watchable: any Watchable) {
