@@ -17,12 +17,18 @@ struct WatchableActionsView: View {
     var body: some View {
 		Menu("Actions") {
 			Button(watchable.isWatched ? "Mark Unwatched" : "Mark Watched", action: toggleWatched)
+				.keyboardShortcut("w", modifiers: .command)
+			
 			Button(watchable.isFavorite ? "Remove from Favorites" : "Add to Favorites", action: toggleFavorite)
+				.keyboardShortcut("f", modifiers: [.shift, .command])
+			
 			Button(watchable.isPinned ? "Unpin" : "Pin", action: togglePinned)
+				.keyboardShortcut("p", modifiers: .command)
 			
 			Divider()
 			
 			Button("Remove from Library", action: removeFromLibrary)
+				.keyboardShortcut(.delete, modifiers: .command)
 			
 			Divider()
 			
@@ -32,6 +38,7 @@ struct WatchableActionsView: View {
 				// Show button only if tvshow has episodes
 			} else {
 				Button("Play with default Player", action: playWithDefaultPlayer)
+					.keyboardShortcut("p", modifiers: [.command, .shift])
 			}
 		}
     }

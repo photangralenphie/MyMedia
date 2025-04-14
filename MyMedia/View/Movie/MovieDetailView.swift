@@ -69,6 +69,7 @@ struct MovieDetailView: View {
 					Spacer()
 					
 					PlayButton(watchable: movie)
+						.keyboardShortcut("p", modifiers: .command)
 				}
 			}
 			.listRowSeparator(.hidden)

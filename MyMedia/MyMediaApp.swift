@@ -21,12 +21,26 @@ struct MyMediaApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+	
+	@State private var commandResource = CommandResource()
 
     var body: some Scene {
         WindowGroup {
             HomeView()
+				.environment(commandResource)
         }
         .modelContainer(sharedModelContainer)
+		.commands {
+			CommandGroup(replacing: .undoRedo) { EmptyView() }
+			CommandGroup(replacing: .systemServices) { EmptyView() }
+			CommandGroup(replacing: .pasteboard) { EmptyView() }
+			CommandGroup(replacing: .importExport) {
+				Button("Import Media") {
+					commandResource.showImporter.toggle()
+				}
+				.keyboardShortcut("i", modifiers: .command)
+			}
+		}
 		
 		WindowGroup(for: URL.self) { url in
 			if let url = url.wrappedValue {

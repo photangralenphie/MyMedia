@@ -12,12 +12,16 @@ import AwesomeSwiftyComponents
 struct HomeView: View {
 	
 	@Environment(\.modelContext) private var moc
+	@Environment(CommandResource.self) var commandResource
 	@Query private var tvShows: [TvShow]
 	@Query private var movies: [Movie]
 	@State private var isImporting: Bool = false
 	@State private var errorMessage: Error?
 	
     var body: some View {
+		
+		@Bindable var commandResource = commandResource
+		
 		TabView {
 			Tab("Recent", systemImage: "calendar") {
 				Text("Recent")
@@ -79,7 +83,7 @@ struct HomeView: View {
 			}
 		}
 		.tabViewStyle(.sidebarAdaptable)
-		.fileImporter(isPresented: $isImporting, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFiles)
+		.fileImporter(isPresented: $commandResource.showImporter, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFiles)
 //		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
 //			Button("Ok"){ errorMessage = nil }
 //		} message: {
@@ -88,6 +92,7 @@ struct HomeView: View {
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				Button("Add Item", systemImage: "plus", action: addItem)
+					.keyboardShortcut("i", modifiers: .command)
 			}
 		}
     }
