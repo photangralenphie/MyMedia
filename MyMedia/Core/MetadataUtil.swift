@@ -152,4 +152,57 @@ struct MetadataUtil {
 		"sn": "🇿🇼",
 		"nd": "🇿🇦"
 	]
+	
+	public static func genreSymbol(for genre: String) -> String {
+		switch genre {
+			case "Action":
+				return "burst"
+			case "Adventure":
+				return "map"
+			case "Animated", "Animation":
+				return "lamp.desk"
+			case "Children":
+				return "figure.child"
+			case "Comedy":
+				return "face.smiling"
+			case "Crime":
+				return "person.fill.viewfinder"
+			case "Drama":
+				return "theatermasks.fill"
+			case "Documentary":
+				return "photo.artframe"
+			case "Family":
+				return "figure.2.and.child.holdinghands"
+			case "Fantasy":
+				return "wand.and.stars"
+			case "History":
+				return "crown"
+			case "Horror":
+				return "figure.run"
+			case "Music":
+				return "music.note"
+			case "Musical":
+				return "music.microphone"
+			case "Mystery":
+				return "magnifyingglass"
+			case "Nature":
+				return "leaf"
+			case "Romance", "Love":
+				return "heart"
+			case "Sci-Fi", "Science-Fiction", "Science Fiction":
+				return "atom"
+			case "Sport", "Sports":
+				return "soccerball"
+			case "Thriller":
+				return "waveform.path.ecg"
+			case "Trash":
+				return "trash"
+			case "War":
+				return "dot.scope"
+			case "Western":
+				return "lasso"
+			default:
+				return "person.crop.square.on.square.angled"
+		}
+	}
 }

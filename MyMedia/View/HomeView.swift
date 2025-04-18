@@ -13,20 +13,20 @@ struct HomeView: View {
 	
 	@Environment(\.modelContext) private var moc
 	@Environment(CommandResource.self) var commandResource
-	@Query private var tvShows: [TvShow]
-	@Query private var movies: [Movie]
+	@Query(sort: \TvShow.title) private var tvShows: [TvShow]
+	@Query(sort: \Movie.title) private var movies: [Movie]
 	@State private var isImporting: Bool = false
-	@State private var errorMessage: Error?
+	@State private var errorMessage: String?
 	
     var body: some View {
 		
 		@Bindable var commandResource = commandResource
 		
 		TabView {
-			Tab("Recent", systemImage: "calendar") {
-				Text("Recent")
-					.navigationTitle("Recent")
-			}
+//			Tab("Recent", systemImage: "calendar") {
+//				Text("Recent")
+//					.navigationTitle("Recent")
+//			}
 			
 			Tab("Unwatched", systemImage: "eye.slash") {
 				let unwatched: [any Watchable] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
@@ -38,18 +38,24 @@ struct HomeView: View {
 				GridView(watchable: favorites, navTitle: "Favorites")
 			}
 			
-			Tab("Search", systemImage: "magnifyingglass") {
-				Text("Search")
-					.navigationTitle("Search")
+			Tab("Genres", systemImage: "theatermasks") {
+				GenresView(watchables: tvShows + movies)
+					.id("CommonGenres")
 			}
+			
+//			Tab("Search", systemImage: "magnifyingglass") {
+//				Text("Search")
+//					.navigationTitle("Search")
+//			}
+			
 			
 			TabSection("Movies") {
 				Tab("All Movies", systemImage: "movieclapper") {
 					GridView(watchable: movies, navTitle: "Movies")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
-					Text("Genres")
-						.navigationTitle("Genres")
+					GenresView(watchables: movies)
+						.id("MovieGenres")
 				}
 
 			}
@@ -59,8 +65,8 @@ struct HomeView: View {
 					GridView(watchable: tvShows, navTitle: "TV Shows")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
-					Text("Genres")
-						.navigationTitle("Genres")
+					GenresView(watchables: tvShows)
+						.id("TvShowGenres")
 				}
 			}
 			
@@ -84,11 +90,11 @@ struct HomeView: View {
 		}
 		.tabViewStyle(.sidebarAdaptable)
 		.fileImporter(isPresented: $commandResource.showImporter, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFiles)
-//		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
-//			Button("Ok"){ errorMessage = nil }
-//		} message: {
-//			Text(errorMessage!.localizedDescription)
-//		}
+		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
+			Button("Ok"){ errorMessage = nil }
+		} message: {
+			Text(errorMessage ?? "")
+		}
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				Button("Add Item", systemImage: "plus", action: addItem)
@@ -106,7 +112,7 @@ struct HomeView: View {
 					}
 					
 				} catch(let importError) {
-					errorMessage = importError
+					errorMessage = importError.localizedDescription
 				}
 			case .failure(let error):
 				print("Error picking file: \(error.localizedDescription)")

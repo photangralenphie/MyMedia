@@ -30,20 +30,7 @@ struct GridView: View {
 			ScrollView {
 				LazyVGrid(columns: layout) {
 					ForEach(filteredWatchables, id: \.id) { watchable in
-						NavigationLink {
-							switch watchable {
-								case let tvShow as TvShow:
-									TvShowDetailView(tvShow: tvShow)
-								case let movie as Movie:
-									MovieDetailView(movie: movie)
-								default:
-									Text("Episodes are not supported in Grid view")
-							}
-						} label: {
-							GridCellView(watchable: watchable)
-						}
-						.buttonStyle(PlainButtonStyle())
-						.padding(.bottom)
+						GridCellView(watchable: watchable)
 					}
 				}
 				.padding()

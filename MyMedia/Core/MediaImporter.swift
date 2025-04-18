@@ -105,21 +105,22 @@ class MediaImporter {
 	public static func createMovieFromFile(file: MP42File) throws -> Movie {
 		let artwork = file.tryGetImageMetaDataValue(for: MP42MetadataKeyCoverArt, artworkType: .moviePoster)
 		let title = try file.getStringMetaDataValue(for: MP42MetadataKeyName)
-		let genre = file.tryGetStringMetaDataValue(for: MP42MetadataKeyUserGenre)
+		let genreString = file.tryGetStringMetaDataValue(for: MP42MetadataKeyUserGenre)
+		let genre = genreString?.split(separator: ",").map{ $0.trimmingCharacters(in: .whitespaces) } ?? []
 		let runtime = Int(file.duration) / 60000
 		let releaseDate = try file.getDateMetaDataValue(for: MP42MetadataKeyReleaseDate)
 		let shortDescription = file.tryGetStringMetaDataValue(for: MP42MetadataKeyDescription)
 		let longDescription = file.tryGetStringMetaDataValue(for: MP42MetadataKeyLongDescription)
-		let producers = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyProducer)
-		let executiveProducers = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyExecProducer)
-		let cast = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyCast)
-		let directors = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyDirector)
-		let coDirectors = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyCodirector)
-		let screenwriters = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyScreenwriters)
+		let producers = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyProducer) ?? []
+		let executiveProducers = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyExecProducer) ?? []
+		let cast = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyCast) ?? []
+		let directors = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyDirector) ?? []
+		let coDirectors = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyCodirector) ?? []
+		let screenwriters = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyScreenwriters) ?? []
 		let studio = file.tryGetStringMetaDataValue(for: MP42MetadataKeyStudio)
 		let rating = file.tryGetStringMetaDataValue(for: MP42MetadataKeyRating)
 		let languages = file.tracks.filter { $0.mediaType == kMP42MediaType_Audio }.map(\.language)
-		let resolutionIndex = try file.getIntMetaDataValue(for: MP42MetadataKeyHDVideo)
+		let resolutionIndex = file.tryGetIntMetaDataValue(for: MP42MetadataKeyHDVideo) ?? 0 // When hd is not found its SD quality
 		let resolution = HDVideoQuality(rawValue: resolutionIndex)
 		
 		if file.url == nil {
@@ -156,7 +157,8 @@ class MediaImporter {
 		let title = try file.getStringMetaDataValue(for: MP42MetadataKeyTVShow)
 		let date = try file.getDateMetaDataValue(for: MP42MetadataKeyReleaseDate)
 		let year = Calendar.current.component(.year, from: date)
-		let genre = file.tryGetStringMetaDataValue(for: MP42MetadataKeyUserGenre)
+		let genreString = file.tryGetStringMetaDataValue(for: MP42MetadataKeyUserGenre)
+		let genre = genreString?.split(separator: ",").map{ $0.trimmingCharacters(in: .whitespaces) } ?? []
 		let seriesDescription = file.tryGetStringMetaDataValue(for: MP42MetadataKeySeriesDescription)
 		let artwork = file.tryGetImageMetaDataValue(for: MP42MetadataKeyCoverArt, artworkType: .tvPoster)
 		
@@ -178,10 +180,10 @@ class MediaImporter {
 		let releaseDate = try file.getDateMetaDataValue(for: MP42MetadataKeyReleaseDate)
 		let shortDescription = file.tryGetStringMetaDataValue(for: MP42MetadataKeyDescription)
 		let longDescription = file.tryGetStringMetaDataValue(for: MP42MetadataKeyLongDescription)
-		let producers = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyProducer)
-		let cast = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyCast)
-		let directors = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyDirector)
-		let screenwriters = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyScreenwriters)
+		let producers = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyProducer) ?? []
+		let cast = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyCast) ?? []
+		let directors = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyDirector) ?? []
+		let screenwriters = file.tryGetStringArrayMetaDataValue(for: MP42MetadataKeyScreenwriters) ?? []
 		let studio = file.tryGetStringMetaDataValue(for: MP42MetadataKeyStudio)
 		let network = file.tryGetStringMetaDataValue(for: MP42MetadataKeyTVNetwork)
 		let rating = file.tryGetStringMetaDataValue(for: MP42MetadataKeyRating)

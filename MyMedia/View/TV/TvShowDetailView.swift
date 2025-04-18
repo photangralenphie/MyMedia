@@ -22,7 +22,9 @@ struct TvShowDetailView: View {
 		self.titleAndData = "\(tvShow.title) (\(String(tvShow.year)))"
 		
 		let groupedEpisodes = Dictionary(grouping: tvShow.episodes, by: { $0.season })
-		self.episodes = groupedEpisodes.values.map { $0.sorted(by: { $0.episode < $1.episode }) }
+		self.episodes = groupedEpisodes.values
+			.map { $0.sorted(by: { $0.episode < $1.episode }) }
+			.sorted(by: { $0.first!.season < $1.first!.season })
 	}
 	
     var body: some View {
@@ -41,8 +43,8 @@ struct TvShowDetailView: View {
 							Text("^[\(episodes.count) SEASON](inflect: true) ")
 								.bold()
 							
-							if let genre = tvShow.genre {
-								Text(genre)
+							if !tvShow.genre.isEmpty {
+								Text(tvShow.genre.joined(separator: ", "))
 							}
 						}
 						.foregroundStyle(.secondary)
@@ -93,7 +95,7 @@ struct TvShowDetailView: View {
 						.padding(.vertical, 5)
 					}
 				} header: {
-					Text("Season \(season.first!.season)")
+					Text("Season \(String(season.first!.season))")
 						.font(.title2)
 						.foregroundStyle(Color.primary)
 						.bold()

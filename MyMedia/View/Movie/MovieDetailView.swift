@@ -12,6 +12,8 @@ struct MovieDetailView: View {
 	let movie: Movie
 	private let titleAndData: String
 	
+	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
+	
 	@Environment(\.modelContext) private var moc
 	@Environment(\.openWindow) private var openWindow
 	@Environment(\.dismiss) private var dismiss
@@ -38,9 +40,9 @@ struct MovieDetailView: View {
 							HStack {
 								Text(movie.releaseDate.formatted(date: .abbreviated, time: .omitted))
 								
-								if let genre = movie.genre {
+								if !movie.genre.isEmpty {
 									Text("·")
-									Text(genre)
+									Text(movie.genre.joined(separator: ", "))
 								}
 							}
 								
@@ -59,7 +61,11 @@ struct MovieDetailView: View {
 									BadgeView(text: rating, style: .outlined)
 								}
 								
-								Text(MetadataUtil.flagEmojis(for: movie.languages))
+								if showLanguageFlags {
+									Text(MetadataUtil.flagEmojis(for: movie.languages))
+								} else {
+									Text(movie.languages.joined(separator: ", "))
+								}
 							}
 						}
 						.foregroundStyle(.secondary)
@@ -88,37 +94,36 @@ struct MovieDetailView: View {
 			}
 			
 			HStack(alignment: .top, spacing: 0) {
-				if let cast = movie.cast {
+				if !movie.cast.isEmpty {
 					VStack(alignment: .leading) {
 						Text("CAST")
 							.bold()
 							.padding(.bottom, 2)
 							.font(.caption)
 							.foregroundStyle(.secondary)
-						Text(cast.joined(separator: "\n"))
+						Text(movie.cast.joined(separator: "\n"))
 					}
 					.frame(minWidth: 150)
 					
 					Spacer()
 				}
 				
-				
-				if let directors = movie.directors {
+				if !movie.directors.isEmpty {
 					VStack(alignment: .leading) {
 						Text("DIRECTOR")
 							.bold()
 							.padding(.bottom, 2)
 							.font(.caption)
 							.foregroundStyle(.secondary)
-						Text(directors.joined(separator: "\n"))
+						Text(movie.directors.joined(separator: "\n"))
 						
-						if let coDirectors = movie.coDirectors {
+						if !movie.coDirectors.isEmpty {
 							Text("CO-DIRECTOR")
 								.bold()
 								.padding(.bottom, 2)
 								.font(.caption)
 								.foregroundStyle(.secondary)
-							Text(coDirectors.joined(separator: "\n"))
+							Text(movie.coDirectors.joined(separator: "\n"))
 						}
 					}
 					.frame(minWidth: 150)
@@ -127,14 +132,14 @@ struct MovieDetailView: View {
 				}
 				
 				
-				if let screenwriters = movie.screenwriters {
+				if !movie.screenwriters.isEmpty {
 					VStack(alignment: .leading) {
 						Text("SCREENWRITER")
 							.bold()
 							.padding(.bottom, 1)
 							.font(.caption)
 							.foregroundStyle(.secondary)
-						Text(screenwriters.joined(separator: "\n"))
+						Text(movie.screenwriters.joined(separator: "\n"))
 					}
 					.frame(minWidth: 150)
 					
@@ -142,23 +147,23 @@ struct MovieDetailView: View {
 				}
 				
 				
-				if let producers = movie.producers {
+				if !movie.producers.isEmpty {
 					VStack(alignment: .leading) {
 						Text("PRODUCERS")
 							.bold()
 							.padding(.bottom, 1)
 							.font(.caption)
 							.foregroundStyle(.secondary)
-						Text(producers.joined(separator: "\n"))
+						Text(movie.producers.joined(separator: "\n"))
 						
-						if let executiveProducers = movie.executiveProducers {
+						if !movie.executiveProducers.isEmpty {
 							Text("EXECUTIVE PRODUCERS")
 								.bold()
 								.padding(.bottom, 1)
 								.font(.caption)
 								.foregroundStyle(.secondary)
 							
-							Text(executiveProducers.joined(separator: "\n"))
+							Text(movie.executiveProducers.joined(separator: "\n"))
 						}
 					}
 					.frame(minWidth: 150)

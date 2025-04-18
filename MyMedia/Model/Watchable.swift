@@ -19,5 +19,8 @@ protocol Watchable: Identifiable {
 	var isWatched: Bool { get set }
 	var isFavorite: Bool { get set }
 	var isPinned: Bool { get set }
-	
+}
+
+protocol WatchableWithGenre: Watchable {
+	var genre: [String] { get }
 }

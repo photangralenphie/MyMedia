@@ -10,11 +10,13 @@ import SwiftData
 
 @Model
 class Episode: Watchable {
-	var id: UUID = UUID()
+	@Attribute(.unique) var id: UUID = UUID()
 	var dateAdded = Date.now
 	var isWatched: Bool = false
 	
-	var year: Int { Calendar.current.component(.year, from: releaseDate) }
+	@Transient var year: Int {
+		Calendar.current.component(.year, from: releaseDate)
+	}
 	
 	var artwork: Data?
 	var season: Int
@@ -24,10 +26,10 @@ class Episode: Watchable {
 	var releaseDate: Date
 	var episodeShortDescription: String?
 	var episodeLongDescription: String?
-	var cast: [String]?
-	var producers: [String]?
-	var directors: [String]?
-	var screenwriters: [String]?
+	var cast: [String]
+	var producers: [String]
+	var directors: [String]
+	var screenwriters: [String]
 	var studio: String?
 	var network: String?
 	var rating: String?
@@ -37,7 +39,25 @@ class Episode: Watchable {
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
 	
-	init(artwork: Data?, season: Int, episode: Int, title: String, runtime: Int, releaseDate: Date, episodeShortDescription: String?, episodeLongDescription: String?, cast: [String]?, producers: [String]?, directors: [String]?, screenwriters: [String]?, studio: String?, network: String?, rating: String?, languages: [String], url: URL) {
+	init(
+		artwork: Data?,
+		season: Int,
+		episode: Int,
+		title: String,
+		runtime: Int,
+		releaseDate: Date,
+		episodeShortDescription: String?,
+		episodeLongDescription: String?,
+		cast: [String],
+		producers: [String],
+		directors: [String],
+		screenwriters: [String],
+		studio: String?,
+		network: String?,
+		rating: String?,
+		languages: [String],
+		url: URL
+	) {
 		self.artwork = artwork
 		self.season = season
 		self.episode = episode

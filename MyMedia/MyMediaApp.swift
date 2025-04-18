@@ -14,11 +14,11 @@ struct MyMediaApp: App {
     var sharedModelContainer: ModelContainer = {
 		let schema = Schema([ TvShow.self, Movie.self ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+		
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+			fatalError("Could not create ModelContainer: \(error.localizedDescription)")
         }
     }()
 	
@@ -26,10 +26,10 @@ struct MyMediaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
+			HomeView()
 				.environment(commandResource)
         }
-        .modelContainer(sharedModelContainer)
+		.modelContainer(sharedModelContainer)
 		.commands {
 			CommandGroup(replacing: .undoRedo) { EmptyView() }
 			CommandGroup(replacing: .systemServices) { EmptyView() }
