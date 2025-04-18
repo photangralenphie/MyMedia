@@ -18,6 +18,14 @@ struct HomeView: View {
 	@State private var isImporting: Bool = false
 	@State private var errorMessage: String?
 	
+	@AppStorage("sortOrderUnwatched") private var sortOrderUnwatched = SortOption.title
+	@AppStorage("sortOrderFavorites") private var sortOrderFavorites = SortOption.title
+	@AppStorage("sortOrderGenres") private var sortOrderGenres = SortOption.title
+	@AppStorage("sortOrderMovies") private var sortOrderMovies = SortOption.title
+	@AppStorage("sortOrderMoviesGenre") private var sortOrderMoviesGenre = SortOption.title
+	@AppStorage("sortOrderTvShows") private var sortOrderTvShows = SortOption.title
+	@AppStorage("sortOrderTvShowsGenre") private var sortOrderTvShowsGenre = SortOption.title
+	
     var body: some View {
 		
 		@Bindable var commandResource = commandResource
@@ -30,16 +38,16 @@ struct HomeView: View {
 			
 			Tab("Unwatched", systemImage: "eye.slash") {
 				let unwatched: [any Watchable] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
-				GridView(watchable: unwatched, navTitle: "Unwatched")
+				GridView(watchables: unwatched, sorting: $sortOrderUnwatched, navTitle: "Unwatched")
 			}
 			
 			Tab("Favorites", systemImage: "star.fill") {
 				let favorites: [any Watchable] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
-				GridView(watchable: favorites, navTitle: "Favorites")
+				GridView(watchables: favorites, sorting: $sortOrderFavorites, navTitle: "Favorites")
 			}
 			
 			Tab("Genres", systemImage: "theatermasks") {
-				GenresView(watchables: tvShows + movies)
+				GenresView(watchables: tvShows + movies, sortOrder: $sortOrderGenres)
 					.id("CommonGenres")
 			}
 			
@@ -48,13 +56,12 @@ struct HomeView: View {
 //					.navigationTitle("Search")
 //			}
 			
-			
 			TabSection("Movies") {
 				Tab("All Movies", systemImage: "movieclapper") {
-					GridView(watchable: movies, navTitle: "Movies")
+					GridView(watchables: movies, sorting: $sortOrderMovies, navTitle: "Movies")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
-					GenresView(watchables: movies)
+					GenresView(watchables: movies, sortOrder: $sortOrderMoviesGenre)
 						.id("MovieGenres")
 				}
 
@@ -62,10 +69,10 @@ struct HomeView: View {
 			
 			TabSection("TV Shows") {
 				Tab("All TV Shows", systemImage: "tv") {
-					GridView(watchable: tvShows, navTitle: "TV Shows")
+					GridView(watchables: tvShows, sorting: $sortOrderTvShows, navTitle: "TV Shows")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
-					GenresView(watchables: tvShows)
+					GenresView(watchables: tvShows, sortOrder: $sortOrderTvShowsGenre)
 						.id("TvShowGenres")
 				}
 			}
@@ -106,14 +113,18 @@ struct HomeView: View {
 	private func importNewFiles(result: Result<[URL], Error>) {
 		switch result {
 			case .success(let urls):
-				do {
-					try urls.forEach { url in
+				urls.forEach { url in
+					do {
 						try MediaImporter.importFile(data: url, moc: moc, existingTvShows: tvShows)
+					} catch(let importError) {
+						if errorMessage == nil {
+							errorMessage = importError.localizedDescription
+						} else {
+							errorMessage! += "\n\(importError.localizedDescription)"
+						}
 					}
-					
-				} catch(let importError) {
-					errorMessage = importError.localizedDescription
 				}
+					
 			case .failure(let error):
 				print("Error picking file: \(error.localizedDescription)")
 		}

@@ -11,14 +11,16 @@ struct GenresView: View {
 	
 	let watchablesByGenre: [String: [any WatchableWithGenre]]
 	@State private var selectedGenre: String?
+	@Binding private var sortOrder: SortOption
 	
-	init(watchables: [any WatchableWithGenre]) {
+	init(watchables: [any WatchableWithGenre], sortOrder: Binding<SortOption>) {
 		let genres = Array(Set(watchables.flatMap(\.genre))).sorted()
 		self.watchablesByGenre = genres.reduce(into: [String: [TvShow]]()) { result, genre in
 			result[genre] = watchables.filter { $0.genre.contains(genre) }
 		}
 		
 		_selectedGenre = State(initialValue: genres.first)
+		_sortOrder = sortOrder
 	}
 	
     var body: some View {
@@ -31,7 +33,7 @@ struct GenresView: View {
 
 			if let selectedGenre {
 				ScrollView {
-					GridView(watchable: watchablesByGenre[selectedGenre] ?? [], navTitle: "\(selectedGenre)")
+					GridView(watchables: watchablesByGenre[selectedGenre] ?? [], sorting: $sortOrder, navTitle: "\(selectedGenre)")
 				}
 			} else {
 				ContentUnavailableView("Select a genre", systemImage: "square.on.square")
