@@ -23,6 +23,7 @@ struct MyMediaApp: App {
     }()
 	
 	@State private var commandResource = CommandResource()
+	@Environment(\.openWindow) var openWindow
 
     var body: some Scene {
         WindowGroup {
@@ -35,10 +36,11 @@ struct MyMediaApp: App {
 			CommandGroup(replacing: .systemServices) { EmptyView() }
 			CommandGroup(replacing: .pasteboard) { EmptyView() }
 			CommandGroup(replacing: .importExport) {
-				Button("Import Media") {
-					commandResource.showImporter.toggle()
-				}
-				.keyboardShortcut("i", modifiers: .command)
+				Button("Import Media") { commandResource.showImporter.toggle() }
+					.keyboardShortcut("i", modifiers: .command)
+			}
+			CommandGroup(replacing: .appInfo) {
+				Button("About") { openWindow(id: "about") }
 			}
 		}
 		
@@ -52,6 +54,16 @@ struct MyMediaApp: App {
 		.windowStyle(.hiddenTitleBar)
 		.commandsRemoved()
 		.defaultLaunchBehavior(.suppressed)
+		
+		Window("About MyMedia", id: "about") {
+			AboutView()
+				.toolbar(removing: .title)
+				.toolbarBackground(.hidden, for: .windowToolbar)
+				.containerBackground(.regularMaterial, for: .window)
+				.windowMinimizeBehavior(.disabled)
+		}
+		.windowResizability(.contentSize)
+		.restorationBehavior(.disabled)
 		
 		Settings {
 			SettingsView()

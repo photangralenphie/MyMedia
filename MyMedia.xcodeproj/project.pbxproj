@@ -7,21 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DD3ECE9B2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */; };
-		DD3ECE9C2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DD4AE38F2DAA92C0006DB62C /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD4AE38E2DAA92C0006DB62C /* AwesomeSwiftyComponents */; };
 		DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DD8065622DB2960200B6A629 /* OrderedCollections */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		DD3ECE972DAA4E1A00C0E1F3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A9B9C1ED182391DF00416A4E;
-			remoteInfo = MP42Foundation;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		DD956CAE2D95EC110033A363 /* Embed Frameworks */ = {
@@ -30,7 +18,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DD3ECE9C2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,7 +25,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MP42Foundation.xcodeproj; path = MP42Foundation/MP42Foundation.xcodeproj; sourceTree = "<group>"; };
 		DD956C812D95D6EA0033A363 /* MyMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -56,7 +42,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD4AE38F2DAA92C0006DB62C /* AwesomeSwiftyComponents in Frameworks */,
-				DD3ECE9B2DAA4E8B00C0E1F3 /* MP42Foundation.framework in Frameworks */,
 				DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,27 +49,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DD3ECE912DAA4E1A00C0E1F3 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DD3ECE932DAA4E1A00C0E1F3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		DD956C782D95D6EA0033A363 = {
 			isa = PBXGroup;
 			children = (
 				DD956C832D95D6EA0033A363 /* MyMedia */,
-				DD3ECE912DAA4E1A00C0E1F3 /* Frameworks */,
 				DD956C822D95D6EA0033A363 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -156,28 +124,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DD956C822D95D6EA0033A363 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = DD3ECE932DAA4E1A00C0E1F3 /* Products */;
-					ProjectRef = DD3ECE922DAA4E1A00C0E1F3 /* MP42Foundation.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				DD956C802D95D6EA0033A363 /* MyMedia */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		DD3ECE982DAA4E1A00C0E1F3 /* MP42Foundation.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MP42Foundation.framework;
-			remoteRef = DD3ECE972DAA4E1A00C0E1F3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DD956C7F2D95D6EA0033A363 /* Resources */ = {
@@ -323,6 +275,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MyMedia/MyMedia.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -332,6 +285,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MyMedia;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -351,6 +306,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = MyMedia/MyMedia.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -360,6 +316,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MyMedia;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

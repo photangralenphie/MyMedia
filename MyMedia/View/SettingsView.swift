@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AwesomeSwiftyComponents
 
 struct PreferenceKeys {
 	public static let useInAppPlayer: String = "useInAppPlayer"
@@ -22,6 +23,7 @@ struct SettingsView: View {
 			Tab("General", systemImage: "gear") {
 				Toggle("Use in-app Player", isOn: $useInAppPlayer)
 			}
+			
 			Tab("UI", systemImage: "square.on.square.intersection.dashed") {
 				Toggle("Show Languages as Flags", isOn: $showLanguageFlags)
 			}

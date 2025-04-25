@@ -114,13 +114,15 @@ struct HomeView: View {
 		switch result {
 			case .success(let urls):
 				urls.forEach { url in
-					do {
-						try MediaImporter.importFile(data: url, moc: moc, existingTvShows: tvShows)
-					} catch(let importError) {
-						if errorMessage == nil {
-							errorMessage = importError.localizedDescription
-						} else {
-							errorMessage! += "\n\(importError.localizedDescription)"
+					Task {
+						do {
+							try await MediaImporter.importFile(data: url, moc: moc, existingTvShows: tvShows)
+						} catch(let importError) {
+							if errorMessage == nil {
+								errorMessage = importError.localizedDescription
+							} else {
+								errorMessage! += "\n\(importError.localizedDescription)"
+							}
 						}
 					}
 				}
