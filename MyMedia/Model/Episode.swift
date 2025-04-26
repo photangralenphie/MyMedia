@@ -30,7 +30,6 @@ class Episode: Watchable {
 	var producers: [String]
 	var directors: [String]
 	var screenwriters: [String]
-	var studio: String?
 	var network: String?
 	var rating: String?
 	var languages: [String]
@@ -52,7 +51,6 @@ class Episode: Watchable {
 		producers: [String],
 		directors: [String],
 		screenwriters: [String],
-		studio: String?,
 		network: String?,
 		rating: String?,
 		languages: [String],
@@ -70,7 +68,6 @@ class Episode: Watchable {
 		self.producers = producers
 		self.directors = directors
 		self.screenwriters = screenwriters
-		self.studio = studio
 		self.network = network
 		self.rating = rating
 		self.languages = languages

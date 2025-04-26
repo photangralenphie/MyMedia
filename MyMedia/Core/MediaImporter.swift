@@ -181,7 +181,6 @@ class MediaImporter {
 			producers: producers,
 			directors: directors,
 			screenwriters: screenwriters,
-			studio: "",
 			network: network,
 			rating: rating,
 			languages: languages,

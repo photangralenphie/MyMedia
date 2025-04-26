@@ -43,6 +43,8 @@ struct TvShowDetailView: View {
 							Text("^[\(episodes.count) SEASON](inflect: true) ")
 								.bold()
 							
+							Text(tvShow.networks.joined(separator: ", "))
+							
 							if !tvShow.genre.isEmpty {
 								Text(tvShow.genre.joined(separator: ", "))
 							}
