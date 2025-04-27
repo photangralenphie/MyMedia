@@ -15,31 +15,35 @@ struct WatchableActionsView: View {
 	let onDelete: () -> Void
 	
     var body: some View {
-		Menu("Actions") {
-			Button(watchable.isWatched ? "Mark Unwatched" : "Mark Watched", action: toggleWatched)
-				.keyboardShortcut("w", modifiers: .command)
-			
-			Button(watchable.isFavorite ? "Remove from Favorites" : "Add to Favorites", action: toggleFavorite)
+		Button(watchable.isWatched ? "Mark Unwatched" : "Mark Watched", action: toggleWatched)
+			.keyboardShortcut("w", modifiers: .command)
+		
+		if !(watchable is TvShow) {
+			Button(watchable.isFavorite ? "Remove from Favourites" : "Add to Favourites", action: toggleFavorite)
 				.keyboardShortcut("f", modifiers: [.shift, .command])
 			
 			Button(watchable.isPinned ? "Unpin" : "Pin", action: togglePinned)
 				.keyboardShortcut("p", modifiers: .command)
-			
-			Divider()
-			
-			Button("Remove from Library", action: removeFromLibrary)
-				.keyboardShortcut(.delete, modifiers: .command)
-			
-			Divider()
-			
-			Button("Open in Subler") { }
-			
-			if case let tvshow as TvShow = watchable, tvshow.episodes.count == 0 {
-				// Show button only if tvshow has episodes
-			} else {
-				Button("Play with default Player", action: playWithDefaultPlayer)
-					.keyboardShortcut("p", modifiers: [.command, .shift])
+		}
+		
+		Divider()
+		
+		Button("Remove from Library", action: removeFromLibrary)
+			.keyboardShortcut(.delete, modifiers: .command)
+		
+		Divider()
+		
+		if isSublerInstalled() {
+			if !(watchable is TvShow) {
+				Button("Open in Subler") { openInSubler(fileUrl: watchable.url) }
 			}
+		}
+		
+		if case let tvShow as TvShow = watchable, tvShow.episodes.count == 0 {
+			// Show button only if tvShow has episodes
+		} else {
+			Button("Play with default Player", action: playWithDefaultPlayer)
+				.keyboardShortcut("p", modifiers: [.command, .shift])
 		}
     }
 	
@@ -49,6 +53,8 @@ struct WatchableActionsView: View {
 				moc.delete(movie)
 			case let tvShow as TvShow:
 				moc.delete(tvShow)
+			case let episode as Episode:
+				moc.delete(episode)
 			default:
 				break
 		}
@@ -76,5 +82,28 @@ struct WatchableActionsView: View {
 	
 	func playWithDefaultPlayer() {
 		NSWorkspace.shared.open(watchable.url)
+	}
+	
+	func isSublerInstalled() -> Bool {
+		let bundleIdentifier = "org.galad.Subler"
+		
+		if let urls = LSCopyApplicationURLsForBundleIdentifier(bundleIdentifier as CFString, nil)?.takeRetainedValue() as? [URL] {
+			return !urls.isEmpty
+		}
+		return false
+	}
+	
+	func openInSubler(fileUrl: URL) {
+		let appPath = "/Applications/Subler.app"
+
+		let process = Process()
+		process.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+		process.arguments = ["-a", appPath, fileUrl.path]
+		
+		do {
+			try process.run()
+		} catch {
+			print("Failed to open file: \(error)")
+		}
 	}
 }

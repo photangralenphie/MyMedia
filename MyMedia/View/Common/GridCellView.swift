@@ -33,6 +33,9 @@ struct GridCellView: View {
 						.foregroundStyle(.secondary)
 				}
 			}
+			.contextMenu {
+				WatchableActionsView(watchable: watchable) { }
+			}
 		}
 		.buttonStyle(PlainButtonStyle())
 		.padding(.bottom)

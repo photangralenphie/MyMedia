@@ -95,6 +95,9 @@ struct TvShowDetailView: View {
 							PlayButton(watchable: episode)
 						}
 						.padding(.vertical, 5)
+						.contextMenu {
+							WatchableActionsView(watchable: episode) {}
+						}
 					}
 				} header: {
 					Text("Season \(String(season.first!.season))")
@@ -105,7 +108,9 @@ struct TvShowDetailView: View {
 			}
 		}
 		.toolbar {
-			WatchableActionsView(watchable: tvShow, onDelete: popNavigation)
+			Menu("Actions") {
+				WatchableActionsView(watchable: tvShow, onDelete: popNavigation)
+			}
 		}
 		.navigationTitle(titleAndData)
     }

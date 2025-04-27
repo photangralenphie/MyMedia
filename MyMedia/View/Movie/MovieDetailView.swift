@@ -96,7 +96,9 @@ struct MovieDetailView: View {
 			CreditsView(hasCredits: movie)
 		}
 		.toolbar {
-			WatchableActionsView(watchable: movie, onDelete: popNavigation)
+			Menu("Actions") {
+				WatchableActionsView(watchable: movie, onDelete: popNavigation)
+			}
 		}
 		.navigationTitle(titleAndData)
 	}
