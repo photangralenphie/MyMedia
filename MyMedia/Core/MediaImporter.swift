@@ -48,33 +48,46 @@ enum HDVideoQuality: Int, Codable {
 
 class MediaImporter {
 	
-	public static func importFile(data: URL, moc: ModelContext, existingTvShows: [TvShow]) async throws {
-		let asset = AVURLAsset(url: data)
+	let context: ModelContext
+	
+	init(container: ModelContainer) {
+		self.context = ModelContext(container)
+	}
+	
+	public func importFromFile(path: URL) async throws {
+		let asset = AVURLAsset(url: path)
 		let metadata = try await asset.load(.metadata)
 		
 		let kind = await metadata.tryGetIntMetaDataValue(for: "itsk/stik")
 		
-		if kind == nil {
+		if kind == nil  {
 			throw ImportError.noMetadataFound
 		}
 		
 		if(kind == 9){
-			try await readMovieMetadata(metadata: metadata, asset: asset, moc: moc)
+			 try await readMovieMetadata(metadata: metadata, asset: asset)
 		}
 	
 		if(kind == 10) {
-			try await readTvMetadata(metaData: metadata, asset: asset, moc: moc, existingTvShows: existingTvShows, source: data)
+			try await readTvMetadata(metaData: metadata, asset: asset, source: path)
 		}
 	}
 	
-	private static func readTvMetadata(metaData: [AVMetadataItem], asset: AVURLAsset, moc: ModelContext, existingTvShows: [TvShow], source: URL) async throws {
+	public func importFromFiles(paths: [URL]) async throws {
+		for path in paths {
+			try await self.importFromFile(path: path)
+		}
+	}
+	
+	private func readTvMetadata(metaData: [AVMetadataItem], asset: AVURLAsset, source: URL) async throws {
 		let showTitle = try await metaData.getStringMetaDataValue(for: .commonIdentifierArtist)
-
+		
+		let existingTvShows = try await fetchCurrentTvShows()
 		var show = existingTvShows.filter { $0.title == showTitle }.first
 		
 		if show == nil {
 			show = try await createTvShowFromEpisode(metadata: metaData)
-			moc.insert(show!)
+			context.insert(show!)
 		}
 		
 		guard let show = show else {
@@ -83,16 +96,17 @@ class MediaImporter {
 		
 		let episode = try await createEpisodeFromFile(metadata: metaData, asset: asset)
 		show.episodes.append(episode)
-		try moc.save()
+		
+		try context.save()
 	}
 	
-	private static func readMovieMetadata(metadata: [AVMetadataItem], asset: AVURLAsset, moc: ModelContext) async throws {
+	private func readMovieMetadata(metadata: [AVMetadataItem], asset: AVURLAsset) async throws {
 		let movie = try await createMovieFromFile(metadata: metadata, asset: asset)
-		moc.insert(movie)
-		try moc.save()
+		context.insert(movie)
+		try context.save()
 	}
 	
-	public static func createMovieFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Movie {
+	private func createMovieFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Movie {
 		let artwork = await metadata.tryGetImageMetaDataValue(artworkType: .moviePoster)
 		let title = try await metadata.getStringMetaDataValue(for: .commonIdentifierTitle)
 		let genre = try await metadata.getGenres()
@@ -112,8 +126,6 @@ class MediaImporter {
 		let languages = try await asset.getAudioLanguages()
 		let resolution = try await metadata.getResolution()
 		let url = asset.url
-
-		print(metadata.debugDescription)
 		
 		return Movie(
 			artwork: artwork,
@@ -138,7 +150,7 @@ class MediaImporter {
 		)
 	}
 	
-	public static func createTvShowFromEpisode(metadata: [AVMetadataItem]) async throws -> TvShow {
+	private func createTvShowFromEpisode(metadata: [AVMetadataItem]) async throws -> TvShow {
 		let title = try await metadata.getStringMetaDataValue(for: .commonIdentifierArtist)
 		let date = try await metadata.getDateMetaDataValue(for: .iTunesMetadataReleaseDate)
 		let year = Calendar.current.component(.year, from: date)
@@ -155,7 +167,7 @@ class MediaImporter {
 		)
 	}
 	
-	public static func createEpisodeFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Episode {
+	private func createEpisodeFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Episode {
 		let artwork = await metadata.tryGetImageMetaDataValue(artworkType: .episodeImage)
 		let seasonNumber = try await metadata.getIntMetaDataValue(for: "itsk/tvsn")
 		let episodeNumber = try await metadata.getIntMetaDataValue(for: "itsk/tves")
@@ -199,6 +211,11 @@ class MediaImporter {
 			languages: languages,
 			url: url
 		)
+	}
+	
+	private func fetchCurrentTvShows() async throws -> [TvShow] {
+		let descriptor = FetchDescriptor<TvShow>()
+		return try context.fetch(descriptor)
 	}
 }
 

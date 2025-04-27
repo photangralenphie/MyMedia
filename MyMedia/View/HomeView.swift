@@ -15,8 +15,11 @@ struct HomeView: View {
 	@Environment(CommandResource.self) var commandResource
 	@Query(sort: \TvShow.title) private var tvShows: [TvShow]
 	@Query(sort: \Movie.title) private var movies: [Movie]
-	@State private var isImporting: Bool = false
+	
 	@State private var errorMessage: String?
+	@State private var importRange: ClosedRange<Int>?
+	@State private var currentImportFile: String?
+	
 	
 	@AppStorage("sortOrderUnwatched") private var sortOrderUnwatched = SortOption.title
 	@AppStorage("sortOrderFavorites") private var sortOrderFavorites = SortOption.title
@@ -96,6 +99,26 @@ struct HomeView: View {
 			}
 		}
 		.tabViewStyle(.sidebarAdaptable)
+		.tabViewSidebarBottomBar(isVisible: importRange != nil) {
+			if let importRange {
+				HStack {
+					ProgressView(value: CGFloat(importRange.lowerBound.magnitude), total: CGFloat(importRange.upperBound.magnitude))
+						.progressViewStyle(.circular)
+						.colorMultiply(.accentColor)
+						.frame(height: 50)
+
+					VStack(alignment: .leading) {
+						Text(importRange.lowerBound.magnitude == importRange.upperBound.magnitude ? "Done" : "Importing")
+						
+						if let currentImportFile {
+							Text(currentImportFile)
+								.font(.footnote)
+								.lineLimit(2)
+						}
+					}
+				}
+			}
+		}
 		.fileImporter(isPresented: $commandResource.showImporter, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFiles)
 		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
 			Button("Ok"){ errorMessage = nil }
@@ -113,10 +136,15 @@ struct HomeView: View {
 	private func importNewFiles(result: Result<[URL], Error>) {
 		switch result {
 			case .success(let urls):
-				urls.forEach { url in
-					Task {
+				withAnimation { importRange = 0...urls.count }
+				
+				Task {
+					let assembler = MediaImporter(container: moc.container)
+					for (index, url) in urls.enumerated() {
 						do {
-							try await MediaImporter.importFile(data: url, moc: moc, existingTvShows: tvShows)
+							currentImportFile = url.lastPathComponent
+							try await assembler.importFromFile(path: url)
+							withAnimation { importRange = (index + 1)...urls.count }
 						} catch(let importError) {
 							if errorMessage == nil {
 								errorMessage = importError.localizedDescription
@@ -125,6 +153,10 @@ struct HomeView: View {
 							}
 						}
 					}
+					
+					withAnimation { currentImportFile = nil }
+					try? await Task.sleep(nanoseconds: 10_000_000_000)
+					withAnimation { importRange = nil }
 				}
 					
 			case .failure(let error):
@@ -133,6 +165,6 @@ struct HomeView: View {
 	}
 	
 	private func addItem() {
-		isImporting.toggle()
+		commandResource.showImporter.toggle()
 	}
 }

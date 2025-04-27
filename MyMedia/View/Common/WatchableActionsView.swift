@@ -18,7 +18,7 @@ struct WatchableActionsView: View {
 		Button(watchable.isWatched ? "Mark Unwatched" : "Mark Watched", action: toggleWatched)
 			.keyboardShortcut("w", modifiers: .command)
 		
-		if !(watchable is TvShow) {
+		if !(watchable is Episode) {
 			Button(watchable.isFavorite ? "Remove from Favourites" : "Add to Favourites", action: toggleFavorite)
 				.keyboardShortcut("f", modifiers: [.shift, .command])
 			
