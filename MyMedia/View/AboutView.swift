@@ -13,6 +13,8 @@ struct AboutView: View {
 	private let currentYear = "2025"
 	private let version: String
 	
+	@State private var licence: Licence?
+	
 	init(){
 		self.version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
 	}
@@ -24,23 +26,33 @@ struct AboutView: View {
 				.scaledToFit()
 				.frame(width: 100, height: 100)
 				.clipShape(RoundedRectangle(cornerRadius: 20))
+			
 			VStack {
 				Text("MyMedia")
-				Section("Credits") {
-					NavigationStack {
-						NavigationLink("AwesomeSwiftyComponents") {
-							LicenceView(licence: .mit(name: "AwesomeSwiftyComponents", author: "Jonas Helmer", year: "2025"))
-								.frame(minWidth: 500, minHeight: 400)
-						}
-						NavigationLink("swift-collections") {
-							LicenceView(licence: .apache(name: "swift-collections", author: "Apple", year: currentYear))
-								.frame(minWidth: 500, minHeight: 400)
-						}
+					.font(.title)
+					.padding(.bottom)
+				
+				VStack(alignment: .leading) {
+					Text("Credits:")
+					Button("AwesomeSwiftyComponents") {
+						licence = .mit(name: "AwesomeSwiftyComponents", author: "Jonas Helmer", year: "2025")
+					}
+					Button("swift-collections") {
+						licence = .apache(name: "swift-collections", author: "Apple", year: currentYear)
 					}
 				}
+				.padding(.bottom)
 				
 				Text("Version \(version)")
 				Text("© \(currentYear) Jonas Helmer")
+			}
+			.sheet(item: $licence) { sheetLicence in
+				VStack{
+					LicenceView(licence: sheetLicence)
+					Button("Close") { licence = nil }
+						.padding(.bottom)
+				}
+				.frame(minHeight: 400)
 			}
 		}
 		.scenePadding()
