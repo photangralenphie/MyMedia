@@ -9,7 +9,7 @@ import SwiftData
 import Foundation
 
 @Model
-class TvShow: WatchableWithGenre {
+class TvShow: HasGenre {
 	@Attribute(.unique) var id = UUID()
 	
 	var dateAdded = Date.now

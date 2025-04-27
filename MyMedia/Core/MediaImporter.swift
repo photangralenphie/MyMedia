@@ -89,6 +89,7 @@ class MediaImporter {
 	private static func readMovieMetadata(metadata: [AVMetadataItem], asset: AVURLAsset, moc: ModelContext) async throws {
 		let movie = try await createMovieFromFile(metadata: metadata, asset: asset)
 		moc.insert(movie)
+		try moc.save()
 	}
 	
 	public static func createMovieFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Movie {
@@ -100,17 +101,20 @@ class MediaImporter {
 		let shortDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/desc")
 		let longDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/ldes")
 		let producers = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "producers") ?? []
-		let executiveProducers = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "executiveProducers") ?? []
+		let executiveProducers = (await metadata.tryGetStringMetaDataValue(for: "itsk/%A9xpd") ?? "").split(separator: ", ").map { String($0) }
 		let cast = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "cast") ?? []
 		let directors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "directors") ?? []
-		let coDirectors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "coDirectors") ?? []
+		let coDirectors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "codirectors") ?? []
 		let screenwriters = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "screenwriters") ?? []
+		let composer = await metadata.tryGetStringMetaDataValue(for: .iTunesMetadataComposer)
 		let studio = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "studio")?.first
 		let rating = await metadata.tryGetStringMetaDataValue(for: "itlk/com.apple.iTunes.iTunEXTC")
 		let languages = try await asset.getAudioLanguages()
 		let resolution = try await metadata.getResolution()
 		let url = asset.url
 
+		print(metadata.debugDescription)
+		
 		return Movie(
 			artwork: artwork,
 			title: title,
@@ -125,6 +129,7 @@ class MediaImporter {
 			directors: directors,
 			coDirectors: coDirectors,
 			screenwriters: screenwriters,
+			composer: composer,
 			studio: studio,
 			hdVideoQuality: resolution,
 			rating: rating,
@@ -160,9 +165,13 @@ class MediaImporter {
 		let shortDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/desc")
 		let longDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/ldes")
 		let producers = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "producers") ?? []
+		let executiveProducers = (await metadata.tryGetStringMetaDataValue(for: "itsk/%A9xpd") ?? "").split(separator: ", ").map { String($0) }
 		let cast = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "cast") ?? []
 		let directors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "directors") ?? []
+		let coDirectors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "codirectors") ?? []
 		let screenwriters = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "screenwriters") ?? []
+		let composer = await metadata.tryGetStringMetaDataValue(for: .iTunesMetadataComposer)
+		let studio = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "studio")?.first
 		let network = await metadata.tryGetStringMetaDataValue(for: "itsk/tvnn")
 		let rating = await metadata.tryGetStringMetaDataValue(for: "itlk/com.apple.iTunes.iTunEXTC")
 		let languages = try await asset.getAudioLanguages()
@@ -179,8 +188,12 @@ class MediaImporter {
 			episodeLongDescription: longDescription,
 			cast: cast,
 			producers: producers,
+			executiveProducers: executiveProducers,
 			directors: directors,
+			coDirectors: coDirectors,
 			screenwriters: screenwriters,
+			composer: composer,
+			studio: studio,
 			network: network,
 			rating: rating,
 			languages: languages,

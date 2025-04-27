@@ -22,8 +22,18 @@ protocol Watchable: Identifiable {
 	var isPinned: Bool { get set }
 }
 
-protocol WatchableWithGenre: Watchable {
+protocol HasGenre: Watchable {
 	var genre: [String] { get }
+}
+
+protocol HasCredits: Watchable {
+	var cast: [String] { get }
+	var directors: [String] { get }
+	var coDirectors: [String] { get }
+	var screenwriters: [String] { get }
+	var producers: [String] { get }
+	var executiveProducers: [String] { get }
+	var composer: String? { get }
 }
 
 extension Watchable {

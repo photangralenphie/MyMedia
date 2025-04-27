@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Episode: Watchable {
+class Episode: Watchable, HasCredits {
 	@Attribute(.unique) var id: UUID = UUID()
 	var dateAdded = Date.now
 	var isWatched: Bool = false
@@ -28,8 +28,12 @@ class Episode: Watchable {
 	var episodeLongDescription: String?
 	var cast: [String]
 	var producers: [String]
+	var executiveProducers: [String]
 	var directors: [String]
+	var coDirectors: [String]
 	var screenwriters: [String]
+	var composer: String?
+	var studio: String?
 	var network: String?
 	var rating: String?
 	var languages: [String]
@@ -49,8 +53,12 @@ class Episode: Watchable {
 		episodeLongDescription: String?,
 		cast: [String],
 		producers: [String],
+		executiveProducers: [String],
 		directors: [String],
+		coDirectors: [String],
 		screenwriters: [String],
+		composer: String?,
+		studio: String?,
 		network: String?,
 		rating: String?,
 		languages: [String],
@@ -66,8 +74,12 @@ class Episode: Watchable {
 		self.episodeLongDescription = episodeLongDescription
 		self.cast = cast
 		self.producers = producers
+		self.executiveProducers = executiveProducers
 		self.directors = directors
+		self.coDirectors = coDirectors
 		self.screenwriters = screenwriters
+		self.composer = composer
+		self.studio = studio
 		self.network = network
 		self.rating = rating
 		self.languages = languages

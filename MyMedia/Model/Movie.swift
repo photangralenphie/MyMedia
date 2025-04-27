@@ -9,7 +9,7 @@ import SwiftData
 import Foundation
 
 @Model
-class Movie: WatchableWithGenre {
+class Movie: HasGenre, HasCredits {
 	@Attribute(.unique) var id: UUID = UUID()
 	var dateAdded = Date.now
 	var isWatched: Bool = false
@@ -33,6 +33,7 @@ class Movie: WatchableWithGenre {
 	var directors: [String]
 	var coDirectors: [String]
 	var screenwriters: [String]
+	var composer: String?
 	var studio: String?
 	var hdVideoQuality: HDVideoQuality?
 	var rating: String?
@@ -53,6 +54,7 @@ class Movie: WatchableWithGenre {
 		directors: [String],
 		coDirectors: [String],
 		screenwriters: [String],
+		composer: String?,
 		studio: String?,
 		hdVideoQuality: HDVideoQuality?,
 		rating: String?,
@@ -72,6 +74,7 @@ class Movie: WatchableWithGenre {
 		self.directors = directors
 		self.coDirectors = coDirectors
 		self.screenwriters = screenwriters
+		self.composer = composer
 		self.studio = studio
 		self.hdVideoQuality = hdVideoQuality
 		self.rating = rating

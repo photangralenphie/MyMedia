@@ -9,11 +9,11 @@ import SwiftUI
 
 struct GenresView: View {
 	
-	let watchablesByGenre: [String: [any WatchableWithGenre]]
+	let watchablesByGenre: [String: [any HasGenre]]
 	@State private var selectedGenre: String?
 	@Binding private var sortOrder: SortOption
 	
-	init(watchables: [any WatchableWithGenre], sortOrder: Binding<SortOption>) {
+	init(watchables: [any HasGenre], sortOrder: Binding<SortOption>) {
 		let genres = Array(Set(watchables.flatMap(\.genre))).sorted()
 		self.watchablesByGenre = genres.reduce(into: [String: [TvShow]]()) { result, genre in
 			result[genre] = watchables.filter { $0.genre.contains(genre) }
