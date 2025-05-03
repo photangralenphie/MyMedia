@@ -9,12 +9,13 @@ import SwiftData
 import Foundation
 
 @Model
-class Movie: HasGenre, HasCredits {
+class Movie: IsWatchable, HasGenre, HasCredits {
 	@Attribute(.unique) var id: UUID = UUID()
 	var dateAdded = Date.now
 	var isWatched: Bool = false
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
+	var progressMinutes: Int = 0
 	
 	@Transient var year: Int {
 		Calendar.current.component(.year, from: releaseDate)
@@ -23,7 +24,7 @@ class Movie: HasGenre, HasCredits {
 	var artwork: Data?
 	var title: String
 	var genre: [String]
-	var runtime: Int
+	var durationMinutes: Int
 	var releaseDate: Date
 	var shortDescription: String?
 	var longDescription: String?
@@ -44,7 +45,7 @@ class Movie: HasGenre, HasCredits {
 		artwork: Data?,
 		title: String,
 		genre: [String],
-		runtime: Int,
+		durationMinutes: Int,
 		releaseDate: Date,
 		shortDescription: String?,
 		longDescription: String?,
@@ -64,7 +65,7 @@ class Movie: HasGenre, HasCredits {
 		self.artwork = artwork
 		self.title = title
 		self.genre = genre
-		self.runtime = runtime
+		self.durationMinutes = durationMinutes
 		self.releaseDate = releaseDate
 		self.shortDescription = shortDescription
 		self.longDescription = longDescription

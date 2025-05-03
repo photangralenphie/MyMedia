@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ArtworkView: View {
 	
-	let watchable: any Watchable
+	let watchable: any MediaItem
 	
 	var body: some View {
 		if let imageData = watchable.artwork, let nsImageFromData = NSImage(data: imageData)  {

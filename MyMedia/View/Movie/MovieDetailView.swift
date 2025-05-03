@@ -15,7 +15,6 @@ struct MovieDetailView: View {
 	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
 	
 	@Environment(\.modelContext) private var moc
-	@Environment(\.openWindow) private var openWindow
 	@Environment(\.dismiss) private var dismiss
 	
 	init(movie: Movie) {
@@ -50,7 +49,7 @@ struct MovieDetailView: View {
 								Text(studio)
 							}
 							
-							Text(MetadataUtil.formatRuntime(minutes: movie.runtime))
+							Text(MetadataUtil.formatRuntime(minutes: movie.durationMinutes))
 							
 							HStack {
 								if let hdVideoQuality = movie.hdVideoQuality?.badgeTitle {

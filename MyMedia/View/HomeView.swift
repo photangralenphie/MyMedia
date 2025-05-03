@@ -40,12 +40,12 @@ struct HomeView: View {
 //			}
 			
 			Tab("Unwatched", systemImage: "eye.slash") {
-				let unwatched: [any Watchable] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
+				let unwatched: [any MediaItem] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
 				GridView(watchables: unwatched, sorting: $sortOrderUnwatched, navTitle: "Unwatched")
 			}
 			
 			Tab("Favorites", systemImage: "star.fill") {
-				let favorites: [any Watchable] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
+				let favorites: [any MediaItem] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
 				GridView(watchables: favorites, sorting: $sortOrderFavorites, navTitle: "Favorites")
 			}
 			
@@ -80,7 +80,7 @@ struct HomeView: View {
 				}
 			}
 			
-			let pinned: [any Watchable] = tvShows.filter({ $0.isPinned }) + movies.filter({ $0.isPinned })
+			let pinned: [any MediaItem] = tvShows.filter({ $0.isPinned }) + movies.filter({ $0.isPinned })
 			if !pinned.isEmpty {
 				TabSection("Pinned") {
 					ForEach(pinned, id: \.id) { watchable in
@@ -99,24 +99,38 @@ struct HomeView: View {
 			}
 		}
 		.tabViewStyle(.sidebarAdaptable)
-		.tabViewSidebarBottomBar(isVisible: importRange != nil) {
-			if let importRange {
-				HStack {
-					ProgressView(value: CGFloat(importRange.lowerBound.magnitude), total: CGFloat(importRange.upperBound.magnitude))
-						.progressViewStyle(.circular)
-						.colorMultiply(.accentColor)
-						.frame(height: 50)
-
-					VStack(alignment: .leading) {
-						Text(importRange.lowerBound.magnitude == importRange.upperBound.magnitude ? "Done" : "Importing")
+		.tabViewSidebarBottomBar() {
+			VStack(alignment: .leading) {
+				if let importRange {
+					HStack {
+						ProgressView(value: CGFloat(importRange.lowerBound.magnitude), total: CGFloat(importRange.upperBound.magnitude))
+							.progressViewStyle(.circular)
+							.colorMultiply(.accentColor)
+							.frame(height: 50)
+							.overlay {
+								if importRange.lowerBound.magnitude == importRange.upperBound.magnitude {
+									Image(systemName: "checkmark")
+								}
+							}
 						
-						if let currentImportFile {
-							Text(currentImportFile)
-								.font(.footnote)
-								.lineLimit(2)
+						VStack(alignment: .leading) {
+							Text(importRange.lowerBound.magnitude == importRange.upperBound.magnitude ? "Finished Importing" : "Importing")
+							
+							if let currentImportFile {
+								Text(currentImportFile)
+									.font(.footnote)
+									.lineLimit(2)
+							}
 						}
 					}
+					
+					Divider()
 				}
+				
+				Button("Import Media", systemImage: "plus", action: addItem)
+					.font(.title)
+					.labelStyle(.titleAndIcon)
+					.keyboardShortcut("i", modifiers: .command)
 			}
 		}
 		.fileImporter(isPresented: $commandResource.showImporter, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFiles)
@@ -124,12 +138,6 @@ struct HomeView: View {
 			Button("Ok"){ errorMessage = nil }
 		} message: {
 			Text(errorMessage ?? "")
-		}
-		.toolbar {
-			ToolbarItem(placement: .primaryAction) {
-				Button("Add Item", systemImage: "plus", action: addItem)
-					.keyboardShortcut("i", modifiers: .command)
-			}
 		}
     }
 	

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WatchableActionsView: View {
 	
-	@State public var watchable: any Watchable
+	@State public var watchable: any MediaItem
 	@Environment(\.modelContext) private var moc
 	
 	let onDelete: () -> Void

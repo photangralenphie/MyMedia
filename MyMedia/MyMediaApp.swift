@@ -44,9 +44,9 @@ struct MyMediaApp: App {
 			}
 		}
 		
-		WindowGroup(for: URL.self) { url in
-			if let url = url.wrappedValue {
-				VideoPlayerView(url: url)
+		WindowGroup(for: [PersistentIdentifier].self) { ids in
+			if let ids = ids.wrappedValue {
+				VideoPlayerView(ids: ids, context: sharedModelContainer.mainContext)
 					.frame(idealWidth: 960, idealHeight: 540)
 			}
 		}

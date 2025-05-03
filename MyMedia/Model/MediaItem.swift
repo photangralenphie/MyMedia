@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUICore
 
-protocol Watchable: Identifiable {
+protocol MediaItem: Identifiable {
 	var id: UUID { get }
 	var title: String { get }
 	var dateAdded: Date { get }
@@ -22,11 +22,11 @@ protocol Watchable: Identifiable {
 	var isPinned: Bool { get set }
 }
 
-protocol HasGenre: Watchable {
+protocol HasGenre: MediaItem {
 	var genre: [String] { get }
 }
 
-protocol HasCredits: Watchable {
+protocol HasCredits: MediaItem {
 	var cast: [String] { get }
 	var directors: [String] { get }
 	var coDirectors: [String] { get }
@@ -36,7 +36,12 @@ protocol HasCredits: Watchable {
 	var composer: String? { get }
 }
 
-extension Watchable {
+protocol IsWatchable: MediaItem {
+	var progressMinutes: Int { get set }
+	var durationMinutes: Int { get }
+}
+
+extension MediaItem {
 	var dateAddedSection: String {
 		let calendar = Calendar.current
 		let now = Date()

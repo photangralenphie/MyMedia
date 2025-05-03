@@ -21,7 +21,7 @@ struct GridView: View {
 	
 	// init
 	private let navTitle: LocalizedStringKey
-	private let watchables: [any Watchable]
+	private let watchables: [any MediaItem]
 	
 	@Binding private var sortOrder: SortOption
 	@State private var searchText: String = ""
@@ -29,7 +29,7 @@ struct GridView: View {
 	private let layout = [GridItem(.adaptive(minimum: 300), spacing: 20, alignment: .top)]
 	@Environment(\.modelContext) private var moc
 	
-	init(watchables: [any Watchable], sorting: Binding<SortOption>, navTitle: LocalizedStringKey) {
+	init(watchables: [any MediaItem], sorting: Binding<SortOption>, navTitle: LocalizedStringKey) {
 		switch sorting.wrappedValue {
 			case .title:
 				self.watchables = watchables.sorted(by: { $0.title < $1.title })
@@ -43,7 +43,7 @@ struct GridView: View {
 		self.navTitle = navTitle
 	}
 
-	var filteredWatchables: [any Watchable] {
+	var filteredWatchables: [any MediaItem] {
 		if searchText.isEmpty { return watchables }
 		
 		return watchables.filter {
@@ -53,7 +53,7 @@ struct GridView: View {
 		}
 	}
 	
-	var groupedWatchables: OrderedDictionary<String, [any Watchable]> {
+	var groupedWatchables: OrderedDictionary<String, [any MediaItem]> {
 		OrderedDictionary(grouping: filteredWatchables) {
 			switch sortOrder {
 				case .releaseDate:

@@ -110,7 +110,7 @@ class MediaImporter {
 		let artwork = await metadata.tryGetImageMetaDataValue(artworkType: .moviePoster)
 		let title = try await metadata.getStringMetaDataValue(for: .commonIdentifierTitle)
 		let genre = try await metadata.getGenres()
-		let runtime = try await asset.getRuntimeMinutes()
+		let durationMinutes = try await asset.getRuntimeMinutes()
 		let releaseDate = try await metadata.getDateMetaDataValue(for: .iTunesMetadataReleaseDate)
 		let shortDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/desc")
 		let longDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/ldes")
@@ -131,7 +131,7 @@ class MediaImporter {
 			artwork: artwork,
 			title: title,
 			genre: genre,
-			runtime: runtime,
+			durationMinutes: durationMinutes,
 			releaseDate: releaseDate,
 			shortDescription: shortDescription,
 			longDescription: longDescription,
@@ -172,7 +172,7 @@ class MediaImporter {
 		let seasonNumber = try await metadata.getIntMetaDataValue(for: "itsk/tvsn")
 		let episodeNumber = try await metadata.getIntMetaDataValue(for: "itsk/tves")
 		let title = try await metadata.getStringMetaDataValue(for: .commonIdentifierTitle)
-		let runtime = try await asset.getRuntimeMinutes()
+		let durationMinutes = try await asset.getRuntimeMinutes()
 		let releaseDate = try await metadata.getDateMetaDataValue(for: .iTunesMetadataReleaseDate)
 		let shortDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/desc")
 		let longDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/ldes")
@@ -194,7 +194,7 @@ class MediaImporter {
 			season: seasonNumber,
 			episode: episodeNumber,
 			title: title,
-			runtime: runtime,
+			durationMinutes: durationMinutes,
 			releaseDate: releaseDate,
 			episodeShortDescription: shortDescription,
 			episodeLongDescription: longDescription,

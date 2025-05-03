@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GridCellView: View {
 	
-	let watchable: any Watchable
+	let watchable: any MediaItem
 	
     var body: some View {
 		NavigationLink {

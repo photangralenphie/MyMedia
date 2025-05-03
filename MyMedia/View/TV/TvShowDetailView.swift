@@ -53,6 +53,9 @@ struct TvShowDetailView: View {
 					}
 					
 					Spacer()
+					
+					PlayButton(watchable: tvShow)
+						.keyboardShortcut("p", modifiers: .command)
 				}
 				
 				if let description = tvShow.showDescription {
@@ -90,7 +93,7 @@ struct TvShowDetailView: View {
 							
 							Spacer()
 							
-							Text(MetadataUtil.formatRuntime(minutes: episode.runtime))
+							Text(MetadataUtil.formatRuntime(minutes: episode.durationMinutes))
 							
 							PlayButton(watchable: episode)
 						}
