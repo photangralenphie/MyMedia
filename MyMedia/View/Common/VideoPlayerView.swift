@@ -19,6 +19,8 @@ struct VideoPlayerView: View {
 	
 	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
 	
+	@State private var activity: NSObjectProtocol?
+	
 	init(ids: [PersistentIdentifier], context: ModelContext) {
 		var initQueue: [any IsWatchable] = []
 		for id in ids {
@@ -46,6 +48,9 @@ struct VideoPlayerView: View {
 	var body: some View {
 		VideoPlayer(player: player)
 			.edgesIgnoringSafeArea(.all)
+			.task {
+				activity = ProcessInfo.processInfo.beginActivity( options: [.idleSystemSleepDisabled, .idleDisplaySleepDisabled, .userInitiated], reason: "Keeps Mac awake during video playback" )
+			}
 			.onAppear {
 				if autoPlay {
 					player.actionAtItemEnd = .advance
@@ -57,6 +62,9 @@ struct VideoPlayerView: View {
 			}
 			.onDisappear {
 				currentWatchable?.progressMinutes = Int(player.currentItem?.currentTime().seconds ?? 0) / 60
+				if let activity = activity {
+					ProcessInfo.processInfo.endActivity(activity)
+				}
 			}
 	}
 	
