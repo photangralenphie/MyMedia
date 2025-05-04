@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DD4AE38F2DAA92C0006DB62C /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD4AE38E2DAA92C0006DB62C /* AwesomeSwiftyComponents */; };
 		DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DD8065622DB2960200B6A629 /* OrderedCollections */; };
+		DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,7 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD4AE38F2DAA92C0006DB62C /* AwesomeSwiftyComponents in Frameworks */,
+				DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */,
 				DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,8 +86,8 @@
 			);
 			name = MyMedia;
 			packageProductDependencies = (
-				DD4AE38E2DAA92C0006DB62C /* AwesomeSwiftyComponents */,
 				DD8065622DB2960200B6A629 /* OrderedCollections */,
+				DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */,
 			);
 			productName = MyMedia;
 			productReference = DD956C812D95D6EA0033A363 /* MyMedia.app */;
@@ -118,8 +118,8 @@
 			mainGroup = DD956C782D95D6EA0033A363;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				DD3ECED12DAA8F8C00C0E1F3 /* XCLocalSwiftPackageReference "../AwesomeSwiftyComponents" */,
 				DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */,
+				DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DD956C822D95D6EA0033A363 /* Products */;
@@ -363,13 +363,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		DD3ECED12DAA8F8C00C0E1F3 /* XCLocalSwiftPackageReference "../AwesomeSwiftyComponents" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../AwesomeSwiftyComponents;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -379,18 +372,26 @@
 				minimumVersion = 1.1.4;
 			};
 		};
+		DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/photangralenphie/AwesomeSwiftyComponents";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DD4AE38E2DAA92C0006DB62C /* AwesomeSwiftyComponents */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DD3ECED12DAA8F8C00C0E1F3 /* XCLocalSwiftPackageReference "../AwesomeSwiftyComponents" */;
-			productName = AwesomeSwiftyComponents;
-		};
 		DD8065622DB2960200B6A629 /* OrderedCollections */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
+		};
+		DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */;
+			productName = AwesomeSwiftyComponents;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
