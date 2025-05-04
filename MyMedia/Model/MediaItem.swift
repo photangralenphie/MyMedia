@@ -115,12 +115,26 @@ extension IsWatchable {
 			let bookmarkData = UserDefaults.standard.data(forKey: self.id.uuidString)
 			var isStale = false
 			if let bookmarkData {
-				return try? URL(
-					resolvingBookmarkData: bookmarkData,
-					options: [.withSecurityScope],
-					relativeTo: nil,
-					bookmarkDataIsStale: &isStale
-				)
+				do {
+					let resolvedURL = try URL(
+						resolvingBookmarkData: bookmarkData,
+						options: [.withSecurityScope],
+						relativeTo: nil,
+						bookmarkDataIsStale: &isStale
+					)
+					if isStale {
+						let newBookmark = try resolvedURL.bookmarkData(
+							options: [.withSecurityScope],
+							includingResourceValuesForKeys: nil,
+							relativeTo: nil
+						)
+						UserDefaults.standard.set(newBookmark, forKey: self.id.uuidString)
+					}
+					return resolvedURL
+				} catch {
+					print("Failed to resolve bookmark: \(error)")
+					return nil
+				}
 			}
 			return nil
 		}

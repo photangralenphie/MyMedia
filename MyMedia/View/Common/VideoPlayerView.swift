@@ -8,12 +8,16 @@
 import SwiftUI
 import AVKit
 import SwiftData
+import AwesomeSwiftyComponents
 
 struct VideoPlayerView: View {
 	
+	@State private var errorText: String = ""
+	@State private var showErrorSheet: Bool = false
+	
 	@State private var queue: [any IsWatchable]
 	@State private var currentWatchable: (any IsWatchable)?
-	@State private var player: AVPlayer
+	private var player: AVQueuePlayer
 	
 	@Environment(\.dismiss) private var dismiss
 	
@@ -29,38 +33,43 @@ struct VideoPlayerView: View {
 				initQueue.append(object as! (any IsWatchable))
 			}
 		}
+
+		self.player = .init()
 		
 		if initQueue.isEmpty {
 			self.currentWatchable = nil
 			self.queue = []
-			self.player = .init()
 			return
 		}
 		
-		let avItems = initQueue.compactMap {
-			if let url = $0.url {
-				if url.startAccessingSecurityScopedResource() {
-					let item = AVPlayerItem(url: url)
-					return item
-				}
-			}
-			return nil
-		}
-		
-		let initCurrentWatchable = initQueue.removeFirst()
-		self.player = AVQueuePlayer(items: avItems)
-		
 		self.queue = initQueue
-		self.currentWatchable = initCurrentWatchable
 	}
 	
 	var body: some View {
 		VideoPlayer(player: player)
+			.sheet(isPresented: $showErrorSheet){
+				Text("error: \(errorText)")
+			}
 			.edgesIgnoringSafeArea(.all)
 			.task {
 				activity = ProcessInfo.processInfo.beginActivity( options: [.idleSystemSleepDisabled, .idleDisplaySleepDisabled, .userInitiated], reason: "Keeps Mac awake during video playback" )
-			}
-			.onAppear {
+				
+				let avItems = queue.compactMap {
+					if let url = $0.url {
+						if url.startAccessingSecurityScopedResource() {
+							let item = AVPlayerItem(url: url)
+							return item
+						}
+					}
+					return nil
+				}
+				
+				currentWatchable = queue.removeFirst()
+				
+				for item in avItems {
+					player.insert(item, after: nil)
+				}
+
 				if autoPlay {
 					player.actionAtItemEnd = .advance
 				}
@@ -74,6 +83,7 @@ struct VideoPlayerView: View {
 				if let activity = activity {
 					ProcessInfo.processInfo.endActivity(activity)
 				}
+				queue.forEach { $0.url?.stopAccessingSecurityScopedResource() }
 			}
 	}
 	
