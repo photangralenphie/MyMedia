@@ -37,7 +37,16 @@ struct VideoPlayerView: View {
 			return
 		}
 		
-		let avItems = initQueue.map{ AVPlayerItem(url: $0.url) }
+		let avItems = initQueue.compactMap {
+			if let url = $0.url {
+				if url.startAccessingSecurityScopedResource() {
+					let item = AVPlayerItem(url: url)
+					return item
+				}
+			}
+			return nil
+		}
+		
 		let initCurrentWatchable = initQueue.removeFirst()
 		self.player = AVQueuePlayer(items: avItems)
 		
@@ -71,6 +80,7 @@ struct VideoPlayerView: View {
 	func videoDidFinish() {
 		currentWatchable?.progressMinutes = currentWatchable?.durationMinutes ?? 0
 		currentWatchable?.isWatched = true
+		currentWatchable?.url?.stopAccessingSecurityScopedResource()
 		
 		if(queue.isEmpty) {
 			dismiss()

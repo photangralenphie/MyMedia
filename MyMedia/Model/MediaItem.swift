@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftUICore
+import SwiftUI
 
 protocol MediaItem: Identifiable {
 	var id: UUID { get }
@@ -15,7 +15,6 @@ protocol MediaItem: Identifiable {
 	var artwork: Data? { get }
 	
 	var year: Int { get }
-	var url: URL { get }
 	
 	var isWatched: Bool { get set }
 	var isFavorite: Bool { get set }
@@ -62,6 +61,93 @@ extension MediaItem {
 			return "Last Year"
 		} else {
 			return "Older"
+		}
+	}
+	
+	mutating func toggleWatched() {
+		withAnimation {
+			self.isWatched.toggle()
+		}
+	}
+	
+	mutating func toggleFavorite() {
+		withAnimation {
+			self.isFavorite.toggle()
+		}
+	}
+	
+	mutating func togglePinned() {
+		withAnimation {
+			self.isPinned.toggle()
+		}
+	}
+	
+	func play(useInAppPlayer: Bool, openWindow: OpenWindowAction? = nil) {
+		if let openWindow, useInAppPlayer {
+			switch self {
+				case let tvShow as TvShow :
+					openWindow(value: tvShow.findEpisodesToPlay().map(\.persistentModelID))
+				case let movie as Movie:
+					openWindow(value: [movie.persistentModelID])
+				case let episode as Episode:
+					openWindow(value: [episode.persistentModelID])
+				default: break
+			}
+		} else {
+			switch self {
+				case let tvShow as TvShow :
+					if let url = tvShow.findEpisodesToPlay().first?.url {
+						NSWorkspace.shared.open(url)
+					}
+				case let isWatchable as any IsWatchable:
+					if let url = isWatchable.url {
+						NSWorkspace.shared.open(url)
+					}
+				default: break
+			}
+		}
+	}
+}
+
+extension IsWatchable {
+	var url: URL? {
+		get {
+			let bookmarkData = UserDefaults.standard.data(forKey: self.id.uuidString)
+			var isStale = false
+			if let bookmarkData {
+				return try? URL(
+					resolvingBookmarkData: bookmarkData,
+					options: [.withSecurityScope],
+					relativeTo: nil,
+					bookmarkDataIsStale: &isStale
+				)
+			}
+			return nil
+		}
+		set {
+			if let newValue {
+				let bookmarkData = try? newValue.bookmarkData(
+					options: [.withSecurityScope],
+					includingResourceValuesForKeys: nil,
+					relativeTo: nil
+				)
+				UserDefaults.standard.set(bookmarkData, forKey: self.id.uuidString)
+			}
+		}
+	}
+	
+	func openInSubler() {
+		guard let url = self.url else { return }
+		let appPath = "/Applications/Subler.app"
+
+		let process = Process()
+		process.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+		process.arguments = ["-a", appPath, url.path]
+		
+		do {
+			try process.run()
+		} catch {
+			print("Failed to open file: \(error)")
 		}
 	}
 }

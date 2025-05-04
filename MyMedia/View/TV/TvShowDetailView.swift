@@ -31,7 +31,7 @@ struct TvShowDetailView: View {
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .bottom, spacing: 20) {
-					ArtworkView(watchable: tvShow)
+					ArtworkView(mediaItem: tvShow)
 					VStack(alignment: .leading, spacing: 5) {
 						Text(tvShow.title)
 							.font(.largeTitle)
@@ -54,7 +54,7 @@ struct TvShowDetailView: View {
 					
 					Spacer()
 					
-					PlayButton(watchable: tvShow)
+					PlayButton(mediaItem: tvShow)
 						.keyboardShortcut("p", modifiers: .command)
 				}
 				
@@ -95,11 +95,11 @@ struct TvShowDetailView: View {
 							
 							Text(MetadataUtil.formatRuntime(minutes: episode.durationMinutes))
 							
-							PlayButton(watchable: episode)
+							PlayButton(mediaItem: episode)
 						}
 						.padding(.vertical, 5)
 						.contextMenu {
-							WatchableActionsView(watchable: episode) {}
+							MediaItemActionsView(mediaItem: episode) {}
 						}
 					}
 				} header: {
@@ -112,7 +112,7 @@ struct TvShowDetailView: View {
 		}
 		.toolbar {
 			Menu("Actions") {
-				WatchableActionsView(watchable: tvShow, onDelete: popNavigation)
+				MediaItemActionsView(mediaItem: tvShow, onDelete: popNavigation)
 			}
 		}
 		.navigationTitle(titleAndData)

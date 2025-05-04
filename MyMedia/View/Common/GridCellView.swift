@@ -9,11 +9,11 @@ import SwiftUI
 
 struct GridCellView: View {
 	
-	let watchable: any MediaItem
+	let mediaItem: any MediaItem
 	
     var body: some View {
 		NavigationLink {
-			switch watchable {
+			switch mediaItem {
 				case let tvShow as TvShow:
 					TvShowDetailView(tvShow: tvShow)
 				case let movie as Movie:
@@ -23,18 +23,18 @@ struct GridCellView: View {
 			}
 		} label: {
 			VStack(alignment: .leading) {
-				ArtworkView(watchable: watchable )
+				ArtworkView(mediaItem: mediaItem )
 				
-				Text(watchable.title) + Text(" (\(String(watchable.year)))")
+				Text(mediaItem.title) + Text(" (\(String(mediaItem.year)))")
 				
-				if let tvShow = watchable as? TvShow {
+				if let tvShow = mediaItem as? TvShow {
 					Text("^[\(Set(tvShow.episodes.compactMap(\.season)).count) SEASON](inflect: true) - ^[\(tvShow.episodes.count) EPISODE](inflect: true) ")
 						.font(.caption)
 						.foregroundStyle(.secondary)
 				}
 			}
 			.contextMenu {
-				WatchableActionsView(watchable: watchable) { }
+				MediaItemActionsView(mediaItem: mediaItem) { }
 			}
 		}
 		.buttonStyle(PlainButtonStyle())

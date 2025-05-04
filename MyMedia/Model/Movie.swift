@@ -39,7 +39,6 @@ class Movie: IsWatchable, HasGenre, HasCredits {
 	var hdVideoQuality: HDVideoQuality?
 	var rating: String?
 	var languages: [String]
-	var url: URL
 	
 	init(
 		artwork: Data?,
@@ -60,7 +59,6 @@ class Movie: IsWatchable, HasGenre, HasCredits {
 		hdVideoQuality: HDVideoQuality?,
 		rating: String?,
 		languages: [String],
-		url: URL
 	) {
 		self.artwork = artwork
 		self.title = title
@@ -80,6 +78,5 @@ class Movie: IsWatchable, HasGenre, HasCredits {
 		self.hdVideoQuality = hdVideoQuality
 		self.rating = rating
 		self.languages = languages
-		self.url = url
 	}
 }

@@ -40,7 +40,6 @@ class Episode: IsWatchable, HasCredits {
 	var network: String?
 	var rating: String?
 	var languages: [String]
-	var url: URL
 	
 	init(
 		artwork: Data?,
@@ -61,8 +60,7 @@ class Episode: IsWatchable, HasCredits {
 		studio: String?,
 		network: String?,
 		rating: String?,
-		languages: [String],
-		url: URL
+		languages: [String]
 	) {
 		self.artwork = artwork
 		self.season = season
@@ -83,6 +81,5 @@ class Episode: IsWatchable, HasCredits {
 		self.network = network
 		self.rating = rating
 		self.languages = languages
-		self.url = url
 	}
 }

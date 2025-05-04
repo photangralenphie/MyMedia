@@ -28,11 +28,6 @@ class TvShow: HasGenre {
 		set { episodes.forEach { $0.isWatched = newValue } }
 	}
 	
-	@Transient var url: URL {
-		// DON'T CALL IF TVSHOW HASN'T GOT ANY EPISODES
-		episodes.filter { !$0.isWatched }.first?.url ?? episodes.first!.url
-	}
-
 	@Transient var networks: [String] {
 		return Array(Set(episodes.compactMap(\.network)))
 	}
@@ -44,5 +39,14 @@ class TvShow: HasGenre {
 		self.showDescription = showDescription
 		self.episodes = episodes
 		self.artwork = artwork
+	}
+	
+	func findEpisodesToPlay() -> [Episode] {
+		let unwatched = self.episodes.filter{ !$0.isWatched }
+		if(unwatched.count > 0) {
+			return unwatched
+		} else {
+			return self.episodes
+		}
 	}
 }

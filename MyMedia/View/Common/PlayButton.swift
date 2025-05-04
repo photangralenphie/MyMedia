@@ -10,14 +10,14 @@ import AwesomeSwiftyComponents
 
 struct PlayButton: View {
 	
-	let watchable: any MediaItem
+	let mediaItem: any MediaItem
 	
 	var text: String {
-		if watchable.isWatched {
+		if mediaItem.isWatched {
 			return "Play Again"
 		}
 		
-		switch watchable {
+		switch mediaItem {
 			case let tvShow as TvShow :
 				if tvShow.episodes.allSatisfy({ !$0.isWatched }) {
 					return "Play"
@@ -42,32 +42,7 @@ struct PlayButton: View {
 	@Environment(\.openWindow) private var openWindow
 	
     var body: some View {
-		Button(text, systemImage: "play.fill") { play(watchable: watchable) }
+		Button(text, systemImage: "play.fill") { mediaItem.play(useInAppPlayer: useInAppPlayer, openWindow: openWindow) }
 			.buttonStyle(iOSBorderedProminentForMacOS())
     }
-	
-	func play(watchable: any MediaItem) {
-		if useInAppPlayer {
-			switch watchable {
-				case let tvShow as TvShow :
-					openWindow(value: findEpisodesToPlay(for: tvShow).map(\.persistentModelID))
-				case let movie as Movie:
-					openWindow(value: [movie.persistentModelID])
-				case let episode as Episode:
-					openWindow(value: [episode.persistentModelID])
-				default: break
-			}
-		} else {
-			NSWorkspace.shared.open(watchable.url)
-		}
-	}
-	
-	func findEpisodesToPlay(for tvShow: TvShow) -> [Episode] {
-		let unwatched = tvShow.episodes.filter{ !$0.isWatched }
-		if(unwatched.count > 0) {
-			return unwatched
-		} else {
-			return tvShow.episodes
-		}
-	}
 }

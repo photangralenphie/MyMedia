@@ -41,16 +41,16 @@ struct HomeView: View {
 			
 			Tab("Unwatched", systemImage: "eye.slash") {
 				let unwatched: [any MediaItem] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
-				GridView(watchables: unwatched, sorting: $sortOrderUnwatched, navTitle: "Unwatched")
+				GridView(mediaItems: unwatched, sorting: $sortOrderUnwatched, navTitle: "Unwatched")
 			}
 			
 			Tab("Favorites", systemImage: "star.fill") {
-				let favorites: [any MediaItem] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
-				GridView(watchables: favorites, sorting: $sortOrderFavorites, navTitle: "Favorites")
+				let favourites: [any MediaItem] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
+				GridView(mediaItems: favourites, sorting: $sortOrderFavorites, navTitle: "Favorites")
 			}
 			
 			Tab("Genres", systemImage: "theatermasks") {
-				GenresView(watchables: tvShows + movies, sortOrder: $sortOrderGenres)
+				GenresView(mediaItems: tvShows + movies, sortOrder: $sortOrderGenres)
 					.id("CommonGenres")
 			}
 			
@@ -61,10 +61,10 @@ struct HomeView: View {
 			
 			TabSection("Movies") {
 				Tab("All Movies", systemImage: "movieclapper") {
-					GridView(watchables: movies, sorting: $sortOrderMovies, navTitle: "Movies")
+					GridView(mediaItems: movies, sorting: $sortOrderMovies, navTitle: "Movies")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
-					GenresView(watchables: movies, sortOrder: $sortOrderMoviesGenre)
+					GenresView(mediaItems: movies, sortOrder: $sortOrderMoviesGenre)
 						.id("MovieGenres")
 				}
 
@@ -72,10 +72,10 @@ struct HomeView: View {
 			
 			TabSection("TV Shows") {
 				Tab("All TV Shows", systemImage: "tv") {
-					GridView(watchables: tvShows, sorting: $sortOrderTvShows, navTitle: "TV Shows")
+					GridView(mediaItems: tvShows, sorting: $sortOrderTvShows, navTitle: "TV Shows")
 				}
 				Tab("Genres", systemImage: "theatermasks") {
-					GenresView(watchables: tvShows, sortOrder: $sortOrderTvShowsGenre)
+					GenresView(mediaItems: tvShows, sortOrder: $sortOrderTvShowsGenre)
 						.id("TvShowGenres")
 				}
 			}
@@ -83,9 +83,9 @@ struct HomeView: View {
 			let pinned: [any MediaItem] = tvShows.filter({ $0.isPinned }) + movies.filter({ $0.isPinned })
 			if !pinned.isEmpty {
 				TabSection("Pinned") {
-					ForEach(pinned, id: \.id) { watchable in
-						Tab(watchable.title, systemImage: watchable is Movie ? "movieclapper" : "tv") {
-							switch watchable {
+					ForEach(pinned, id: \.id) { mediaItem in
+						Tab(mediaItem.title, systemImage: mediaItem is Movie ? "movieclapper" : "tv") {
+							switch mediaItem {
 								case let tvShow as TvShow:
 									TvShowDetailView(tvShow: tvShow)
 								case let movie as Movie:

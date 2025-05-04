@@ -26,7 +26,7 @@ struct MovieDetailView: View {
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .center, spacing: 20) {
-					ArtworkView(watchable: movie)
+					ArtworkView(mediaItem: movie)
 					
 					VStack(alignment: .leading, spacing: 5) {
 						Spacer()
@@ -73,7 +73,7 @@ struct MovieDetailView: View {
 					
 					Spacer()
 					
-					PlayButton(watchable: movie)
+					PlayButton(mediaItem: movie)
 						.keyboardShortcut("p", modifiers: .command)
 				}
 			}
@@ -96,7 +96,7 @@ struct MovieDetailView: View {
 		}
 		.toolbar {
 			Menu("Actions") {
-				WatchableActionsView(watchable: movie, onDelete: popNavigation)
+				MediaItemActionsView(mediaItem: movie, onDelete: popNavigation)
 			}
 		}
 		.navigationTitle(titleAndData)

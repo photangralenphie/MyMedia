@@ -55,6 +55,10 @@ class MediaImporter {
 	}
 	
 	public func importFromFile(path: URL) async throws {
+		if !path.startAccessingSecurityScopedResource() {
+			throw ImportError.fileNotAccessible
+		}
+		
 		let asset = AVURLAsset(url: path)
 		let metadata = try await asset.load(.metadata)
 		
@@ -71,6 +75,8 @@ class MediaImporter {
 		if(kind == 10) {
 			try await readTvMetadata(metaData: metadata, asset: asset, source: path)
 		}
+		
+		path.stopAccessingSecurityScopedResource()
 	}
 	
 	public func importFromFiles(paths: [URL]) async throws {
@@ -127,7 +133,7 @@ class MediaImporter {
 		let resolution = try await metadata.getResolution()
 		let url = asset.url
 		
-		return Movie(
+		var movie = Movie(
 			artwork: artwork,
 			title: title,
 			genre: genre,
@@ -146,8 +152,10 @@ class MediaImporter {
 			hdVideoQuality: resolution,
 			rating: rating,
 			languages: languages,
-			url: url
 		)
+		
+		movie.url = url
+		return movie
 	}
 	
 	private func createTvShowFromEpisode(metadata: [AVMetadataItem]) async throws -> TvShow {
@@ -189,7 +197,7 @@ class MediaImporter {
 		let languages = try await asset.getAudioLanguages()
 		let url = asset.url
 		
-		return Episode(
+		var episode = Episode(
 			artwork: artwork,
 			season: seasonNumber,
 			episode: episodeNumber,
@@ -209,8 +217,10 @@ class MediaImporter {
 			network: network,
 			rating: rating,
 			languages: languages,
-			url: url
 		)
+		
+		episode.url = url
+		return episode
 	}
 	
 	private func fetchCurrentTvShows() async throws -> [TvShow] {

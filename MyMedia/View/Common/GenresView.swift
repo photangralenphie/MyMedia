@@ -9,14 +9,14 @@ import SwiftUI
 
 struct GenresView: View {
 	
-	let watchablesByGenre: [String: [any HasGenre]]
+	let mediaItemsByGenre: [String: [any HasGenre]]
 	@State private var selectedGenre: String?
 	@Binding private var sortOrder: SortOption
 	
-	init(watchables: [any HasGenre], sortOrder: Binding<SortOption>) {
-		let genres = Array(Set(watchables.flatMap(\.genre))).sorted()
-		self.watchablesByGenre = genres.reduce(into: [String: [TvShow]]()) { result, genre in
-			result[genre] = watchables.filter { $0.genre.contains(genre) }
+	init(mediaItems: [any HasGenre], sortOrder: Binding<SortOption>) {
+		let genres = Array(Set(mediaItems.flatMap(\.genre))).sorted()
+		self.mediaItemsByGenre = genres.reduce(into: [String: [TvShow]]()) { result, genre in
+			result[genre] = mediaItems.filter { $0.genre.contains(genre) }
 		}
 		
 		_selectedGenre = State(initialValue: genres.first)
@@ -25,15 +25,15 @@ struct GenresView: View {
 	
     var body: some View {
 		HStack{
-			List(watchablesByGenre.keys.sorted(), id: \.self, selection: $selectedGenre) { genre in
+			List(mediaItemsByGenre.keys.sorted(), id: \.self, selection: $selectedGenre) { genre in
 				Label(genre, systemImage: MetadataUtil.genreSymbol(for: genre))
-					.badge(watchablesByGenre[genre]?.count ?? 0)
+					.badge(mediaItemsByGenre[genre]?.count ?? 0)
 			}
 			.frame(width: 200)
 
 			if let selectedGenre {
 				ScrollView {
-					GridView(watchables: watchablesByGenre[selectedGenre] ?? [], sorting: $sortOrder, navTitle: "\(selectedGenre)")
+					GridView(mediaItems: mediaItemsByGenre[selectedGenre] ?? [], sorting: $sortOrder, navTitle: "\(selectedGenre)")
 				}
 			} else {
 				ContentUnavailableView("Select a genre", systemImage: "square.on.square")

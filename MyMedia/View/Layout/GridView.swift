@@ -21,7 +21,7 @@ struct GridView: View {
 	
 	// init
 	private let navTitle: LocalizedStringKey
-	private let watchables: [any MediaItem]
+	private let mediaItems: [any MediaItem]
 	
 	@Binding private var sortOrder: SortOption
 	@State private var searchText: String = ""
@@ -29,24 +29,24 @@ struct GridView: View {
 	private let layout = [GridItem(.adaptive(minimum: 300), spacing: 20, alignment: .top)]
 	@Environment(\.modelContext) private var moc
 	
-	init(watchables: [any MediaItem], sorting: Binding<SortOption>, navTitle: LocalizedStringKey) {
+	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, navTitle: LocalizedStringKey) {
 		switch sorting.wrappedValue {
 			case .title:
-				self.watchables = watchables.sorted(by: { $0.title < $1.title })
+				self.mediaItems = mediaItems.sorted(by: { $0.title < $1.title })
 			case .releaseDate:
-				self.watchables = watchables.sorted(by: { $0.year > $1.year})
+				self.mediaItems = mediaItems.sorted(by: { $0.year > $1.year})
 			case .dateAdded:
-				self.watchables = watchables.sorted(by: { $0.dateAdded > $1.dateAdded})
+				self.mediaItems = mediaItems.sorted(by: { $0.dateAdded > $1.dateAdded})
 		}
 		
 		_sortOrder = sorting
 		self.navTitle = navTitle
 	}
 
-	var filteredWatchables: [any MediaItem] {
-		if searchText.isEmpty { return watchables }
+	var filteredMediaItems: [any MediaItem] {
+		if searchText.isEmpty { return mediaItems }
 		
-		return watchables.filter {
+		return mediaItems.filter {
 			$0.title
 				.lowercased()
 				.contains(searchText.lowercased())
@@ -54,7 +54,7 @@ struct GridView: View {
 	}
 	
 	var groupedWatchables: OrderedDictionary<String, [any MediaItem]> {
-		OrderedDictionary(grouping: filteredWatchables) {
+		OrderedDictionary(grouping: filteredMediaItems) {
 			switch sortOrder {
 				case .releaseDate:
 					String($0.year)
@@ -72,8 +72,8 @@ struct GridView: View {
 				LazyVGrid(columns: layout, pinnedViews: [.sectionHeaders]) {
 					ForEach(Array(groupedWatchables.keys), id: \.self) { section in
 						Section {
-							ForEach(groupedWatchables[section] ?? [], id: \.id) { watchable in
-								GridCellView(watchable: watchable)
+							ForEach(groupedWatchables[section] ?? [], id: \.id) { mediaItem in
+								GridCellView(mediaItem: mediaItem)
 							}
 
 						} header: {
