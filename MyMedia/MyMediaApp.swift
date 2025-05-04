@@ -28,6 +28,9 @@ struct MyMediaApp: App {
     var body: some Scene {
         WindowGroup {
 			HomeView()
+				.onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { _ in
+					try? sharedModelContainer.mainContext.save()
+				}
 				.environment(commandResource)
         }
 		.modelContainer(sharedModelContainer)

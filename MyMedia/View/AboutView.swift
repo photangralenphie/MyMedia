@@ -44,6 +44,9 @@ struct AboutView: View {
 				.padding(.bottom)
 				
 				Text("Version \(version)")
+				Button("MyMedia is licensed under the MIT Licence") {
+					licence = .mit(name: "MyMedia", author: "Jonas Helmer", year: "2025")
+				}
 				Text("© \(currentYear) Jonas Helmer")
 			}
 			.sheet(item: $licence) { sheetLicence in
