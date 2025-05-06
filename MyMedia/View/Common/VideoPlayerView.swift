@@ -53,7 +53,8 @@ struct VideoPlayerView: View {
 			.edgesIgnoringSafeArea(.all)
 			.task {
 				activity = ProcessInfo.processInfo.beginActivity( options: [.idleSystemSleepDisabled, .idleDisplaySleepDisabled, .userInitiated], reason: "Keeps Mac awake during video playback" )
-				
+			}
+			.onAppear {
 				let avItems = queue.compactMap {
 					if let url = $0.url {
 						if url.startAccessingSecurityScopedResource() {

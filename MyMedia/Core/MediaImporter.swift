@@ -11,7 +11,7 @@ import AVFoundation
 
 enum ImportError: LocalizedError {
 	case fileNotAccessible
-	case noMetadataFound
+	case noMetadataFound(fileName: String)
 	case missingMetadata(type: String)
 	case unknown(message: String)
 
@@ -20,7 +20,7 @@ enum ImportError: LocalizedError {
 			case .fileNotAccessible: return "Could not access file."
 			case .missingMetadata(let type): return metadataError(metadataType: type)
 			case .unknown(let message): return "Unknown Error while reading file: \(message)."
-			case .noMetadataFound: return "No metadata found in file. Please add metadata before importing."
+			case .noMetadataFound(let fileName): return "No metadata found in file: \(fileName). Please add metadata before importing."
 		}
 	}
 	
@@ -55,17 +55,13 @@ class MediaImporter {
 	}
 	
 	public func importFromFile(path: URL) async throws {
-		if !path.startAccessingSecurityScopedResource() {
-			throw ImportError.fileNotAccessible
-		}
-		
 		let asset = AVURLAsset(url: path)
 		let metadata = try await asset.load(.metadata)
 		
 		let kind = await metadata.tryGetIntMetaDataValue(for: "itsk/stik")
 		
 		if kind == nil  {
-			throw ImportError.noMetadataFound
+			throw ImportError.noMetadataFound(fileName: path.absoluteString)
 		}
 		
 		if(kind == 9){
@@ -75,8 +71,6 @@ class MediaImporter {
 		if(kind == 10) {
 			try await readTvMetadata(metaData: metadata, asset: asset, source: path)
 		}
-		
-		path.stopAccessingSecurityScopedResource()
 	}
 	
 	public func importFromFiles(paths: [URL]) async throws {

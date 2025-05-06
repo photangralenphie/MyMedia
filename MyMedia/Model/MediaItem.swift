@@ -124,7 +124,7 @@ extension IsWatchable {
 					)
 					if isStale {
 						let newBookmark = try resolvedURL.bookmarkData(
-							options: [.withSecurityScope],
+							options: [.securityScopeAllowOnlyReadAccess],
 							includingResourceValuesForKeys: nil,
 							relativeTo: nil
 						)
@@ -141,7 +141,7 @@ extension IsWatchable {
 		set {
 			if let newValue {
 				let bookmarkData = try? newValue.bookmarkData(
-					options: [.withSecurityScope],
+					options: [.securityScopeAllowOnlyReadAccess],
 					includingResourceValuesForKeys: nil,
 					relativeTo: nil
 				)

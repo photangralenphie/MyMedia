@@ -10,7 +10,8 @@ import Observation
 
 @Observable
 class CommandResource {
-	public var showImporter: Bool = false
+	public var showFileImporter: Bool = false
+	public var showDirectoryImporter: Bool = false
 	
 	public init() { }
 }

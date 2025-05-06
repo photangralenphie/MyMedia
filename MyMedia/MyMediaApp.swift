@@ -39,11 +39,15 @@ struct MyMediaApp: App {
 			CommandGroup(replacing: .systemServices) { EmptyView() }
 			CommandGroup(replacing: .pasteboard) { EmptyView() }
 			CommandGroup(replacing: .importExport) {
-				Button("Import Media") { commandResource.showImporter.toggle() }
+				Button("Import Files", systemImage: "document.badge.plus") { commandResource.showFileImporter.toggle() }
 					.keyboardShortcut("i", modifiers: .command)
+					.labelStyle(.titleAndIcon)
+				Button("Import Directory", systemImage: "folder.badge.plus") { commandResource.showDirectoryImporter.toggle() }
+					.keyboardShortcut("i", modifiers: [.command, .shift])
+					.labelStyle(.titleAndIcon)
 			}
 			CommandGroup(replacing: .appInfo) {
-				Button("About") { openWindow(id: "about") }
+				Button("About", systemImage: "info.circle") { openWindow(id: "about") }
 			}
 		}
 		
