@@ -79,7 +79,7 @@ struct ImportingView: View {
 	private func importNewFilesFromFileImporter(result: Result<[URL], Error>) {
 		switch result {
 			case .success(let urls):
-				importFileRange(urls: urls)
+				importFileRange(urls: urls, needsSecurityScope: true)
 					
 			case .failure(let error):
 				print("Error picking file: \(error.localizedDescription)")
@@ -134,17 +134,7 @@ struct ImportingView: View {
 		}
 	}
 	
-	private func importFileRange(urls: [URL], needsSecurityScope: Bool = true) {
-		
-		if needsSecurityScope {
-			for url in urls {
-				if !url.startAccessingSecurityScopedResource() {
-					errorMessage = "Error reading file at \(url)"
-					return
-				}
-			}
-		}
-		
+	private func importFileRange(urls: [URL], needsSecurityScope: Bool) {
 		withAnimation { importRange = 0...urls.count }
 		
 		Task {
@@ -152,7 +142,7 @@ struct ImportingView: View {
 			for (index, url) in urls.enumerated() {
 				do {
 					currentImportFile = url.lastPathComponent
-					try await assembler.importFromFile(path: url)
+					try await assembler.importFromFile(path: url, needsSecurityScope: needsSecurityScope)
 					withAnimation { importRange = (index + 1)...urls.count }
 				} catch(let importError) {
 					if errorMessage == nil {
@@ -166,12 +156,6 @@ struct ImportingView: View {
 			withAnimation { currentImportFile = nil }
 			try? await Task.sleep(nanoseconds: 10_000_000_000)
 			withAnimation { importRange = nil }
-		}
-		
-		if needsSecurityScope {
-			urls.forEach { url in
-				url.stopAccessingSecurityScopedResource()
-			}
 		}
 	}
 }

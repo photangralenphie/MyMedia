@@ -54,7 +54,12 @@ class MediaImporter {
 		self.context = ModelContext(container)
 	}
 	
-	public func importFromFile(path: URL) async throws {
+	public func importFromFile(path: URL, needsSecurityScope: Bool) async throws {
+		defer { path .stopAccessingSecurityScopedResource()}
+		if needsSecurityScope && !path.startAccessingSecurityScopedResource() {
+			throw ImportError.fileNotAccessible
+		}
+		
 		let asset = AVURLAsset(url: path)
 		let metadata = try await asset.load(.metadata)
 		
@@ -70,12 +75,6 @@ class MediaImporter {
 	
 		if(kind == 10) {
 			try await readTvMetadata(metaData: metadata, asset: asset, source: path)
-		}
-	}
-	
-	public func importFromFiles(paths: [URL]) async throws {
-		for path in paths {
-			try await self.importFromFile(path: path)
 		}
 	}
 	
