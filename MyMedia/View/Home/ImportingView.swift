@@ -138,7 +138,7 @@ struct ImportingView: View {
 		withAnimation { importRange = 0...urls.count }
 		
 		Task {
-			let assembler = MediaImporter(container: moc.container)
+			let assembler = MediaImporter(modelContainer: moc.container)
 			for (index, url) in urls.enumerated() {
 				do {
 					currentImportFile = url.lastPathComponent

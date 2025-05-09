@@ -45,13 +45,13 @@ enum HDVideoQuality: Int, Codable {
 	}
 }
 
-
-class MediaImporter {
+@ModelActor
+actor MediaImporter {
 	
-	let context: ModelContext
-	
-	init(container: ModelContainer) {
-		self.context = ModelContext(container)
+	private func getAssetAndMetadata(path: URL) async throws -> (asset: AVURLAsset, metadata: [AVMetadataItem]) {
+		let asset = AVURLAsset(url: path)
+		let metadata = try await asset.load(.metadata)
+		return (asset, metadata)
 	}
 	
 	public func importFromFile(path: URL, needsSecurityScope: Bool) async throws {
@@ -60,8 +60,7 @@ class MediaImporter {
 			throw ImportError.fileNotAccessible
 		}
 		
-		let asset = AVURLAsset(url: path)
-		let metadata = try await asset.load(.metadata)
+		let (asset, metadata) = try await getAssetAndMetadata(path: path)
 		
 		let kind = await metadata.tryGetIntMetaDataValue(for: "itsk/stik")
 		
@@ -86,7 +85,7 @@ class MediaImporter {
 		
 		if show == nil {
 			show = try await createTvShowFromEpisode(metadata: metaData)
-			context.insert(show!)
+			modelContext.insert(show!)
 		}
 		
 		guard let show = show else {
@@ -96,13 +95,13 @@ class MediaImporter {
 		let episode = try await createEpisodeFromFile(metadata: metaData, asset: asset)
 		show.episodes.append(episode)
 		
-		try context.save()
+		try modelContext.save()
 	}
 	
 	private func readMovieMetadata(metadata: [AVMetadataItem], asset: AVURLAsset) async throws {
 		let movie = try await createMovieFromFile(metadata: metadata, asset: asset)
-		context.insert(movie)
-		try context.save()
+		modelContext.insert(movie)
+		try modelContext.save()
 	}
 	
 	private func createMovieFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Movie {
@@ -218,7 +217,102 @@ class MediaImporter {
 	
 	private func fetchCurrentTvShows() async throws -> [TvShow] {
 		let descriptor = FetchDescriptor<TvShow>()
-		return try context.fetch(descriptor)
+		return try modelContext.fetch(descriptor)
+	}
+	
+	public func updateMediaItem(mediaItem: any MediaItem) async throws {
+		switch mediaItem {
+			case let movie as Movie:
+				try await updateMovie(movie: movie)
+			case let tvShow as TvShow:
+				try await updateTvShow(tvShow: tvShow)
+			case let episode as Episode:
+				try await updateEpisode(episode: episode)
+			default:
+				throw ImportError.unknown(message: "Media is not a movie, TV show or episode.")
+		}
+		
+		try modelContext.save()
+	}
+	
+	public func updateMovie(movie: Movie) async throws {
+		if let url = movie.url, url.startAccessingSecurityScopedResource() {
+			defer { url.stopAccessingSecurityScopedResource() }
+			
+			let (asset, metadata) = try await getAssetAndMetadata(path: url)
+			let update = try await createMovieFromFile(metadata: metadata, asset: asset)
+			
+			movie.artwork = update.artwork
+			movie.title = update.title
+			movie.genre = update.genre
+			movie.durationMinutes = update.durationMinutes
+			movie.releaseDate = update.releaseDate
+			movie.shortDescription = update.shortDescription
+			movie.longDescription = update.longDescription
+			movie.cast = update.cast
+			movie.producers = update.producers
+			movie.executiveProducers = update.executiveProducers
+			movie.directors = update.directors
+			movie.coDirectors = update.coDirectors
+			movie.screenwriters = update.screenwriters
+			movie.composer = update.composer
+			movie.studio = update.studio
+			movie.hdVideoQuality = update.hdVideoQuality
+			movie.rating = update.rating
+			movie.languages = update.languages
+		}
+	}
+	
+	public func updateTvShow(tvShow: TvShow) async throws {
+		if tvShow.episodes.count == 0 {
+			throw ImportError.unknown(message: "TV show has no episodes.")
+		}
+		
+		if let url = tvShow.episodes[0].url, url.startAccessingSecurityScopedResource() {
+			defer { url.stopAccessingSecurityScopedResource() }
+			
+			let (_, metadata) = try await getAssetAndMetadata(path: url)
+			let update = try await createTvShowFromEpisode(metadata: metadata)
+			
+			tvShow.title = update.title
+			tvShow.year = update.year
+			tvShow.genre = update.genre
+			tvShow.showDescription = update.showDescription
+			tvShow.artwork = update.artwork
+		}
+		
+		for episode in tvShow.episodes {
+			try await updateEpisode(episode: episode)
+		}
+	}
+	
+	public func updateEpisode(episode: Episode) async throws {
+		if let url = episode.url, url.startAccessingSecurityScopedResource() {
+			defer { url.stopAccessingSecurityScopedResource() }
+			
+			let (asset, metadata) = try await getAssetAndMetadata(path: url)
+			let update = try await createEpisodeFromFile(metadata: metadata, asset: asset)
+			
+			episode.artwork = update.artwork
+			episode.season = update.season
+			episode.episode = update.episode
+			episode.title = update.title
+			episode.durationMinutes = update.durationMinutes
+			episode.releaseDate = update.releaseDate
+			episode.episodeShortDescription = update.episodeShortDescription
+			episode.episodeLongDescription = update.episodeLongDescription
+			episode.cast = update.cast
+			episode.producers = update.producers
+			episode.executiveProducers = update.executiveProducers
+			episode.directors = update.directors
+			episode.coDirectors = update.coDirectors
+			episode.screenwriters = update.screenwriters
+			episode.composer = update.composer
+			episode.studio = update.studio
+			episode.network = update.network
+			episode.rating = update.rating
+			episode.languages = update.languages
+		}
 	}
 }
 
