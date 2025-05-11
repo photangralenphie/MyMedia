@@ -30,6 +30,11 @@ struct GenresView: View {
 					.badge(mediaItemsByGenre[genre]?.count ?? 0)
 			}
 			.frame(width: 200)
+			.onChange(of: selectedGenre) { oldValue, newValue in
+				if newValue == nil {
+					selectedGenre = oldValue
+				}
+			}
 
 			if let selectedGenre {
 				ScrollView {
