@@ -12,7 +12,8 @@ public class MediaCollection
 {
 	@Attribute(.unique) public var id: UUID = UUID()
 	var title: String
-	var artwork: Data
+	var collectionDescription: String?
+	var artwork: Data?
 	private var tvShows: [TvShow] = []
 	private var movies: [Movie] = []
 	private var episodes: [Episode] = []
@@ -29,7 +30,7 @@ public class MediaCollection
 		tvShows.allSatisfy(\.isWatched)
 	}
 	
-	init(title: String, media: [any MediaItem], artwork: Data) {
+	init(title: String, artwork: Data?) {
 		self.title = title
 		self.artwork = artwork
 	}

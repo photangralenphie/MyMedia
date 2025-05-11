@@ -31,7 +31,7 @@ struct TvShowDetailView: View {
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .bottom, spacing: 20) {
-					ArtworkView(mediaItem: tvShow)
+					ArtworkView(imageData: tvShow.artwork, title: tvShow.title, subtitle: "(\(String(tvShow.year)))")
 					VStack(alignment: .leading, spacing: 5) {
 						Text(tvShow.title)
 							.font(.largeTitle)

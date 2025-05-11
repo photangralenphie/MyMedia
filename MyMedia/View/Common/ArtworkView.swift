@@ -9,10 +9,13 @@ import SwiftUI
 
 struct ArtworkView: View {
 	
-	let mediaItem: any MediaItem
+	//let mediaItem: any MediaItem
+	let imageData: Data?
+	let title: String
+	let subtitle: String
 	
 	var body: some View {
-		if let imageData = mediaItem.artwork, let nsImageFromData = NSImage(data: imageData)  {
+		if let imageData = imageData, let nsImageFromData = NSImage(data: imageData)  {
 			ZStack {
 				// When not correctly formatted
 				Image(nsImage: nsImageFromData)
@@ -34,10 +37,10 @@ struct ArtworkView: View {
 				.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius))
 				.overlay(alignment: .center) {
 					VStack {
-						Text(mediaItem.title)
+						Text(title)
 							.font(.largeTitle)
 							.bold()
-						Text("(\(String(mediaItem.year)))")
+						Text(subtitle)
 							.font(.title)
 					}
 				}

@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MediaItemActionsView: View {
+	
+	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 	
 	@State public var mediaItem: any MediaItem
 	@Environment(\.modelContext) private var moc
@@ -24,6 +27,16 @@ struct MediaItemActionsView: View {
 			
 			Button(mediaItem.isPinned ? "Unpin" : "Pin") { mediaItem.togglePinned() }
 				.keyboardShortcut("p", modifiers: .command)
+			
+			if !collections.isEmpty {
+				Menu("Add to Collection") {
+					ForEach(collections) { collection in
+						Button(collection.title) {
+							collection.addMediaItem(mediaItem)
+						}
+					}
+				}
+			}
 		}
 		
 		Divider()
