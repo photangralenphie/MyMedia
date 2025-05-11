@@ -18,6 +18,7 @@ struct Tabs {
 	public static let tvShows: String = "tvShows"
 	public static let tvShowsGenres: String = "tvShowsGenres"
 	
+	public static let generalSection: String = "generalSection"
 	public static let moviesSection: String = "moviesSection"
 	public static let tvShowsSection: String = "tvShowsSection"
 	public static let pinnedSection: String = "pinnedSection"
@@ -51,24 +52,28 @@ struct HomeView: View {
 //				Text("Recent")
 //					.navigationTitle("Recent")
 //			}
-			TabSection {
+			TabSection("Library") {
 				Tab("Unwatched", systemImage: "eye.slash", value: Tabs.unwatched) {
 					let unwatched: [any MediaItem] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
 					GridView(mediaItems: unwatched, sorting: $sortOrderUnwatched, navTitle: "Unwatched")
 						.id(Tabs.unwatched)
 				}
+				.customizationID(Tabs.unwatched)
 				
 				Tab("Favorites", systemImage: "star.fill", value: Tabs.favourites) {
 					let favourites: [any MediaItem] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
 					GridView(mediaItems: favourites, sorting: $sortOrderFavorites, navTitle: "Favorites")
 						.id(Tabs.favourites)
 				}
+				.customizationID(Tabs.favourites)
 				
 				Tab("Genres", systemImage: "theatermasks", value: Tabs.genres) {
 					GenresView(mediaItems: tvShows + movies, sortOrder: $sortOrderGenres)
 						.id(Tabs.genres)
 				}
+				.customizationID(Tabs.genres)
 			}
+			.customizationID(Tabs.generalSection)
 			
 //			Tab("Search", systemImage: "magnifyingglass") {
 //				Text("Search")
