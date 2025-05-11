@@ -26,7 +26,7 @@ struct MovieDetailView: View {
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .center, spacing: 20) {
-					ArtworkView(mediaItem: movie)
+					ArtworkView(imageData: movie.artwork, title: movie.title, subtitle: "(\(String(movie.year)))")
 					
 					VStack(alignment: .leading, spacing: 5) {
 						Spacer()

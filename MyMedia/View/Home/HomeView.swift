@@ -13,6 +13,7 @@ struct Tabs {
 	public static let unwatched: String = "unwatched"
 	public static let favourites: String = "favourites"
 	public static let genres: String = "genres"
+	public static let collections: String = "collections"
 	public static let movies: String = "movies"
 	public static let movieGenres: String = "movieGenres"
 	public static let tvShows: String = "tvShows"
@@ -70,6 +71,11 @@ struct HomeView: View {
 				Tab("Genres", systemImage: "theatermasks", value: Tabs.genres) {
 					GenresView(mediaItems: tvShows + movies, sortOrder: $sortOrderGenres)
 						.id(Tabs.genres)
+				}
+				
+				Tab("Collections", systemImage: "star.square.on.square", value: Tabs.collections) {
+					CollectionsView()
+						.id(Tabs.collections)
 				}
 				.customizationID(Tabs.genres)
 			}

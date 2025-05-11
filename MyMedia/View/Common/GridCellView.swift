@@ -23,7 +23,7 @@ struct GridCellView: View {
 			}
 		} label: {
 			VStack(alignment: .leading) {
-				ArtworkView(mediaItem: mediaItem )
+				ArtworkView(imageData: mediaItem.artwork, title: mediaItem.title, subtitle: "(\(String(mediaItem.year)))")
 				
 				Text("\(mediaItem.title) (\(String(mediaItem.year)))")
 					.frame(maxWidth: LayoutConstants.artworkWidth, alignment: .leading)
