@@ -25,7 +25,8 @@ struct GridCellView: View {
 			VStack(alignment: .leading) {
 				ArtworkView(mediaItem: mediaItem )
 				
-				Text(mediaItem.title) + Text(" (\(String(mediaItem.year)))")
+				Text("\(mediaItem.title) (\(String(mediaItem.year)))")
+					.frame(maxWidth: LayoutConstants.artworkWidth, alignment: .leading)
 				
 				if let tvShow = mediaItem as? TvShow {
 					Text("^[\(Set(tvShow.episodes.compactMap(\.season)).count) SEASON](inflect: true) - ^[\(tvShow.episodes.count) EPISODE](inflect: true) ")
