@@ -54,12 +54,8 @@ actor MediaImporter {
 		return (asset, metadata)
 	}
 	
-	public func importFromFile(path: URL, needsSecurityScope: Bool) async throws {
-		defer { path .stopAccessingSecurityScopedResource()}
-		if needsSecurityScope && !path.startAccessingSecurityScopedResource() {
-			throw ImportError.fileNotAccessible
-		}
-		
+	public func importFromFile(path: URL) async throws {
+
 		let (asset, metadata) = try await getAssetAndMetadata(path: path)
 		
 		let kind = await metadata.tryGetIntMetaDataValue(for: "itsk/stik")
@@ -89,7 +85,7 @@ actor MediaImporter {
 		}
 		
 		guard let show = show else {
-			throw ImportError.unknown(message: "Something went wrong creating a TV show from file \(source)")
+			throw ImportError.unknown(message: "Something went wrong creating a TV show from file \(source.absoluteString)")
 		}
 		
 		let episode = try await createEpisodeFromFile(metadata: metaData, asset: asset)

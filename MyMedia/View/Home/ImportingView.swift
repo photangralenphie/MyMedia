@@ -50,7 +50,7 @@ struct ImportingView: View {
 			}
 			
 			Menu("Import Media", systemImage: "plus") {
-				Button("Select Files", systemImage: "document.badge.plus.fill", action: showFilePicker)
+				Button("Select Files", systemImage: "document.badge.plus.fill", action: importNewFilesFromSelection)
 					.font(.title)
 					.labelStyle(.titleAndIcon)
 					.keyboardShortcut("i", modifiers: .command)
@@ -63,7 +63,6 @@ struct ImportingView: View {
 			.padding(.vertical, 6)
 			.padding(.horizontal, 3)
 		}
-		.fileImporter(isPresented: $commandResource.showFileImporter, allowedContentTypes: [.mpeg4Movie], allowsMultipleSelection: true, onCompletion: importNewFilesFromFileImporter)
 		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
 			Button("Ok"){ errorMessage = nil }
 		} message: {
@@ -74,15 +73,29 @@ struct ImportingView: View {
 				importNewFilesFromFolder()
 			}
 		}
+		.onChange(of: commandResource.showFileImporter) {
+			if commandResource.showFileImporter {
+				
+			}
+		}
     }
-
-	private func importNewFilesFromFileImporter(result: Result<[URL], Error>) {
-		switch result {
-			case .success(let urls):
-				importFileRange(urls: urls, needsSecurityScope: true)
-					
-			case .failure(let error):
-				print("Error picking file: \(error.localizedDescription)")
+	
+	private func importNewFilesFromSelection() {
+		selectFiles { files in
+			defer {
+				for file in files {
+					file.stopAccessingSecurityScopedResource()
+				}
+			}
+			
+			for file in files {
+				if !file.startAccessingSecurityScopedResource() {
+					errorMessage = "Failed to gain access to the file \(file.absoluteString)."
+					return;
+				}
+			}
+			
+			importFileRange(urls: files)
 		}
 	}
 	
@@ -105,36 +118,48 @@ struct ImportingView: View {
 							collectedURLs.append(fileURL)
 						}
 					} catch {
-						errorMessage = "Error reading file at \(fileURL)"
+						errorMessage = "Error reading file at \(fileURL.absoluteString)"
 						return
 					}
 				}
 			}
 			
-			importFileRange(urls: collectedURLs, needsSecurityScope: false)
+			importFileRange(urls: collectedURLs)
 		}
-	}
-	
-	
-	private func showFilePicker() {
-		commandResource.showFileImporter.toggle()
 	}
 	
 	func selectFolder(completion: @escaping (URL?) -> Void) {
 		let panel = NSOpenPanel()
+		panel.title = "Select a directory to import."
+
+		panel.allowsMultipleSelection = false
 		panel.canChooseDirectories = true
 		panel.canChooseFiles = false
-		panel.allowsMultipleSelection = false
+
 		panel.begin { response in
 			if response == .OK {
 				completion(panel.url)
-			} else {
-				completion(nil)
 			}
 		}
 	}
 	
-	private func importFileRange(urls: [URL], needsSecurityScope: Bool) {
+	func selectFiles(completion: @escaping ([URL]) -> Void) {
+		let panel = NSOpenPanel()
+		panel.title = "Select media files to import."
+
+		panel.allowedContentTypes = [.mpeg4Movie]
+		panel.allowsMultipleSelection = true
+		panel.canChooseDirectories = false
+		panel.canChooseFiles = true
+		
+		panel.begin { response in
+			if response == .OK {
+				completion(panel.urls)
+			}
+		}
+	}
+	
+	private func importFileRange(urls: [URL]) {
 		withAnimation { importRange = 0...urls.count }
 		
 		Task {
@@ -142,7 +167,7 @@ struct ImportingView: View {
 			for (index, url) in urls.enumerated() {
 				do {
 					currentImportFile = url.lastPathComponent
-					try await assembler.importFromFile(path: url, needsSecurityScope: needsSecurityScope)
+					try await assembler.importFromFile(path: url)
 					withAnimation { importRange = (index + 1)...urls.count }
 				} catch(let importError) {
 					if errorMessage == nil {
