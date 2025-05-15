@@ -46,4 +46,16 @@ public class MediaCollection
 			default: break
 		}
 	}
+	
+	func isItemInCollection(_ media: any MediaItem) -> Bool {
+		switch media {
+			case let show as TvShow:
+				return self.tvShows.contains(show)
+			case let movie as Movie:
+				return self.movies.contains(movie)
+			case let episode as Episode:
+				return self.episodes.contains(episode)
+			default: return false
+		}
+	}
 }
