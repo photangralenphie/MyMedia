@@ -40,6 +40,10 @@ struct AboutView: View {
 					Button("swift-collections") {
 						licence = .apache(name: "swift-collections", author: "Apple", year: currentYear)
 					}
+					
+					Button("swiftui-introspect") {
+						licence = .apache(name: "swiftui-introspect", author: "Timber Software", year: "2019")
+					}
 				}
 				.padding(.bottom)
 				
