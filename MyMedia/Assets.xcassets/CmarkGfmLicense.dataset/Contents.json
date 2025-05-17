@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "COPYING",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.plain-text"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

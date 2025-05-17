@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ArtworkView: View {
 	
-	//let mediaItem: any MediaItem
 	let imageData: Data?
 	let title: String
 	let subtitle: String
+	var scale: CGFloat = 1.0
 	
 	var body: some View {
 		if let imageData = imageData, let nsImageFromData = NSImage(data: imageData)  {
@@ -21,26 +21,26 @@ struct ArtworkView: View {
 				Image(nsImage: nsImageFromData)
 					.resizable()
 					.scaledToFill()
-					.frame(width: LayoutConstants.artworkWidth, height: LayoutConstants.artworkHeight)
+					.frame(width: LayoutConstants.artworkWidth * scale, height: LayoutConstants.artworkHeight * scale)
 					.overlay(.ultraThinMaterial)
 				
 				// "real" image
 				Image(nsImage: nsImageFromData)
 					.resizable()
 					.scaledToFit()
-					.frame(width: LayoutConstants.artworkWidth, height: LayoutConstants.artworkHeight)
+					.frame(width: LayoutConstants.artworkWidth * scale, height: LayoutConstants.artworkHeight * scale)
 			}
 			.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius))
 		} else {
 			Color.accentColor
-				.frame(width: LayoutConstants.artworkWidth, height: LayoutConstants.artworkHeight)
+				.frame(width: LayoutConstants.artworkWidth * scale, height: LayoutConstants.artworkHeight * scale)
 				.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius))
 				.overlay(alignment: .center) {
 					VStack {
-						Text(title)
+						Text(LocalizedStringKey(title))
 							.font(.largeTitle)
 							.bold()
-						Text(subtitle)
+						Text(LocalizedStringKey(subtitle))
 							.font(.title)
 					}
 				}

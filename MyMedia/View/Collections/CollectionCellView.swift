@@ -14,12 +14,14 @@ struct CollectionCellView: View {
 	
     var body: some View {
 		NavigationLink {
-			GridView(mediaItems: collection.mediaItems, sorting: $collectionSorting, navTitle: LocalizedStringKey(collection.title) )
+			GridView(mediaItems: collection.mediaItems, sorting: $collectionSorting, navTitle: LocalizedStringKey(collection.title)) {
+				CollectionHeaderView(collection: collection)
+			}
 		} label: {
 			VStack(alignment: .leading) {
 				ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "^[\(collection.mediaItems.count) Item](inflect: true)")
 				
-				Text(collection.title)
+				Text(LocalizedStringKey(collection.title))
 				
 				Text("^[\(collection.mediaItems.count) ITEM](inflect: true)")
 					.font(.caption)

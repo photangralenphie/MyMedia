@@ -59,8 +59,14 @@ struct NewCollectionView: View {
 			.labelStyle(.titleAndIcon)
 			
 			TextField("Title", text: $title)
-			TextField("Description", text: $description)
 			
+			LabeledContent {
+				TextEditor(text: $description)
+			} label: {
+				Text("Description\n(optional)")
+					.multilineTextAlignment(.trailing)
+			}
+						
 			HStack {
 				Button("Create", action: createCollection)
 				
@@ -78,6 +84,10 @@ struct NewCollectionView: View {
 	
 	func createCollection() {
 		let collection = MediaCollection(title: title, artwork: imageData)
+		if !description.isEmpty {
+			collection.collectionDescription = description
+		}
+		
 		moc.insert(collection)
 		try? moc.save()
 		

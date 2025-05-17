@@ -14,9 +14,18 @@ struct AboutView: View {
 	private let version: String
 	
 	@State private var licence: Licence?
+	@State private var showCmarkGfmLicense: Bool = false
+	@State private var cmarkGfmLicense: String
 	
 	init(){
 		self.version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+		
+		if let asset = NSDataAsset(name: "CmarkGfmLicense"),
+		   let content = String(data: asset.data, encoding: .utf8) {
+				self.cmarkGfmLicense = content
+		} else {
+			self.cmarkGfmLicense = ""
+		}
 	}
 	
     var body: some View {
@@ -37,8 +46,21 @@ struct AboutView: View {
 					Button("AwesomeSwiftyComponents") {
 						licence = .mit(name: "AwesomeSwiftyComponents", author: "Jonas Helmer", year: "2025")
 					}
+					
+					Button("cmark-gfm") {
+						showCmarkGfmLicense.toggle()
+					}
+					
+					Button("NetworkImage") {
+						licence = .mit(name: "NetworkImage", author: "Guille Gonzalez", year: "2020")
+					}
+					
 					Button("swift-collections") {
 						licence = .apache(name: "swift-collections", author: "Apple", year: currentYear)
+					}
+					
+					Button("swift-markdown-ui") {
+						licence = .mit(name: "swift-markdown-ui", author: "Guillermo Gonzalez", year: "2020")
 					}
 				}
 				.padding(.bottom)
@@ -56,6 +78,18 @@ struct AboutView: View {
 						.padding(.bottom)
 				}
 				.frame(minHeight: 400)
+			}
+			.sheet(isPresented: $showCmarkGfmLicense) {
+				VStack {
+					ScrollView {
+						Text(cmarkGfmLicense)
+							.padding()
+					}
+					.frame(minHeight: 400)
+					
+					Button("Close") { showCmarkGfmLicense.toggle() }
+						.padding(.bottom)
+				}
 			}
 		}
 		.scenePadding()

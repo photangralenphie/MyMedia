@@ -33,10 +33,16 @@ struct MediaItemActionsView: View {
 			if !collections.isEmpty {
 				Menu("Add to Collection") {
 					ForEach(collections) { collection in
-						Button(collection.title, systemImage: collection.isItemInCollection(mediaItem) ? "checkmark" : "") {
+						Button {
 							collection.addMediaItem(mediaItem)
+						} label: {
+							if collection.isItemInCollection(mediaItem) {
+								Label(collection.title, systemImage: "checkmark")
+									.labelStyle(.titleAndIcon)
+							} else {
+								Text(collection.title)
+							}
 						}
-						.labelStyle(.titleAndIcon)
 					}
 				}
 			}
