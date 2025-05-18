@@ -11,13 +11,15 @@ import SwiftData
 
 struct MediaItemActionsView: View {
 	
+	@State public var mediaItem: any MediaItem
+	let onDelete: () -> Void
+
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 	
-	@State public var mediaItem: any MediaItem
 	@Environment(\.modelContext) private var moc
-	@State private var updateError: String? = nil
+	@Environment(\.mediaContext) private var mediaContext
 	
-	let onDelete: () -> Void
+	@State private var updateError: String? = nil
 	
     var body: some View {
 		Button(mediaItem.isWatched ? "Mark Unwatched" : "Mark Watched") { mediaItem.toggleWatched() }
@@ -52,6 +54,12 @@ struct MediaItemActionsView: View {
 		
 		Button("Remove from Library", action: removeFromLibrary)
 			.keyboardShortcut(.delete, modifiers: .command)
+		
+		if case let .collection(collection) = mediaContext {
+			Button("Remove from Collection") {
+				withAnimation { collection.removeMediaItem(mediaItem) }
+			}
+		}
 		
 		Divider()
 		

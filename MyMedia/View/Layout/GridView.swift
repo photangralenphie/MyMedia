@@ -9,14 +9,6 @@ import SwiftUI
 import SwiftData
 import OrderedCollections
 
-enum SortOption: String, CaseIterable, Identifiable {
-	case title = "Title"
-	case releaseDate = "Release Date"
-	case dateAdded = "Date Added"
-	
-	var id: Self { return self }
-}
-
 struct GridView<Header: View>: View {
 	
 	// init

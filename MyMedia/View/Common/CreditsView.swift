@@ -113,13 +113,3 @@ struct CreditsView: View {
 		.frame(width: 150, alignment: .leading)
 	}
 }
-
-struct CreditHeadingStyle: ViewModifier {
-	func body(content: Content) -> some View {
-		content
-			.bold()
-			.padding(.bottom, 2)
-			.font(.caption)
-			.foregroundStyle(.secondary)
-	}
-}

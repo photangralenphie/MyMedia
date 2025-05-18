@@ -9,23 +9,6 @@ import SwiftUI
 import SwiftData
 import AwesomeSwiftyComponents
 
-struct Tabs {
-	public static let unwatched: String = "unwatched"
-	public static let favourites: String = "favourites"
-	public static let genres: String = "genres"
-	public static let collections: String = "collections"
-	public static let movies: String = "movies"
-	public static let movieGenres: String = "movieGenres"
-	public static let tvShows: String = "tvShows"
-	public static let tvShowsGenres: String = "tvShowsGenres"
-	
-	public static let generalSection: String = "generalSection"
-	public static let moviesSection: String = "moviesSection"
-	public static let tvShowsSection: String = "tvShowsSection"
-	public static let pinnedSection: String = "pinnedSection"
-}
-
-
 struct HomeView: View {
 	
 	@Environment(\.modelContext) private var moc
@@ -127,6 +110,7 @@ struct HomeView: View {
 								GridView(mediaItems: collection.mediaItems, sorting: .constant(SortOption.title), navTitle: LocalizedStringKey(collection.title)) {
 									CollectionHeaderView(collection: collection)
 								}
+								.environment(\.mediaContext, .collection(collection))
 								.id(collection.id.uuidString)
 							}
 							.dropDestination(for: String.self) { ids in dropMediaItemOnCollection(target: collection, ids: ids) }

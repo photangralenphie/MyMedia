@@ -17,6 +17,7 @@ struct CollectionCellView: View {
 			GridView(mediaItems: collection.mediaItems, sorting: $collectionSorting, navTitle: LocalizedStringKey(collection.title)) {
 				CollectionHeaderView(collection: collection)
 			}
+			.environment(\.mediaContext, .collection(collection))
 		} label: {
 			VStack(alignment: .leading) {
 				ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "^[\(collection.mediaItems.count) Item](inflect: true)")

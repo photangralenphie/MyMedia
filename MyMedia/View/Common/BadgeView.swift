@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum BadgeStyle {
-	case outlined
-	case filled
-}
-
 struct BadgeView: View {
 	
 	let text: String

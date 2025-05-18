@@ -9,32 +9,6 @@ import SwiftUI
 import AwesomeSwiftyComponents
 import AVKit
 
-struct PreferenceKeys {
-	public static let useInAppPlayer: String = "useInAppPlayer"
-	public static let showLanguageFlags: String = "showLanguageFlags"
-	public static let autoPlay: String = "autoPlay"
-	public static let playerStyle: String = "playerStyle"
-}
-
-extension AVPlayerViewControlsStyle {
-	var name: LocalizedStringKey {
-		switch self {
-			case .inline:
-				return "Inline"
-			case .minimal:
-				return "Minimal"
-			case .floating:
-				return "Floating"
-			default:
-				return ""
-		}
-	}
-	
-	static var userSelectableStyles: [AVPlayerViewControlsStyle] {
-		return [.floating, .inline, .minimal]
-	}
-}
-
 struct SettingsView: View {
 	
 	let MAX_SETTING_WIDTH: CGFloat = 250

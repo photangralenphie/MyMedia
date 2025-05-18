@@ -51,6 +51,18 @@ public class MediaCollection: IsPinnable
 		}
 	}
 	
+	func removeMediaItem(_ media: any MediaItem) {	
+		switch media {
+			case let show as TvShow:
+				self.tvShows.removeAll(where: { $0.id == show.id })
+			case let movie as Movie:
+				self.movies.removeAll(where: { $0.id == movie.id })
+			case let episode as Episode:
+				self.episodes.removeAll(where: { $0.id == episode.id })
+			default: return
+		}
+	}
+	
 	func isItemInCollection(_ media: any MediaItem) -> Bool {
 		switch media {
 			case let show as TvShow:
