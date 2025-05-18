@@ -8,7 +8,28 @@
 import Foundation
 import SwiftUI
 
-protocol MediaItem: Identifiable {
+protocol IsPinnable {
+	var id: UUID { get }
+	var title: String { get }
+	var isPinned: Bool { get set }
+}
+
+extension IsPinnable {
+	var systemImageName: String {
+		switch self {
+			case is TvShow:
+				return SystemImages.tvShow
+			case is Movie:
+				return SystemImages.movie
+			case is MediaCollection:
+				return SystemImages.collections
+			default:
+				return "questionmark"
+		}
+	}
+}
+
+protocol MediaItem: Identifiable, IsPinnable {
 	var id: UUID { get }
 	var title: String { get }
 	var dateAdded: Date { get }
@@ -18,7 +39,6 @@ protocol MediaItem: Identifiable {
 	
 	var isWatched: Bool { get set }
 	var isFavorite: Bool { get set }
-	var isPinned: Bool { get set }
 }
 
 protocol HasGenre: MediaItem {

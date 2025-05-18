@@ -5,10 +5,11 @@
 //  Created by Jonas Helmer on 03.05.25.
 //
 import SwiftData
+import SwiftUI
 import Foundation
 
 @Model
-public class MediaCollection
+public class MediaCollection: IsPinnable
 {
 	@Attribute(.unique) public var id: UUID = UUID()
 	var title: String
@@ -18,15 +19,14 @@ public class MediaCollection
 	private var movies: [Movie] = []
 	private var episodes: [Episode] = []
 	
-	var mediaItems: [any MediaItem] {
+	@Transient var mediaItems: [any MediaItem] {
 		(tvShows + movies + episodes).sorted { $0.title < $1.title }
 	}
 	
 	var dateAdded: Date = Date.now
-	var isFavorite: Bool = false
 	var isPinned: Bool = false
 	
-	var isWatched: Bool {
+	@Transient var isWatched: Bool {
 		tvShows.allSatisfy(\.isWatched)
 	}
 	
@@ -36,6 +36,10 @@ public class MediaCollection
 	}
 	
 	func addMediaItem(_ media: any MediaItem) {
+		if mediaItems.contains(where: { $0.id == media.id }) {
+			return
+		}
+		
 		switch media {
 			case let show as TvShow:
 				self.tvShows.append(show)
@@ -56,6 +60,12 @@ public class MediaCollection
 			case let episode as Episode:
 				return self.episodes.contains(episode)
 			default: return false
+		}
+	}
+	
+	func togglePinned() {
+		withAnimation {
+			self.isPinned.toggle()
 		}
 	}
 }

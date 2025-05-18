@@ -30,11 +30,11 @@ struct ArtworkView: View {
 					.scaledToFit()
 					.frame(width: LayoutConstants.artworkWidth * scale, height: LayoutConstants.artworkHeight * scale)
 			}
-			.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius))
+			.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius * scale))
 		} else {
 			Color.accentColor
 				.frame(width: LayoutConstants.artworkWidth * scale, height: LayoutConstants.artworkHeight * scale)
-				.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius))
+				.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius * scale))
 				.overlay(alignment: .center) {
 					VStack {
 						Text(LocalizedStringKey(title))

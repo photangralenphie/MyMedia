@@ -11,6 +11,7 @@ import MarkdownUI
 struct CollectionHeaderView: View {
 	
 	let collection: MediaCollection
+	@Environment(\.dismiss) private var dismiss
 	 
     var body: some View {
 		HStack(alignment: .bottom) {
@@ -35,5 +36,12 @@ struct CollectionHeaderView: View {
 			Spacer()
 		}
 		.padding()
+		.toolbar {
+			Menu("Actions") {
+				CollectionActionsView(collection: collection) {
+					dismiss()
+				}
+			}
+		}
     }
 }

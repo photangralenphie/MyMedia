@@ -27,6 +27,9 @@ struct CollectionCellView: View {
 					.font(.caption)
 					.foregroundStyle(.secondary)
 			}
+			.contextMenu {
+				CollectionActionsView(collection: collection) { }
+			}
 		}
 		.buttonStyle(.plain)
 		.padding(.bottom)

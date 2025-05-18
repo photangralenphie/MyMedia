@@ -10,6 +10,7 @@ import SwiftUI
 struct GridCellView: View {
 	
 	let mediaItem: any MediaItem
+	private let scale = 0.4
 	
     var body: some View {
 		NavigationLink {
@@ -36,6 +37,17 @@ struct GridCellView: View {
 			}
 			.contextMenu {
 				MediaItemActionsView(mediaItem: mediaItem) { }
+			}
+			.draggable(mediaItem.id.uuidString) {
+				VStack {
+					VStack(alignment: .leading) {
+						ArtworkView(imageData: mediaItem.artwork, title: mediaItem.title, subtitle: "", scale: scale)
+						Text("\(mediaItem.title) - (\(String(mediaItem.year)))")
+					}
+					.padding(5)
+					.background(Material.regular)
+					.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius * scale))
+				}
 			}
 		}
 		.buttonStyle(PlainButtonStyle())
