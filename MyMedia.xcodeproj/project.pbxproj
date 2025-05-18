@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD42F35C2DD9EC5B000EE9C8 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */; };
 		DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DD8065622DB2960200B6A629 /* OrderedCollections */; };
 		DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */; };
 		DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD95FB962DC7E88900149619 /* AVKit.framework */; };
@@ -34,6 +35,7 @@
 				DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */,
 				DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */,
 				DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */,
+				DD42F35C2DD9EC5B000EE9C8 /* SwiftUIIntrospect in Frameworks */,
 				DDA200552DD8C21A00C1F7F8 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,6 +91,7 @@
 				DD8065622DB2960200B6A629 /* OrderedCollections */,
 				DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */,
 				DDA200542DD8C21A00C1F7F8 /* MarkdownUI */,
+				DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */,
 			);
 			productName = MyMedia;
 			productReference = DD956C812D95D6EA0033A363 /* MyMedia.app */;
@@ -122,6 +125,7 @@
 				DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */,
 				DDA200532DD8C21A00C1F7F8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				DD42F35A2DD9EC5B000EE9C8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DD956C822D95D6EA0033A363 /* Products */;
@@ -366,6 +370,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DD42F35A2DD9EC5B000EE9C8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -393,6 +405,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD42F35A2DD9EC5B000EE9C8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
+		};
 		DD8065622DB2960200B6A629 /* OrderedCollections */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */;

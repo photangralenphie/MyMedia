@@ -62,6 +62,10 @@ struct AboutView: View {
 					Button("swift-markdown-ui") {
 						licence = .mit(name: "swift-markdown-ui", author: "Guillermo Gonzalez", year: "2020")
 					}
+					
+					Button("swiftui-introspect") {
+						licence = .apache(name: "swiftui-introspect", author: "Timber Software", year: "2019")
+					}
 				}
 				.padding(.bottom)
 				

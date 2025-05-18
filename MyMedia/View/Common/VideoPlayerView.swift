@@ -9,6 +9,7 @@ import SwiftUI
 import AVKit
 import SwiftData
 import AwesomeSwiftyComponents
+import SwiftUIIntrospect
 
 struct VideoPlayerView: View {
 	
@@ -22,6 +23,7 @@ struct VideoPlayerView: View {
 	@Environment(\.dismiss) private var dismiss
 	
 	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
+	@AppStorage(PreferenceKeys.playerStyle) private var playerStyle: AVPlayerViewControlsStyle = .floating
 	
 	@State private var activity: NSObjectProtocol?
 	
@@ -50,42 +52,46 @@ struct VideoPlayerView: View {
 			.sheet(isPresented: $showErrorSheet){
 				Text("error: \(errorText)")
 			}
-			.edgesIgnoringSafeArea(.all)
-			.task {
-				activity = ProcessInfo.processInfo.beginActivity( options: [.idleSystemSleepDisabled, .idleDisplaySleepDisabled, .userInitiated], reason: "Keeps Mac awake during video playback" )
-			}
-			.onAppear {
-				let avItems = queue.compactMap {
-					if let url = $0.url {
-						if url.startAccessingSecurityScopedResource() {
-							let item = AVPlayerItem(url: url)
-							return item
-						}
-					}
-					return nil
-				}
-				
-				currentWatchable = queue.removeFirst()
-				
-				for item in avItems {
-					player.insert(item, after: nil)
-				}
-
-				if autoPlay {
-					player.actionAtItemEnd = .advance
-				}
-				player.play()
-			}
+			.task { preventSleep() }
+			.onAppear(perform: createPlaybackQueue)
 			.onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)) { _ in
 				videoDidFinish()
 			}
-			.onDisappear {
-				currentWatchable?.progressMinutes = Int(player.currentItem?.currentTime().seconds ?? 0) / 60
-				if let activity = activity {
-					ProcessInfo.processInfo.endActivity(activity)
-				}
-				queue.forEach { $0.url?.stopAccessingSecurityScopedResource() }
+			.onDisappear(perform: ondisappear)
+			.introspect(.videoPlayer, on: .macOS(.v15)) { AVPlayerView in
+				AVPlayerView.allowsPictureInPicturePlayback = true
+				AVPlayerView.controlsStyle = playerStyle
 			}
+	}
+	
+	func preventSleep() {
+		activity = ProcessInfo.processInfo.beginActivity(
+			options: [.idleSystemSleepDisabled, .idleDisplaySleepDisabled, .userInitiated],
+			reason: "Keeps Mac awake during video playback"
+		)
+	}
+	
+	func createPlaybackQueue() {
+		let avItems = queue.compactMap {
+			if let url = $0.url {
+				if url.startAccessingSecurityScopedResource() {
+					let item = AVPlayerItem(url: url)
+					return item
+				}
+			}
+			return nil
+		}
+		
+		currentWatchable = queue.removeFirst()
+		
+		for item in avItems {
+			player.insert(item, after: nil)
+		}
+
+		if autoPlay {
+			player.actionAtItemEnd = .advance
+		}
+		player.play()
 	}
 	
 	func videoDidFinish() {
@@ -99,5 +105,13 @@ struct VideoPlayerView: View {
 		}
 			
 		currentWatchable = queue.removeFirst()
+	}
+	
+	func ondisappear() {
+		currentWatchable?.progressMinutes = Int(player.currentItem?.currentTime().seconds ?? 0) / 60
+		if let activity = activity {
+			ProcessInfo.processInfo.endActivity(activity)
+		}
+		queue.forEach { $0.url?.stopAccessingSecurityScopedResource() }
 	}
 }
