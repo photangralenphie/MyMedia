@@ -12,6 +12,8 @@ struct CollectionHeaderView: View {
 	
 	let collection: MediaCollection
 	@Environment(\.dismiss) private var dismiss
+	
+	@State private var showEditSheet: Bool = false
 	 
     var body: some View {
 		HStack(alignment: .bottom) {
@@ -38,10 +40,13 @@ struct CollectionHeaderView: View {
 		.padding()
 		.toolbar {
 			Menu("Actions") {
-				CollectionActionsView(collection: collection) {
+				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet) {
 					dismiss()
 				}
 			}
+		}
+		.sheet(isPresented: $showEditSheet) {
+			CollectionEditView(collection: collection)
 		}
     }
 }

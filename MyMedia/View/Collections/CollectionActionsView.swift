@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct CollectionActionsView: View {
+
 	@State public var collection: MediaCollection
+	@Binding public var showEditSheet: Bool
 	
 	@Environment(\.modelContext) private var moc
 	@State private var updateError: String? = nil
@@ -28,7 +30,7 @@ struct CollectionActionsView: View {
 		Divider()
 		
 		Button("Edit", systemImage: "pencil") {
-			
+			showEditSheet.toggle()
 		}
 	}
 	

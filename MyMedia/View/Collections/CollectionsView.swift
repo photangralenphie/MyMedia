@@ -61,7 +61,7 @@ struct CollectionsView: View {
 				Button("Create Collection", systemImage: "plus") { showAddCollectionSheet.toggle() }
 			}
 			.sheet(isPresented: $showAddCollectionSheet) {
-				NewCollectionView()
+				CollectionEditView()
 			}
 		}
 	}

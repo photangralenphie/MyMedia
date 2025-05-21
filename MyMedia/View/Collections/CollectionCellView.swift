@@ -11,6 +11,7 @@ struct CollectionCellView: View {
 	
 	let collection: MediaCollection
 	@State private var collectionSorting: SortOption = .title
+	@State private var showEditSheet: Bool = false
 	
     var body: some View {
 		NavigationLink {
@@ -29,10 +30,13 @@ struct CollectionCellView: View {
 					.foregroundStyle(.secondary)
 			}
 			.contextMenu {
-				CollectionActionsView(collection: collection) { }
+				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet) { }
 			}
 		}
 		.buttonStyle(.plain)
 		.padding(.bottom)
+		.sheet(isPresented: $showEditSheet) {
+			CollectionEditView(collection: collection)
+		}
     }
 }
