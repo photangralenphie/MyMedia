@@ -91,7 +91,7 @@ struct GridView<Header: View>: View {
 				.toolbar {
 					Picker("Sort by", selection: $sortOrder) {
 						ForEach(SortOption.allCases) { option in
-							Text(option.rawValue)
+							Text(option.title)
 						}
 					}
 				}

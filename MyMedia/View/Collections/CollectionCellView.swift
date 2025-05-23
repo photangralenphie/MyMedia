@@ -10,12 +10,11 @@ import SwiftUI
 struct CollectionCellView: View {
 	
 	let collection: MediaCollection
-	@State private var collectionSorting: SortOption = .title
 	@State private var showEditSheet: Bool = false
 	
     var body: some View {
 		NavigationLink {
-			GridView(mediaItems: collection.mediaItems, sorting: $collectionSorting, navTitle: LocalizedStringKey(collection.title)) {
+			GridView(mediaItems: collection.mediaItems, sorting: Bindable(collection).sort, navTitle: LocalizedStringKey(collection.title)) {
 				CollectionHeaderView(collection: collection)
 			}
 			.environment(\.mediaContext, .collection(collection))

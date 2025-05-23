@@ -32,6 +32,7 @@ struct CollectionActionsView: View {
 		Button("Edit", systemImage: "pencil") {
 			showEditSheet.toggle()
 		}
+		.keyboardShortcut("e", modifiers: .command)
 	}
 	
 	func deleteCollection() {

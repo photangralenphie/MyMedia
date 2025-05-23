@@ -107,7 +107,7 @@ struct HomeView: View {
 
 						if let collection = pinnedItem as? MediaCollection {
 							Tab(collection.title, systemImage: collection.systemImageName, value: collection.id.uuidString) {
-								GridView(mediaItems: collection.mediaItems, sorting: .constant(SortOption.title), navTitle: LocalizedStringKey(collection.title)) {
+								GridView(mediaItems: collection.mediaItems, sorting: Bindable(collection).sort, navTitle: LocalizedStringKey(collection.title)) {
 									CollectionHeaderView(collection: collection)
 								}
 								.environment(\.mediaContext, .collection(collection))

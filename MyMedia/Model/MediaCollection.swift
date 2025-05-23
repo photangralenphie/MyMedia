@@ -25,6 +25,7 @@ public class MediaCollection: IsPinnable
 	
 	var dateAdded: Date = Date.now
 	var isPinned: Bool = false
+	var sort: SortOption = SortOption.title
 	
 	@Transient var isWatched: Bool {
 		tvShows.allSatisfy(\.isWatched)
