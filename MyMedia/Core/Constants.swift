@@ -15,6 +15,9 @@ public struct LayoutConstants {
 	
 	// Settings
 	public static let settingsWidth: CGFloat = 300
+	
+	// Grid
+	public static let gridSpacing: CGFloat = 20
 }
 
 public struct SystemImages {

@@ -19,7 +19,7 @@ struct GridView<Header: View>: View {
 	@Binding private var sortOrder: SortOption
 	@State private var searchText: String = ""
 
-	private let layout = [GridItem(.adaptive(minimum: 300), spacing: 20, alignment: .top)]
+	private let layout = [GridItem(.adaptive(minimum: LayoutConstants.artworkWidth), spacing: LayoutConstants.gridSpacing, alignment: .top)]
 	@Environment(\.modelContext) private var moc
 	
 	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, navTitle: LocalizedStringKey) where Header == EmptyView {
@@ -85,9 +85,11 @@ struct GridView<Header: View>: View {
 								.padding(.vertical, 3)
 								.frame(maxWidth: .infinity, alignment: .leading)
 								.background(.regularMaterial)
+								.padding(.horizontal, -LayoutConstants.gridSpacing)
 						}
 					}
 				}
+				.padding(.horizontal, LayoutConstants.gridSpacing)
 				.toolbar {
 					Picker("Sort by", selection: $sortOrder) {
 						ForEach(SortOption.allCases) { option in
