@@ -10,23 +10,29 @@ import AwesomeSwiftyComponents
 import AVKit
 
 struct SettingsView: View {
-	
-	let MAX_SETTING_WIDTH: CGFloat = 250
-	
+
 	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = true
 	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
 	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
 	@AppStorage(PreferenceKeys.playerStyle) private var playerStyle: AVPlayerViewControlsStyle = .floating
+	@AppStorage(PreferenceKeys.autoQuit) private var autoQuit: Bool = false
 	
     var body: some View {
 		TabView {
+			Tab("General", systemImage: "gearshape") {
+				Form {
+					Toggle("Auto Quit", isOn: $autoQuit)
+					Text("Automatically quit the app when the last window is closed.")
+						.font(.footnote)
+						.foregroundStyle(.secondary)
+				}
+			}
 			Tab("Player", systemImage: "play.rectangle.on.rectangle.fill") {
 				Form {
 					Toggle("AutoPlay next Episode", isOn: $autoPlay)
 					Toggle("Use in-app Player", isOn: $useInAppPlayer)
 					
 					Divider()
-						.frame(maxWidth: MAX_SETTING_WIDTH)
 					
 					Picker("Player Style", selection: $playerStyle) {
 						ForEach(AVPlayerViewControlsStyle.userSelectableStyles, id: \.self) { playerStyle in
@@ -34,7 +40,7 @@ struct SettingsView: View {
 								.tag(playerStyle)
 						}
 					}
-					.frame(maxWidth: MAX_SETTING_WIDTH)
+					.frame(width: 180)
 				}
 			}
 			
@@ -44,8 +50,8 @@ struct SettingsView: View {
 				}
 			}
 		}
+		.frame(width: LayoutConstants.settingsWidth)
 		.scenePadding()
-		.frame(minWidth: 300)
     }
 }
 

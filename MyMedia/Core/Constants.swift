@@ -8,9 +8,13 @@
 import CoreFoundation
 
 public struct LayoutConstants {
+	// Artwork
 	public static let cornerRadius: CGFloat = 20
 	public static let artworkWidth: CGFloat = 300
 	public static let artworkHeight: CGFloat = 168.75
+	
+	// Settings
+	public static let settingsWidth: CGFloat = 300
 }
 
 public struct SystemImages {
@@ -42,4 +46,5 @@ public struct PreferenceKeys {
 	public static let showLanguageFlags: String = "showLanguageFlags"
 	public static let autoPlay: String = "autoPlay"
 	public static let playerStyle: String = "playerStyle"
+	public static let autoQuit: String = "autoQuit"
 }

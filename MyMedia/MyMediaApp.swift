@@ -22,6 +22,7 @@ struct MyMediaApp: App {
         }
     }()
 	
+	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 	@State private var commandResource = CommandResource()
 	@Environment(\.openWindow) var openWindow
 
