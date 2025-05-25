@@ -24,7 +24,8 @@ struct CollectionHeaderView: View {
 					.font(.largeTitle)
 					.bold()
 				
-					Text("^[\(collection.mediaItems.count) ITEM](inflect: true)")
+					Text("^[\(collection.mediaItems.count) Item](inflect: true)")
+					.textCase(.uppercase)
 						.bold()
 						.foregroundStyle(.secondary)
 					

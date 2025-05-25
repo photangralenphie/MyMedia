@@ -30,7 +30,8 @@ struct GridCellView: View {
 					.frame(maxWidth: LayoutConstants.artworkWidth, alignment: .leading)
 				
 				if let tvShow = mediaItem as? TvShow {
-					Text("^[\(Set(tvShow.episodes.compactMap(\.season)).count) SEASON](inflect: true) - ^[\(tvShow.episodes.count) EPISODE](inflect: true) ")
+					Text("^[\(Set(tvShow.episodes.compactMap(\.season)).count) Season](inflect: true) - ^[\(tvShow.episodes.count) Episode](inflect: true) ")
+						.textCase(.uppercase)
 						.font(.caption)
 						.foregroundStyle(.secondary)
 				}

@@ -81,7 +81,8 @@ struct MovieDetailView: View {
 			
 			if let description = getDescription() {
 				VStack(alignment: .leading) {
-					Text("SUMMARY")
+					Text("Summary")
+						.textCase(.uppercase)
 						.bold()
 						.foregroundStyle(.secondary)
 						.font(.caption)

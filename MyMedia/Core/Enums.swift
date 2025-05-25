@@ -35,3 +35,13 @@ enum MediaContext {
 	case normal
 	case collection(_ collection: MediaCollection)
 }
+
+enum CreditKey: LocalizedStringKey {
+	case cast = "Cast"
+	case director = "Director"
+	case coDirector = "Co-Director"
+	case screenwriters = "Screenwriters"
+	case producers = "Producers"
+	case executiveProducers = "Executive Producers"
+	case composer = "Composer"
+}

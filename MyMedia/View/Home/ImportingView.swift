@@ -64,7 +64,7 @@ struct ImportingView: View {
 			.padding(.horizontal, 3)
 		}
 		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
-			Button("Ok"){ errorMessage = nil }
+			Button("OK"){ errorMessage = nil }
 		} message: {
 			Text(errorMessage ?? "")
 		}

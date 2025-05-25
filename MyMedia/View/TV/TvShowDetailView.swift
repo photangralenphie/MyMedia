@@ -40,7 +40,8 @@ struct TvShowDetailView: View {
 						Group {
 							Text(String(tvShow.year))
 							
-							Text("^[\(episodes.count) SEASON](inflect: true) ")
+							Text("^[\(episodes.count) Season](inflect: true) ")
+								.textCase(.uppercase)
 								.bold()
 							
 							Text(tvShow.networks.joined(separator: ", "))
@@ -80,7 +81,8 @@ struct TvShowDetailView: View {
 							}
 							
 							VStack(alignment: .leading, spacing: 5) {
-								Text("EPISODE \(episode.episode)")
+								Text("Episode \(episode.episode)")
+									.textCase(.uppercase)
 									.bold()
 									.foregroundStyle(.secondary)
 									.font(.body)

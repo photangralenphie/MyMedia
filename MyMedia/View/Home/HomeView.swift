@@ -41,6 +41,7 @@ struct HomeView: View {
 				Tab("Unwatched", systemImage: "eye.slash", value: Tabs.unwatched) {
 					let unwatched: [any MediaItem] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
 					GridView(mediaItems: unwatched, sorting: $sortOrderUnwatched, navTitle: "Unwatched")
+						.navigationTitle("Unwatched")
 						.id(Tabs.unwatched)
 				}
 				.customizationID(Tabs.unwatched)

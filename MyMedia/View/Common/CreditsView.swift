@@ -10,42 +10,42 @@ import OrderedCollections
 
 struct CreditsView: View {
 	
-	let credits: OrderedDictionary<String, String>
+	let credits: OrderedDictionary<CreditKey, String>
 	
 	init (hasCredits: any HasCredits) {
-		var credits: OrderedDictionary<String, String> = [:]
+		var credits: OrderedDictionary<CreditKey, String> = [:]
 		let cast = hasCredits.cast.joined(separator: "\n")
 		if !cast.isEmpty {
-			credits["CAST"] = cast
+			credits[.cast] = cast
 		}
 		
 		let directors = hasCredits.directors.joined(separator: "\n")
 		if !directors.isEmpty {
-			credits["DIRECTOR"] = directors
+			credits[.director] = directors
 		}
 		
 		let coDirectors = hasCredits.coDirectors.joined(separator: "\n")
 		if !coDirectors.isEmpty {
-			credits["CO-DIRECTOR"] = coDirectors
+			credits[.coDirector] = coDirectors
 		}
 		
 		let screenwriters = hasCredits.screenwriters.joined(separator: "\n")
 		if !screenwriters.isEmpty {
-			credits["SCREENWRITERS"] = screenwriters
+			credits[.screenwriters] = screenwriters
 		}
 		
 		let producers = hasCredits.producers.joined(separator: "\n")
 		if !producers.isEmpty {
-			credits["PRODUCERS"] = producers
+			credits[.producers] = producers
 		}
 		
 		let executiveProducers = hasCredits.executiveProducers.joined(separator: "\n")
 		if !executiveProducers.isEmpty {
-			credits["EXECUTIVE PRODUCERS"] = executiveProducers
+			credits[.executiveProducers] = executiveProducers
 		}
 		
 		if let composer = hasCredits.composer {
-			credits["COMPOSER"] = composer
+			credits[.composer] = composer
 		}
 		
 		self.credits = credits
@@ -58,7 +58,7 @@ struct CreditsView: View {
 			let availableCols = Int(proxy.size.width / 150)
 			let numCols = min(availableCols, credits.keys.count)
 			let spacing = (proxy.size.width - CGFloat(numCols) * 150.0) / CGFloat(numCols - 1)
-			let hasCast = credits["CAST"] != nil
+			let hasCast = credits[.cast] != nil
 			
 			HStack(alignment: .top, spacing: spacing) {
 				if hasCast {
@@ -106,7 +106,8 @@ struct CreditsView: View {
 	@ViewBuilder func creditCell(forIndex: Int) -> some View {
 		let creditKey = Array(credits.keys)[forIndex]
 		VStack(alignment: .leading) {
-			Text(creditKey)
+			Text(creditKey.rawValue)
+				.textCase(.uppercase)
 				.modifier(CreditHeadingStyle())
 			Text(credits[creditKey] ?? "")
 		}

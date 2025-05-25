@@ -22,9 +22,10 @@ struct CollectionCellView: View {
 			VStack(alignment: .leading) {
 				ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "^[\(collection.mediaItems.count) Item](inflect: true)")
 				
-				Text(LocalizedStringKey(collection.title))
+				Text(collection.title)
 				
-				Text("^[\(collection.mediaItems.count) ITEM](inflect: true)")
+				Text("^[\(collection.mediaItems.count) Item](inflect: true)")
+					.textCase(.uppercase)
 					.font(.caption)
 					.foregroundStyle(.secondary)
 			}

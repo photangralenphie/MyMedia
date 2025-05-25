@@ -38,7 +38,7 @@ struct GenresView: View {
 
 			if let selectedGenre {
 				ScrollView {
-					GridView(mediaItems: mediaItemsByGenre[selectedGenre] ?? [], sorting: $sortOrder, navTitle: "\(selectedGenre)")
+					GridView(mediaItems: mediaItemsByGenre[selectedGenre] ?? [], sorting: $sortOrder, navTitle: LocalizedStringKey(selectedGenre))
 				}
 			} else {
 				ContentUnavailableView("Select a genre", systemImage: "square.on.square")

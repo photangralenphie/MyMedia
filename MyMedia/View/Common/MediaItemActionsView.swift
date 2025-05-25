@@ -71,7 +71,7 @@ struct MediaItemActionsView: View {
 		
 		Button("Re-import", systemImage: "arrow.trianglehead.counterclockwise", action: reImportToLibrary)
 			.alert("An Error occurred while updating.", isPresented: $updateError.isNotNil()) {
-				Button("Ok"){ updateError = nil }
+				Button("OK"){ updateError = nil }
 			} message: {
 				Text(updateError ?? "")
 			}

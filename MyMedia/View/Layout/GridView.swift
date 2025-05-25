@@ -78,7 +78,7 @@ struct GridView<Header: View>: View {
 							}
 
 						} header: {
-							Text(section)
+							Text(LocalizedStringKey(section))
 								.font(.title3)
 								.bold()
 								.padding(.horizontal)
