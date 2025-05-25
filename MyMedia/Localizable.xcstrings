@@ -1,0 +1,976 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
+    "·" : {
+      "shouldTranslate" : false
+    },
+    "%@ - (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ - (%2$@)"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "^[%lld Item](inflect: true)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%lld Element](inflect: true)"
+          }
+        }
+      }
+    },
+    "^[%lld Season](inflect: true) " : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%lld Staffel](inflect: true) "
+          }
+        }
+      }
+    },
+    "^[%lld Season](inflect: true) - ^[%lld Episode](inflect: true) " : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%1$lld Staffel](inflect: true) - ^[%2$lld Episode](inflect: true) "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "^[%1$lld Season](inflect: true) - ^[%2$lld Episode](inflect: true) "
+          }
+        }
+      }
+    },
+    "© %@ Jonas Helmer" : {
+      "shouldTranslate" : false
+    },
+    "About" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über"
+          }
+        }
+      }
+    },
+    "About MyMedia" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über MyMedia"
+          }
+        }
+      }
+    },
+    "Actions" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optionen"
+          }
+        }
+      }
+    },
+    "Add to Collection" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zur Sammlung hinzufügen"
+          }
+        }
+      }
+    },
+    "Add to Favourites" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zu Favoriten hinzufügen"
+          }
+        }
+      }
+    },
+    "All Movies" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Filme"
+          }
+        }
+      }
+    },
+    "All TV Shows" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Serien"
+          }
+        }
+      }
+    },
+    "An Error occurred while importing." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Fehler ist während des Importieren aufgetreten."
+          }
+        }
+      }
+    },
+    "An Error occurred while updating." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Fehler ist während des Aktualisieren aufgetreten"
+          }
+        }
+      }
+    },
+    "Auto Quit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch Beenden"
+          }
+        }
+      }
+    },
+    "Automatically quit the app when the last window is closed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Anwendung wird beendet, wenn das letzte Fenster geschossen wird."
+          }
+        }
+      }
+    },
+    "AutoPlay next Episode" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AutoPlay nächste Episode"
+          }
+        }
+      }
+    },
+    "AwesomeSwiftyComponents" : {
+      "shouldTranslate" : false
+    },
+    "Browse Files" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien Durchsuchen"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        }
+      }
+    },
+    "Cast" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Besetzung"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        }
+      }
+    },
+    "cmark-gfm" : {
+      "shouldTranslate" : false
+    },
+    "Co-Director" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Co-Regisseur"
+          }
+        }
+      }
+    },
+    "Collections" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sammlungen"
+          }
+        }
+      }
+    },
+    "Composer" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komponist"
+          }
+        }
+      }
+    },
+    "Create" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erstellen"
+          }
+        }
+      }
+    },
+    "Create Collection" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Sammlung erstellen"
+          }
+        }
+      }
+    },
+    "Credits:" : {
+      "shouldTranslate" : false
+    },
+    "Date Added" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinzugefügt am"
+          }
+        }
+      }
+    },
+    "Delete Collection" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sammlung löschen"
+          }
+        }
+      }
+    },
+    "Description\n(optional)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibung\n(optional)"
+          }
+        }
+      }
+    },
+    "Director" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regisseur"
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit Collection" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sammlung bearbeiten"
+          }
+        }
+      }
+    },
+    "Episode %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Episode %lld"
+          }
+        }
+      }
+    },
+    "Episodes are not supported in Grid view" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Episoden werden in der Raster Ansicht nicht unterstützt"
+          }
+        }
+      }
+    },
+    "Error loading image: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim laden des Bildes: %@"
+          }
+        }
+      }
+    },
+    "error: %@" : {
+      "shouldTranslate" : false
+    },
+    "Executive Producers" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausführende Produzenten"
+          }
+        }
+      }
+    },
+    "Favorites" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoriten"
+          }
+        }
+      }
+    },
+    "Finished Importing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importieren abgeschlossen"
+          }
+        }
+      }
+    },
+    "Floating" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwebend"
+          }
+        }
+      }
+    },
+    "General" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allgemein"
+          }
+        }
+      }
+    },
+    "Genres" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genres"
+          }
+        }
+      }
+    },
+    "Image" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bild"
+          }
+        }
+      }
+    },
+    "Image Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto Bibliothek"
+          }
+        }
+      }
+    },
+    "Import Directory" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner Importieren"
+          }
+        }
+      }
+    },
+    "Import Files" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei Importieren"
+          }
+        }
+      }
+    },
+    "Import Media" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medien importieren"
+          }
+        }
+      }
+    },
+    "Importing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importvorgang"
+          }
+        }
+      }
+    },
+    "Inline" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inline"
+          }
+        }
+      }
+    },
+    "Last 3 Months" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzten 3 Monate"
+          }
+        }
+      }
+    },
+    "Last Month" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Monat"
+          }
+        }
+      }
+    },
+    "Last Week" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzte Woche"
+          }
+        }
+      }
+    },
+    "Last Year" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letztes Jahr"
+          }
+        }
+      }
+    },
+    "Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bibliothek"
+          }
+        }
+      }
+    },
+    "Mark Unwatched" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als ungesehen markieren"
+          }
+        }
+      }
+    },
+    "Mark Watched" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als gesehen markieren"
+          }
+        }
+      }
+    },
+    "Minimal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimal"
+          }
+        }
+      }
+    },
+    "Movies" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filme"
+          }
+        }
+      }
+    },
+    "MyMedia" : {
+      "shouldTranslate" : false
+    },
+    "MyMedia is licensed under the MIT Licence" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MyMedia ist lizensiert unter der MIT Lizenz."
+          }
+        }
+      }
+    },
+    "NetworkImage" : {
+      "shouldTranslate" : false
+    },
+    "New Collection" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Sammlung"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Older" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Älter"
+          }
+        }
+      }
+    },
+    "Open in Subler" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Subler öffnen"
+          }
+        }
+      }
+    },
+    "Pin" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anpinnen"
+          }
+        }
+      }
+    },
+    "Pinned" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angepinnt"
+          }
+        }
+      }
+    },
+    "Play with default Player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abspielen mit standard Player"
+          }
+        }
+      }
+    },
+    "Player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Player"
+          }
+        }
+      }
+    },
+    "Player Style" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Player Stil"
+          }
+        }
+      }
+    },
+    "Producers" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produzenten"
+          }
+        }
+      }
+    },
+    "Re-import" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut importieren"
+          }
+        }
+      }
+    },
+    "Release Date" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veröffenlichungsdatum"
+          }
+        }
+      }
+    },
+    "Remove from Collection" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus Sammlung entfernen"
+          }
+        }
+      }
+    },
+    "Remove from Favourites" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus Favoriten entfernen"
+          }
+        }
+      }
+    },
+    "Remove from Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus Bibliothek entfenrnen"
+          }
+        }
+      }
+    },
+    "Remove Image" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bild entfernen"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speichern"
+          }
+        }
+      }
+    },
+    "Screenwriters" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drehbuchautoren"
+          }
+        }
+      }
+    },
+    "Search" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suche"
+          }
+        }
+      }
+    },
+    "Season %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Staffel %@"
+          }
+        }
+      }
+    },
+    "Select a genre" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genre auswählen"
+          }
+        }
+      }
+    },
+    "Select Directory" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner auswählen"
+          }
+        }
+      }
+    },
+    "Select Files" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien auswählen"
+          }
+        }
+      }
+    },
+    "Show Languages as Flags" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprachen als Länderflaggen anzeigen"
+          }
+        }
+      }
+    },
+    "Sort by" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sortieren nach"
+          }
+        }
+      }
+    },
+    "Summary" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusammenfassung"
+          }
+        }
+      }
+    },
+    "swift-collections" : {
+      "shouldTranslate" : false
+    },
+    "swift-markdown-ui" : {
+      "shouldTranslate" : false
+    },
+    "swiftui-introspect" : {
+      "shouldTranslate" : false
+    },
+    "Title" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute"
+          }
+        }
+      }
+    },
+    "TV Shows" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serien"
+          }
+        }
+      }
+    },
+    "UI" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UI"
+          }
+        }
+      }
+    },
+    "Unpin" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entpinnen"
+          }
+        }
+      }
+    },
+    "Unwatched" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungesehen"
+          }
+        }
+      }
+    },
+    "Use in-app Player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In-App Player benutzen"
+          }
+        }
+      }
+    },
+    "Version %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
