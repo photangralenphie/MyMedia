@@ -32,7 +32,7 @@ struct CollectionEditView: View {
 			Text(vm.sheetTitle)
 				.font(.title)
 			
-			ArtworkView(imageData: vm.imageData, title: vm.title, subtitle: "")
+			ArtworkView(imageData: vm.imageData, title: vm.title, subtitle: "", scale: 1.4)
 				.onHover { showImageRemoveButton = $0 }
 				.overlay(alignment: .center) {
 					if vm.imageData == nil && vm.title.isEmpty {

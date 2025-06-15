@@ -37,7 +37,7 @@ struct GridCellView: View {
 				}
 			}
 			.contextMenu {
-				MediaItemActionsView(mediaItem: mediaItem) { }
+				MediaItemActionsView(mediaItem: mediaItem, applyShortcuts: false) { }
 			}
 			.draggable(mediaItem.id.uuidString) {
 				VStack {

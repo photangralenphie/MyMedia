@@ -30,7 +30,7 @@ struct CollectionCellView: View {
 					.foregroundStyle(.secondary)
 			}
 			.contextMenu {
-				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet) { }
+				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet, applyShortcuts: false) { }
 			}
 		}
 		.buttonStyle(.plain)

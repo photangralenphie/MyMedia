@@ -101,7 +101,7 @@ struct TvShowDetailView: View {
 						}
 						.padding(.vertical, 5)
 						.contextMenu {
-							MediaItemActionsView(mediaItem: episode) {}
+							MediaItemActionsView(mediaItem: episode, applyShortcuts: false) {}
 						}
 					}
 				} header: {
@@ -114,7 +114,7 @@ struct TvShowDetailView: View {
 		}
 		.toolbar {
 			Menu("Actions") {
-				MediaItemActionsView(mediaItem: tvShow, onDelete: popNavigation)
+				MediaItemActionsView(mediaItem: tvShow, applyShortcuts: true, onDelete: popNavigation)
 			}
 		}
 		.navigationTitle(titleAndData)

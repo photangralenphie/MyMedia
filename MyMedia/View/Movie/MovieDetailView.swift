@@ -97,7 +97,7 @@ struct MovieDetailView: View {
 		}
 		.toolbar {
 			Menu("Actions") {
-				MediaItemActionsView(mediaItem: movie, onDelete: popNavigation)
+				MediaItemActionsView(mediaItem: movie, applyShortcuts: true, onDelete: popNavigation)
 			}
 		}
 		.navigationTitle(titleAndData)

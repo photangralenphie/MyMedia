@@ -12,6 +12,7 @@ import SwiftData
 struct MediaItemActionsView: View {
 	
 	@State public var mediaItem: any MediaItem
+	public var applyShortcuts: Bool
 	let onDelete: () -> Void
 
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
@@ -23,14 +24,14 @@ struct MediaItemActionsView: View {
 	
     var body: some View {
 		Button(mediaItem.isWatched ? "Mark Unwatched" : "Mark Watched") { mediaItem.toggleWatched() }
-			.keyboardShortcut("w", modifiers: .command)
+			.keyboardShortcut(applyShortcuts ? KeyboardShortcut("w", modifiers: .command) : nil)
 		
 		if !(mediaItem is Episode) {
 			Button(mediaItem.isFavorite ? "Remove from Favourites" : "Add to Favourites") { mediaItem.toggleFavorite() }
-				.keyboardShortcut("f", modifiers: [.shift, .command])
+				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("f", modifiers: [.shift, .command]) : nil)
 			
 			Button(mediaItem.isPinned ? "Unpin" : "Pin") { mediaItem.togglePinned() }
-				.keyboardShortcut("p", modifiers: .command)
+				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: .command) : nil)
 			
 			if !collections.isEmpty {
 				Menu("Add to Collection") {
@@ -53,7 +54,7 @@ struct MediaItemActionsView: View {
 		Divider()
 		
 		Button("Remove from Library", action: removeFromLibrary)
-			.keyboardShortcut(.delete, modifiers: .command)
+			.keyboardShortcut(applyShortcuts ? KeyboardShortcut(.delete, modifiers: .command) : nil)
 		
 		if case let .collection(collection) = mediaContext {
 			Button("Remove from Collection") {
@@ -80,7 +81,7 @@ struct MediaItemActionsView: View {
 			// Show button only if tvShow has episodes
 		} else {
 			Button("Play with default Player") { mediaItem.play(useInAppPlayer: false) }
-				.keyboardShortcut("p", modifiers: [.command, .shift])
+				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: [.command, .shift]) : nil)
 		}
     }
 	
@@ -109,10 +110,11 @@ struct MediaItemActionsView: View {
 	}
 	
 	func reImportToLibrary() {
+		let currentMediaItem = mediaItem
 		Task {
 			let mediaImporter = MediaImporter(modelContainer: moc.container)
 			do {
-				try await mediaImporter.updateMediaItem(mediaItem: mediaItem)
+				try await mediaImporter.updateMediaItem(mediaItem: currentMediaItem)
 			} catch(let importError) {
 				updateError = importError.localizedDescription
 			}

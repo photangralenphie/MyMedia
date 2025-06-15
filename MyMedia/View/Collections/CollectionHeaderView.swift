@@ -41,7 +41,7 @@ struct CollectionHeaderView: View {
 		.padding()
 		.toolbar {
 			Menu("Actions") {
-				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet) {
+				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet, applyShortcuts: true) {
 					dismiss()
 				}
 			}
