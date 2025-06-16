@@ -102,6 +102,7 @@ extension MediaItem {
 		}
 	}
 	
+	@MainActor
 	func play(useInAppPlayer: Bool, openWindow: OpenWindowAction? = nil) {
 		if let openWindow, useInAppPlayer {
 			switch self {

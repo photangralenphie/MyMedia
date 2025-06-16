@@ -7,43 +7,8 @@
 
 import SwiftUI
 import SwiftData
-import AVFoundation
-
-enum ImportError: LocalizedError {
-	case fileNotAccessible
-	case noMetadataFound(fileName: String)
-	case missingMetadata(type: String)
-	case unknown(message: String)
-
-	var errorDescription: String? {
-		switch self {
-			case .fileNotAccessible: return "Could not access file."
-			case .missingMetadata(let type): return metadataError(metadataType: type)
-			case .unknown(let message): return "Unknown Error while reading file: \(message)."
-			case .noMetadataFound(let fileName): return "No metadata found in file: \(fileName). Please add metadata before importing."
-		}
-	}
-	
-	private func metadataError(metadataType: String) -> String {
-		return "No \(metadataType) found in metadata."
-	}
-}
-
-enum HDVideoQuality: Int, Codable {
-	case sd = 0
-	case hd720p = 1
-	case hd1080p = 2
-	case uhd4k = 3
-	
-	var badgeTitle: String {
-		switch self {
-			case .sd: return "SD"
-			case .hd720p: return "Standard HD"
-			case .hd1080p: return "Full HD"
-			case .uhd4k: return "4K"
-		}
-	}
-}
+#warning("@preconcurrency can be removed on with swift 6.2 / macOS 26")
+@preconcurrency import AVFoundation
 
 @ModelActor
 actor MediaImporter {
@@ -58,7 +23,7 @@ actor MediaImporter {
 
 		let (asset, metadata) = try await getAssetAndMetadata(path: path)
 		
-		let kind = await metadata.tryGetIntMetaDataValue(for: "itsk/stik")
+		let kind = await self.tryGetIntMetaDataValue(metadata: metadata, for: "itsk/stik")
 		
 		if kind == nil  {
 			throw ImportError.noMetadataFound(fileName: path.absoluteString)
@@ -74,7 +39,7 @@ actor MediaImporter {
 	}
 	
 	private func readTvMetadata(metaData: [AVMetadataItem], asset: AVURLAsset, source: URL) async throws {
-		let showTitle = try await metaData.getStringMetaDataValue(for: .commonIdentifierArtist)
+		let showTitle = try await self.getStringMetaDataValue(metadata: metaData, for: .commonIdentifierArtist)
 		
 		let existingTvShows = try await fetchCurrentTvShows()
 		var show = existingTvShows.filter { $0.title == showTitle }.first
@@ -101,24 +66,24 @@ actor MediaImporter {
 	}
 	
 	private func createMovieFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Movie {
-		let artwork = await metadata.tryGetImageMetaDataValue(artworkType: .moviePoster)
-		let title = try await metadata.getStringMetaDataValue(for: .commonIdentifierTitle)
-		let genre = try await metadata.getGenres()
+		let artwork = await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .moviePoster)
+		let title = try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierTitle)
+		let genre = try await self.getGenres(metadata: metadata)
 		let durationMinutes = try await asset.getRuntimeMinutes()
-		let releaseDate = try await metadata.getDateMetaDataValue(for: .iTunesMetadataReleaseDate)
-		let shortDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/desc")
-		let longDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/ldes")
-		let producers = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "producers") ?? []
-		let executiveProducers = (await metadata.tryGetStringMetaDataValue(for: "itsk/%A9xpd") ?? "").split(separator: ", ").map { String($0) }
-		let cast = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "cast") ?? []
-		let directors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "directors") ?? []
-		let coDirectors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "codirectors") ?? []
-		let screenwriters = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "screenwriters") ?? []
-		let composer = await metadata.tryGetStringMetaDataValue(for: .iTunesMetadataComposer)
-		let studio = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "studio")?.first
-		let rating = await metadata.tryGetStringMetaDataValue(for: "itlk/com.apple.iTunes.iTunEXTC")
+		let releaseDate = try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate)
+		let shortDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/desc")
+		let longDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/ldes")
+		let producers = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "producers") ?? []
+		let executiveProducers = (await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/%A9xpd") ?? "").split(separator: ", ").map { String($0) }
+		let cast = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "cast") ?? []
+		let directors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "directors") ?? []
+		let coDirectors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "codirectors") ?? []
+		let screenwriters = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "screenwriters") ?? []
+		let composer = await self.tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataComposer)
+		let studio = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "studio")?.first
+		let rating = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunEXTC")
 		let languages = try await asset.getAudioLanguages()
-		let resolution = try await metadata.getResolution()
+		let resolution = try await self.getResolution(metadata: metadata)
 		let url = asset.url
 		
 		var movie = Movie(
@@ -147,12 +112,12 @@ actor MediaImporter {
 	}
 	
 	private func createTvShowFromEpisode(metadata: [AVMetadataItem]) async throws -> TvShow {
-		let title = try await metadata.getStringMetaDataValue(for: .commonIdentifierArtist)
-		let date = try await metadata.getDateMetaDataValue(for: .iTunesMetadataReleaseDate)
+		let title = try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierArtist)
+		let date = try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate)
 		let year = Calendar.current.component(.year, from: date)
-		let genre = try await metadata.getGenres()
-		let seriesDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/sdes")
-		let artwork = await metadata.tryGetImageMetaDataValue(artworkType: .tvPoster)
+		let genre = try await self.getGenres(metadata: metadata)
+		let seriesDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/sdes")
+		let artwork = await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .tvPoster)
 		
 		return TvShow(
 			title: title,
@@ -164,24 +129,24 @@ actor MediaImporter {
 	}
 	
 	private func createEpisodeFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Episode {
-		let artwork = await metadata.tryGetImageMetaDataValue(artworkType: .episodeImage)
-		let seasonNumber = try await metadata.getIntMetaDataValue(for: "itsk/tvsn")
-		let episodeNumber = try await metadata.getIntMetaDataValue(for: "itsk/tves")
-		let title = try await metadata.getStringMetaDataValue(for: .commonIdentifierTitle)
+		let artwork = await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .episodeImage)
+		let seasonNumber = try await self.getIntMetaDataValue(metadata: metadata, for: "itsk/tvsn")
+		let episodeNumber = try await self.getIntMetaDataValue(metadata: metadata, for: "itsk/tves")
+		let title = try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierTitle)
 		let durationMinutes = try await asset.getRuntimeMinutes()
-		let releaseDate = try await metadata.getDateMetaDataValue(for: .iTunesMetadataReleaseDate)
-		let shortDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/desc")
-		let longDescription = await metadata.tryGetStringMetaDataValue(for: "itsk/ldes")
-		let producers = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "producers") ?? []
-		let executiveProducers = (await metadata.tryGetStringMetaDataValue(for: "itsk/%A9xpd") ?? "").split(separator: ", ").map { String($0) }
-		let cast = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "cast") ?? []
-		let directors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "directors") ?? []
-		let coDirectors = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "codirectors") ?? []
-		let screenwriters = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "screenwriters") ?? []
-		let composer = await metadata.tryGetStringMetaDataValue(for: .iTunesMetadataComposer)
-		let studio = await metadata.tryGetStringArrayMetaDataValue(for: "itlk/com.apple.iTunes.iTunMOVI", creditCroup: "studio")?.first
-		let network = await metadata.tryGetStringMetaDataValue(for: "itsk/tvnn")
-		let rating = await metadata.tryGetStringMetaDataValue(for: "itlk/com.apple.iTunes.iTunEXTC")
+		let releaseDate = try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate)
+		let shortDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/desc")
+		let longDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/ldes")
+		let producers = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "producers") ?? []
+		let executiveProducers = (await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/%A9xpd") ?? "").split(separator: ", ").map { String($0) }
+		let cast = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "cast") ?? []
+		let directors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "directors") ?? []
+		let coDirectors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "codirectors") ?? []
+		let screenwriters = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "screenwriters") ?? []
+		let composer = await self.tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataComposer)
+		let studio = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunMOVI", creditGroup: "studio")?.first
+		let network = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itsk/tvnn")
+		let rating = await self.tryGetStringMetaDataValue(metadata: metadata, for: "itlk/com.apple.iTunes.iTunEXTC")
 		let languages = try await asset.getAudioLanguages()
 		let url = asset.url
 		
@@ -310,22 +275,160 @@ actor MediaImporter {
 			episode.languages = update.languages
 		}
 	}
-}
-
-enum ArtworkType {
-	case moviePoster
-	case tvPoster
-	case episodeImage
 	
-	var index: Int {
-		switch self {
-			case .moviePoster:
-				return 0
-			case .tvPoster:
-				return 0
-			case .episodeImage:
-				return 1
+	private func getStringMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> String {
+		if let stringValue = await tryGetStringMetaDataValue(metadata: metadata, for: identifier) {
+			return stringValue
 		}
+		throw ImportError.missingMetadata(type: identifier.rawValue)
+	}
+
+	private func tryGetStringMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async -> String? {
+		do {
+			return try await AVMetadataItem.metadataItems(from: metadata, filteredByIdentifier: identifier).first?.load(.stringValue)
+		} catch {
+			return nil
+		}
+	}
+	
+	private func getStringMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async throws -> String {
+		if let stringValue = await tryGetStringMetaDataValue(metadata: metadata, for: identifier) {
+			return stringValue
+		}
+		throw ImportError.missingMetadata(type: identifier)
+	}
+
+	private func tryGetStringMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async -> String? {
+		do {
+			return try await metadata.filter({ $0.identifier?.rawValue == identifier}).first?.load(.stringValue)
+		} catch {
+			return nil
+		}
+	}
+	
+	private func getIntMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> Int {
+		if let intValue = await tryGetIntMetaDataValue(metadata: metadata, for: identifier) {
+			return intValue
+		}
+		throw ImportError.missingMetadata(type: identifier.rawValue)
+	}
+
+	private func tryGetIntMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async -> Int? {
+		do {
+			return try await AVMetadataItem.metadataItems(from: metadata, filteredByIdentifier: identifier).first?.load(.numberValue)?.intValue
+		} catch {
+			return nil
+		}
+	}
+	
+	private func getIntMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async throws -> Int {
+		if let intValue = await tryGetIntMetaDataValue(metadata: metadata, for: identifier) {
+			return intValue
+		}
+		throw ImportError.missingMetadata(type: identifier)
+	}
+
+	private func tryGetIntMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async -> Int? {
+		do {
+			return try await metadata.filter({ $0.identifier?.rawValue == identifier}).first?.load(.numberValue)?.intValue
+		} catch {
+			return nil
+		}
+	}
+
+	private func getStringArrayMetaDataValue(metadata: [AVMetadataItem], for identifier: String, creditCroup: String) async throws -> [String] {
+		if let stringArrayValue = await tryGetStringArrayMetaDataValue(metadata: metadata, for: identifier, creditGroup: creditCroup) {
+			return stringArrayValue
+		}
+		throw ImportError.missingMetadata(type: identifier)
+	}
+
+	private func tryGetStringArrayMetaDataValue(metadata: [AVMetadataItem], for identifier: String, creditGroup: String) async -> [String]? {
+		do {
+			guard let xmlData = try await
+					metadata.filter({ $0.identifier?.rawValue == identifier})
+						.first?
+						.load(.stringValue)?
+						.data(using: .utf8) else { return nil }
+
+			var format = PropertyListSerialization.PropertyListFormat.xml
+			guard let plist = try? PropertyListSerialization.propertyList(from: xmlData, options: [], format: &format),
+				  let dict = plist as? [String: Any] else { return nil }
+			
+			if creditGroup == "studio" {
+				guard let studio = dict[creditGroup] as? String else { return nil }
+				return [studio]
+			}
+			guard let items = dict[creditGroup] as? [[String: Any]] else { return nil }
+			return items.compactMap { $0["name"] as? String }
+		} catch {
+			return nil
+		}
+	}
+	
+	private func getDateMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> Date {
+		if let date = await tryGetDateMetaDataValue(metadata: metadata, for: identifier) {
+			return date
+		}
+		throw ImportError.missingMetadata(type: identifier.rawValue)
+	}
+
+	private func tryGetDateMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async -> Date? {
+		do {
+			return try await AVMetadataItem.metadataItems(from: metadata, filteredByIdentifier: identifier).first?.load(.dateValue)
+		} catch {
+			return nil
+		}
+	}
+	
+	private func tryGetImageMetaDataValue(metadata: [AVMetadataItem], artworkType: ArtworkType) async -> Data? {
+		let artworks = AVMetadataItem.metadataItems(from: metadata, filteredByIdentifier: .commonIdentifierArtwork)
+		if artworks.isEmpty { return nil }
+		
+		var imageData: Data?
+		do {
+			if artworks.endIndex > artworkType.index {
+				imageData = try await artworks[artworkType.index].load(.dataValue)
+			} else {
+				imageData = try await artworks.first?.load(.dataValue)
+			}
+		} catch {
+			return nil
+		}
+		
+		let doDownsize = UserDefaults.standard.bool(forKey: PreferenceKeys.downSizeArtwork)
+		if let imageData, doDownsize, let image = NSImage(data: imageData) {
+			let maxSize = MetadataUtil.getMaxImageSize()
+			let newSize = MetadataUtil.getDownSizedImageSize(originalSize: image.size, maxSize: maxSize)
+			return MetadataUtil.downSizeImage(imageData: imageData, newSize: newSize)
+		}
+		
+		return imageData
+	}
+	
+	private func getGenres(metadata: [AVMetadataItem]) async throws -> [String] {
+		let userGenresString = await tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataUserGenre)
+		let userGenres = userGenresString?.split(separator: ",").map{ $0.trimmingCharacters(in: .whitespaces) }
+		if userGenres != nil { return userGenres! }
+	
+		let iTunesRawGenreCode = try await metadata.filter({ $0.identifier?.rawValue == "itsk/gnre"}).first?.load(.dataValue)
+		let iTunesGenreCode = iTunesRawGenreCode?.withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
+		
+		if let iTunesGenreCode {
+			let correctedITunesGenreCode = iTunesGenreCode - 1
+			let iTunesGenreName = iTunesGenreCodes[correctedITunesGenreCode]
+			
+			if let iTunesGenreName {
+				return [iTunesGenreName]
+			}
+		}
+		
+		return []
+	}
+	
+	private func getResolution(metadata: [AVMetadataItem]) async throws -> HDVideoQuality {
+		let resolutionIndex = await tryGetIntMetaDataValue(metadata: metadata, for: "itsk/hdvd") ?? 0 // When hd is not found it's SD quality
+		return HDVideoQuality(rawValue: resolutionIndex) ?? .sd
 	}
 }
 
@@ -349,160 +452,7 @@ extension AVURLAsset {
 	}
 }
 
-extension [AVMetadataItem] {
-	
-	// String
-	func getStringMetaDataValue(for identifier: AVMetadataIdentifier) async throws -> String {
-		if let stringValue = await self.tryGetStringMetaDataValue(for: identifier) {
-			return stringValue
-		}
-		throw ImportError.missingMetadata(type: identifier.rawValue)
-	}
-
-	func tryGetStringMetaDataValue(for identifier: AVMetadataIdentifier) async -> String? {
-		do {
-			return try await AVMetadataItem.metadataItems(from: self, filteredByIdentifier: identifier).first?.load(.stringValue)
-		} catch {
-			return nil
-		}
-	}
-	
-	func getStringMetaDataValue(for identifier: String) async throws -> String {
-		if let stringValue = await self.tryGetStringMetaDataValue(for: identifier) {
-			return stringValue
-		}
-		throw ImportError.missingMetadata(type: identifier)
-	}
-
-	func tryGetStringMetaDataValue(for identifier: String) async -> String? {
-		do {
-			return try await self.filter({ $0.identifier?.rawValue == identifier}).first?.load(.stringValue)
-		} catch {
-			return nil
-		}
-	}
-	
-	// Int
-	func getIntMetaDataValue(for identifier: AVMetadataIdentifier) async throws -> Int {
-		if let intValue = await self.tryGetIntMetaDataValue(for: identifier) {
-			return intValue
-		}
-		throw ImportError.missingMetadata(type: identifier.rawValue)
-	}
-
-	func tryGetIntMetaDataValue(for identifier: AVMetadataIdentifier) async -> Int? {
-		do {
-			return try await AVMetadataItem.metadataItems(from: self, filteredByIdentifier: identifier).first?.load(.numberValue)?.intValue
-		} catch {
-			return nil
-		}
-	}
-	
-	func getIntMetaDataValue(for identifier: String) async throws -> Int {
-		if let intValue = await self.tryGetIntMetaDataValue(for: identifier) {
-			return intValue
-		}
-		throw ImportError.missingMetadata(type: identifier)
-	}
-
-	func tryGetIntMetaDataValue(for identifier: String) async -> Int? {
-		do {
-			return try await self.filter({ $0.identifier?.rawValue == identifier}).first?.load(.numberValue)?.intValue
-		} catch {
-			return nil
-		}
-	}
-
-	// String Array
-	func getStringArrayMetaDataValue(for identifier: String, creditCroup: String) async throws -> [String] {
-		if let stringArrayValue = await self.tryGetStringArrayMetaDataValue(for: identifier, creditCroup: creditCroup) {
-			return stringArrayValue
-		}
-		throw ImportError.missingMetadata(type: identifier)
-	}
-
-	func tryGetStringArrayMetaDataValue(for identifier: String, creditCroup: String) async -> [String]? {
-		do {
-			guard let xmlData = try await
-					self.filter({ $0.identifier?.rawValue == identifier})
-						.first?
-						.load(.stringValue)?
-						.data(using: .utf8) else { return nil }
-
-			var format = PropertyListSerialization.PropertyListFormat.xml
-			guard let plist = try? PropertyListSerialization.propertyList(from: xmlData, options: [], format: &format),
-				  let dict = plist as? [String: Any] else { return nil }
-			
-			if creditCroup=="studio" {
-				guard let studio = dict[creditCroup] as? String else { return nil }
-				return [studio]
-			}
-			guard let items = dict[creditCroup] as? [[String: Any]] else { return nil }
-			return items.compactMap { $0["name"] as? String }
-		} catch {
-			return nil
-		}
-	}
-	
-	// Date
-	func getDateMetaDataValue(for identifier: AVMetadataIdentifier) async throws -> Date {
-		if let date = await self.tryGetDateMetaDataValue(for: identifier) {
-			return date
-		}
-		throw ImportError.missingMetadata(type: identifier.rawValue)
-	}
-
-	func tryGetDateMetaDataValue(for identifier: AVMetadataIdentifier) async -> Date? {
-		do {
-			return try await AVMetadataItem.metadataItems(from: self, filteredByIdentifier: identifier).first?.load(.dateValue)
-		} catch {
-			return nil
-		}
-	}
-	
-	// Artwork
-	func tryGetImageMetaDataValue(artworkType: ArtworkType) async -> Data? {
-		let artworks = AVMetadataItem.metadataItems(from: self, filteredByIdentifier: .commonIdentifierArtwork)
-		if artworks.isEmpty { return nil }
-
-		do {
-			if artworks.endIndex > artworkType.index {
-				return try await artworks[artworkType.index].load(.dataValue)
-			}
-
-			return try await artworks.first?.load(.dataValue)
-		} catch {
-			return nil
-		}
-	}
-	
-	func getGenres() async throws -> [String] {
-		let userGenresString = await self.tryGetStringMetaDataValue(for: .iTunesMetadataUserGenre)
-		let userGenres = userGenresString?.split(separator: ",").map{ $0.trimmingCharacters(in: .whitespaces) }
-		if userGenres != nil { return userGenres! }
-	
-		let itunesRawGenreCode = try await self.filter({ $0.identifier?.rawValue == "itsk/gnre"}).first?.load(.dataValue)
-		let itunesGenreCode = itunesRawGenreCode?.withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
-		
-		if let itunesGenreCode {
-			let correctedItunesGenreCode = itunesGenreCode - 1
-			let iTunesGenreName = itunesGenreCodes[correctedItunesGenreCode]
-			
-			if let iTunesGenreName {
-				return [iTunesGenreName]
-			}
-		}
-		
-		return []
-	}
-	
-	func getResolution() async throws -> HDVideoQuality {
-		let resolutionIndex = await self.tryGetIntMetaDataValue(for: "itsk/hdvd") ?? 0 // When hd is not found its SD quality
-		return HDVideoQuality(rawValue: resolutionIndex) ?? .sd
-	}
-}
-
-fileprivate let itunesGenreCodes: [UInt16: String] = [
+fileprivate let iTunesGenreCodes: [UInt16: String] = [
 	 0: "Blues",
 	 1: "Classic Rock",
 	 2: "Country",

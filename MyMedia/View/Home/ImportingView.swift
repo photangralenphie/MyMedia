@@ -90,12 +90,16 @@ struct ImportingView: View {
 			
 			for file in files {
 				if !file.startAccessingSecurityScopedResource() {
-					errorMessage = "Failed to gain access to the file \(file.absoluteString)."
+					Task { @MainActor in
+						errorMessage = "Failed to gain access to the file \(file.absoluteString)."
+					}
 					return;
 				}
 			}
 			
-			importFileRange(urls: files)
+			Task { @MainActor in
+				importFileRange(urls: files)
+			}
 		}
 	}
 	
@@ -103,7 +107,9 @@ struct ImportingView: View {
 		selectFolder { folderURL in
 			guard let folderURL else { return }
 			if !folderURL.startAccessingSecurityScopedResource() {
-				errorMessage = "Failed to gain access to the selected folder."
+				Task { @MainActor in
+					errorMessage = "Failed to gain access to the selected folder."
+				}
 				return
 			}
 			defer { folderURL.stopAccessingSecurityScopedResource() }
@@ -118,17 +124,22 @@ struct ImportingView: View {
 							collectedURLs.append(fileURL)
 						}
 					} catch {
-						errorMessage = "Error reading file at \(fileURL.absoluteString)"
+						Task { @MainActor in
+							errorMessage = "Error reading file at \(fileURL.absoluteString)"
+						}
+						folderURL.stopAccessingSecurityScopedResource()
 						return
 					}
 				}
 			}
 			
-			importFileRange(urls: collectedURLs)
+			Task { @MainActor in
+				importFileRange(urls: collectedURLs)
+			}
 		}
 	}
 	
-	func selectFolder(completion: @escaping (URL?) -> Void) {
+	func selectFolder(completion: @escaping @Sendable (URL?) -> Void) {
 		let panel = NSOpenPanel()
 		panel.title = "Select a directory to import."
 
@@ -138,12 +149,14 @@ struct ImportingView: View {
 
 		panel.begin { response in
 			if response == .OK {
-				completion(panel.url)
+				Task { @MainActor in
+					completion(panel.url)
+				}
 			}
 		}
 	}
 	
-	func selectFiles(completion: @escaping ([URL]) -> Void) {
+	func selectFiles(completion: @escaping @Sendable ([URL]) -> Void) {
 		let panel = NSOpenPanel()
 		panel.title = "Select media files to import."
 
@@ -154,7 +167,9 @@ struct ImportingView: View {
 		
 		panel.begin { response in
 			if response == .OK {
-				completion(panel.urls)
+				Task { @MainActor in
+					completion(panel.urls)
+				}
 			}
 		}
 	}
