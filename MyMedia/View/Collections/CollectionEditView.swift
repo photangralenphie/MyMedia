@@ -46,14 +46,26 @@ struct CollectionEditView: View {
 							.imageScale(.large)
 							.buttonStyle(.plain)
 							.labelStyle(.iconOnly)
-							.padding(5)
+							.padding(10)
 							.foregroundStyle(Color.accentColor)
 							.onHover { showImageRemoveButton = $0 }
 					}
 				}
 			
+			if vm.imageData != nil {
+				LabeledContent("Image Size") {
+					HStack {
+						Text(vm.imageSizeDescription)
+						Spacer()
+						if vm.canDownsize {
+							ImageDownsizeToggle(isOn: Bindable(vm).downSizeImage)
+						}
+					}
+				}
+			}
+			
 			LabeledContent {
-				Button("Browse Files", systemImage: "folder", action: vm.loadImage)
+				Button("Browse", systemImage: "folder", action: vm.loadImage)
 					.padding(.trailing)
 				
 				PhotosPicker(selection: $vm.photoPickerItem, matching: .images, preferredItemEncoding: .compatible) {
@@ -89,11 +101,12 @@ struct CollectionEditView: View {
     }
 	
 	func saveCollection() {
+		let finalImageData = vm.getFinalImageData()
 		if let collection = vm.collection {
 			collection.title = vm.title
-			collection.artwork = vm.imageData
+			collection.artwork = finalImageData
 		} else {
-			vm.collection = MediaCollection(title: vm.title, artwork: vm.imageData)
+			vm.collection = MediaCollection(title: vm.title, artwork: finalImageData)
 			moc.insert(vm.collection!)
 		}
 		
@@ -108,6 +121,3 @@ struct CollectionEditView: View {
 		dismiss()
 	}
 }
-
-
-

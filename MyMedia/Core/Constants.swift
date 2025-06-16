@@ -50,4 +50,8 @@ public struct PreferenceKeys {
 	public static let autoPlay: String = "autoPlay"
 	public static let playerStyle: String = "playerStyle"
 	public static let autoQuit: String = "autoQuit"
+	public static let downSizeArtwork: String = "downSizeArtwork"
+	public static let downSizeCollectionArtwork: String = "downSizeCollectionArtwork"
+	public static let downSizeArtworkWidth: String = "downSizeArtworkWidth"
+	public static let downSizeArtworkHeight: String = "downSizeArtworkHeight"
 }

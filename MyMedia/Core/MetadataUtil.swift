@@ -5,7 +5,12 @@
 //  Created by Jonas Helmer on 12.04.25.
 //
 
+import SwiftUI
+import AppKit
+
 struct MetadataUtil {
+	private init() { }
+	
 	public static func formatRuntime(minutes: Int) -> String {
 		let hours = minutes / 60
 		let mins = minutes % 60
@@ -28,6 +33,48 @@ struct MetadataUtil {
 			}
 		}
 		return nil
+	}
+	
+	public static func getMaxImageSize() -> CGSize {
+		let width = UserDefaults.standard.integer(forKey: PreferenceKeys.downSizeArtworkWidth)
+		let height = UserDefaults.standard.integer(forKey: PreferenceKeys.downSizeArtworkHeight)
+		return CGSize(width: width, height: height)
+	}
+	
+	public static func getDownSizedImageSize(originalSize: CGSize, maxSize: CGSize) -> CGSize {
+		let widthRatio = maxSize.width / originalSize.width
+		let heightRatio = maxSize.height / originalSize.height
+		let scaleFactor = min(widthRatio, heightRatio)
+
+		return CGSize(
+			width: originalSize.width * scaleFactor,
+			height: originalSize.height * scaleFactor
+		)
+	}
+	
+	public static func downSizeImage(imageData: Data, newSize: CGSize) -> Data {
+		guard let image = NSImage(data: imageData) else { return imageData }
+		if image.size.width <= newSize.width && image.size.height <= newSize.height {
+			return imageData
+		}
+		
+		let resizedImage = NSImage(size: newSize)
+		resizedImage.lockFocus()
+		image.draw(
+			in: NSRect(origin: .zero, size: newSize),
+			from: NSRect(origin: .zero, size: image.size),
+			operation: .copy,
+			fraction: 1.0
+		)
+		resizedImage.unlockFocus()
+		
+		if let tiffData = resizedImage.tiffRepresentation,
+		   let bitmap = NSBitmapImageRep(data: tiffData),
+		   let downSizedData = bitmap.representation(using: .jpeg, properties: [.compressionFactor: 0.8]) {
+			return downSizedData
+		} else {
+			return imageData
+		}
 	}
 	
 	public static func flagEmojis(for languageCodes: [String]) -> String {

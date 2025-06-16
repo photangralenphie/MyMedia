@@ -16,8 +16,12 @@ struct SettingsView: View {
 	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
 	@AppStorage(PreferenceKeys.playerStyle) private var playerStyle: AVPlayerViewControlsStyle = .floating
 	@AppStorage(PreferenceKeys.autoQuit) private var autoQuit: Bool = false
+	@AppStorage(PreferenceKeys.downSizeArtwork) private var downSizeArtwork: Bool = true
 	
-    var body: some View {
+	@AppStorage(PreferenceKeys.downSizeArtworkWidth) private var downSizeArtworkWidth: Int = 1000
+	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1000
+	
+	var body: some View {
 		TabView {
 			Tab("General", systemImage: "gearshape") {
 				Form {
@@ -27,6 +31,7 @@ struct SettingsView: View {
 						.foregroundStyle(.secondary)
 				}
 			}
+			
 			Tab("Player", systemImage: "play.rectangle.on.rectangle.fill") {
 				Form {
 					Toggle("AutoPlay next Episode", isOn: $autoPlay)
@@ -44,15 +49,34 @@ struct SettingsView: View {
 				}
 			}
 			
-			Tab("UI", systemImage: "square.on.square.intersection.dashed") {
+			Tab("Metadata", systemImage: "list.bullet.rectangle") {
 				Form {
 					Toggle("Show Languages as Flags", isOn: $showLanguageFlags)
+					
+					Divider()
+						.padding(.vertical, 3)
+					
+					ImageDownsizeToggle(isOn: $downSizeArtwork)
+					
+					if downSizeArtwork {
+						LabeledContent("Max Size:") {
+							HStack {
+								TextField("Width", value: $downSizeArtworkWidth, format: .number)
+									.labelsHidden()
+									.frame(width: 50)
+								Text("x")
+								TextField("Height", value: $downSizeArtworkHeight, format: .number)
+									.labelsHidden()
+									.frame(width: 50)
+							}
+						}
+					}
 				}
 			}
 		}
 		.frame(width: LayoutConstants.settingsWidth)
 		.scenePadding()
-    }
+	}
 }
 
 #Preview {

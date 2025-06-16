@@ -29,6 +29,28 @@
       },
       "shouldTranslate" : false
     },
+    "%lld x %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld x %2$lld"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "%lld x %lld %@ %lld x %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld x %2$lld %3$@ %4$lld x %5$lld"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
     "^[%lld Item](inflect: true)" : {
       "localizations" : {
         "de" : {
@@ -173,7 +195,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Anwendung wird beendet, wenn das letzte Fenster geschossen wird."
+            "value" : "Die Anwendung wird automatisch beendet, wenn das letzte Fenster geschossen wird."
           }
         }
       }
@@ -191,12 +213,12 @@
     "AwesomeSwiftyComponents" : {
       "shouldTranslate" : false
     },
-    "Browse Files" : {
+    "Browse" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dateien Durchsuchen"
+            "value" : "Durchsuchen"
           }
         }
       }
@@ -327,6 +349,16 @@
         }
       }
     },
+    "Downsize Artwork" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bild Skalieren"
+          }
+        }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "de" : {
@@ -440,6 +472,16 @@
         }
       }
     },
+    "Height" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Höhe"
+          }
+        }
+      }
+    },
     "Image" : {
       "localizations" : {
         "de" : {
@@ -456,6 +498,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foto Bibliothek"
+          }
+        }
+      }
+    },
+    "Image Size" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bild Größe"
           }
         }
       }
@@ -496,6 +548,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importvorgang"
+          }
+        }
+      }
+    },
+    "Importing a larger artwork will consume more memory, and increase loading times." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importieren von größeren Bildern verbraucht mehr Arbeitsspeicher und verlängert Ladezeiten."
           }
         }
       }
@@ -580,6 +642,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Als gesehen markieren"
+          }
+        }
+      }
+    },
+    "Max Size:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max-Größe"
+          }
+        }
+      }
+    },
+    "Metadata" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metadaten"
           }
         }
       }
@@ -766,7 +848,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aus Bibliothek entfenrnen"
+            "value" : "Aus Bibliothek entfernen"
           }
         }
       }
@@ -921,16 +1003,6 @@
         }
       }
     },
-    "UI" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "UI"
-          }
-        }
-      }
-    },
     "Unpin" : {
       "localizations" : {
         "de" : {
@@ -970,6 +1042,19 @@
           }
         }
       }
+    },
+    "Width" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breite"
+          }
+        }
+      }
+    },
+    "x" : {
+      "shouldTranslate" : false
     }
   },
   "version" : "1.0"
