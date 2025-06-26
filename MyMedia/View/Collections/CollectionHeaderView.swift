@@ -40,7 +40,7 @@ struct CollectionHeaderView: View {
 		}
 		.padding()
 		.toolbar {
-			Menu("Actions") {
+			Menu("Actions", systemImage: "ellipsis.circle") {
 				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet, applyShortcuts: true) {
 					dismiss()
 				}

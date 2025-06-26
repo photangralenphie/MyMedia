@@ -28,6 +28,17 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 		}
 	}
 	
+	var systemImageName: String {
+		switch self {
+			case .title:
+				return "textformat.characters"
+			case .releaseDate:
+				return "calendar"
+			case .dateAdded:
+				return "plus.square.on.square"
+		}
+	}
+	
 	var id: Self { return self }
 }
 

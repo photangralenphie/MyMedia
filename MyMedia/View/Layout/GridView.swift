@@ -91,9 +91,9 @@ struct GridView<Header: View>: View {
 				}
 				.padding(.horizontal, LayoutConstants.gridSpacing)
 				.toolbar {
-					Picker("Sort by", selection: $sortOrder) {
+					Picker("Sort by", systemImage: "arrow.up.arrow.down", selection: $sortOrder) {
 						ForEach(SortOption.allCases) { option in
-							Text(option.title)
+							Label(option.title, systemImage: option.systemImageName)
 						}
 					}
 				}

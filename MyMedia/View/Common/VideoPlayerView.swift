@@ -57,8 +57,8 @@ struct VideoPlayerView: View {
 			.onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)) { _ in
 				videoDidFinish()
 			}
-			.onDisappear(perform: ondisappear)
-			.introspect(.videoPlayer, on: .macOS(.v15)) { AVPlayerView in
+			.onDisappear(perform: onDisappear)
+			.introspect(.videoPlayer, on: .macOS(.v15...)) { AVPlayerView in
 				AVPlayerView.allowsPictureInPicturePlayback = true
 				AVPlayerView.controlsStyle = playerStyle
 			}
@@ -107,7 +107,7 @@ struct VideoPlayerView: View {
 		currentWatchable = queue.removeFirst()
 	}
 	
-	func ondisappear() {
+	func onDisappear() {
 		currentWatchable?.progressMinutes = Int(player.currentItem?.currentTime().seconds ?? 0) / 60
 		if let activity = activity {
 			ProcessInfo.processInfo.endActivity(activity)

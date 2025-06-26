@@ -96,7 +96,7 @@ struct MovieDetailView: View {
 			CreditsView(hasCredits: movie)
 		}
 		.toolbar {
-			Menu("Actions") {
+			Menu("Actions", systemImage: "ellipsis.circle") {
 				MediaItemActionsView(mediaItem: movie, applyShortcuts: true, onDelete: popNavigation)
 			}
 		}

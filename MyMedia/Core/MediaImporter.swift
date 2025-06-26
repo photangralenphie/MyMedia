@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-#warning("@preconcurrency can be removed on with swift 6.2 / macOS 26")
 @preconcurrency import AVFoundation
 
 @ModelActor

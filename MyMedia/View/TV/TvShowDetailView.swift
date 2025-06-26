@@ -113,7 +113,7 @@ struct TvShowDetailView: View {
 			}
 		}
 		.toolbar {
-			Menu("Actions") {
+			Menu("Actions", systemImage: "ellipsis.circle") {
 				MediaItemActionsView(mediaItem: tvShow, applyShortcuts: true, onDelete: popNavigation)
 			}
 		}
