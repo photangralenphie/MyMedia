@@ -24,15 +24,14 @@ struct CollectionHeaderView: View {
 					.font(.largeTitle)
 					.bold()
 				
-					Text("^[\(collection.mediaItems.count) Item](inflect: true)")
+				Text("^[\(collection.mediaItems.count) Item](inflect: true)")
 					.textCase(.uppercase)
-						.bold()
-						.foregroundStyle(.secondary)
-					
-					if let description = collection.collectionDescription, !description.isEmpty {
-						Markdown(description)
-					}
-
+					.bold()
+					.foregroundStyle(.secondary)
+				
+				if let description = collection.collectionDescription, !description.isEmpty {
+					Markdown(description)
+				}
 			}
 			.padding(.leading)
 			
@@ -48,8 +47,9 @@ struct CollectionHeaderView: View {
 				}
 				
 			}
+			
 			if #available(macOS 26.0, *) {
-				ToolbarSpacer()
+				ToolbarSpacer(.fixed)
 			}
 		}
 		.sheet(isPresented: $showEditSheet) {

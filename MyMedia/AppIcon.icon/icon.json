@@ -1,0 +1,69 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "srgb:1.00000,0.69979,0.00000,1.00000",
+      "srgb:1.00000,0.52214,0.00000,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "blur-material" : null,
+      "hidden" : false,
+      "layers" : [
+        {
+          "fill-specializations" : [
+            {
+              "value" : {
+                "linear-gradient" : [
+                  "srgb:1.00000,0.69979,0.00000,1.00000",
+                  "srgb:1.00000,0.52214,0.00000,1.00000"
+                ]
+              }
+            },
+            {
+              "appearance" : "dark",
+              "value" : {
+                "linear-gradient" : [
+                  "extended-gray:0.25000,1.00000",
+                  "extended-gray:0.00000,1.00000"
+                ]
+              }
+            }
+          ],
+          "image-name" : "baseIconTriangle.svg",
+          "name" : "baseIconTriangle",
+          "position" : {
+            "scale" : 0.25,
+            "translation-in-points" : [
+              22,
+              -9
+            ]
+          }
+        },
+        {
+          "blend-mode" : "overlay",
+          "fill" : {
+            "automatic-gradient" : "extended-gray:1.00000,1.00000"
+          },
+          "glass" : true,
+          "image-name" : "baseIconCircle.svg",
+          "name" : "baseIconCircle"
+        }
+      ],
+      "lighting" : "individual",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 1
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : [
+      "macOS"
+    ]
+  }
+}
