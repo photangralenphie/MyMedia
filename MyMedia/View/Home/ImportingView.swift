@@ -104,31 +104,33 @@ struct ImportingView: View {
 	}
 	
 	private func importNewFilesFromFolder() {
-		selectFolder { folderURL in
-			guard let folderURL else { return }
-			if !folderURL.startAccessingSecurityScopedResource() {
-				Task { @MainActor in
-					errorMessage = "Failed to gain access to the selected folder."
-				}
-				return
-			}
-			defer { folderURL.stopAccessingSecurityScopedResource() }
+		selectFolder { folderURLs in
 			var collectedURLs: [URL] = []
+			
+			for folderURL in folderURLs {
+				if !folderURL.startAccessingSecurityScopedResource() {
+					Task { @MainActor in
+						errorMessage = "Failed to gain access to the selected folder."
+					}
+					return
+				}
+				defer { folderURL.stopAccessingSecurityScopedResource() }
 
-			let keys: [URLResourceKey] = [.isRegularFileKey, .contentTypeKey]
-			if let enumerator = FileManager.default.enumerator(at: folderURL, includingPropertiesForKeys: keys, options: [.skipsHiddenFiles]) {
-				for case let fileURL as URL in enumerator {
-					do {
-						let resourceValues = try fileURL.resourceValues(forKeys: Set(keys))
-						if resourceValues.isRegularFile == true, let contentType = resourceValues.contentType, contentType.conforms(to: .mpeg4Movie) {
-							collectedURLs.append(fileURL)
+				let keys: [URLResourceKey] = [.isRegularFileKey, .contentTypeKey]
+				if let enumerator = FileManager.default.enumerator(at: folderURL, includingPropertiesForKeys: keys, options: [.skipsHiddenFiles]) {
+					for case let fileURL as URL in enumerator {
+						do {
+							let resourceValues = try fileURL.resourceValues(forKeys: Set(keys))
+							if resourceValues.isRegularFile == true, let contentType = resourceValues.contentType, contentType.conforms(to: .mpeg4Movie) {
+								collectedURLs.append(fileURL)
+							}
+						} catch {
+							Task { @MainActor in
+								errorMessage = "Error reading file at \(fileURL.absoluteString)"
+							}
+							folderURL.stopAccessingSecurityScopedResource()
+							return
 						}
-					} catch {
-						Task { @MainActor in
-							errorMessage = "Error reading file at \(fileURL.absoluteString)"
-						}
-						folderURL.stopAccessingSecurityScopedResource()
-						return
 					}
 				}
 			}
@@ -139,18 +141,18 @@ struct ImportingView: View {
 		}
 	}
 	
-	func selectFolder(completion: @escaping @Sendable (URL?) -> Void) {
+	func selectFolder(completion: @escaping @Sendable ([URL]) -> Void) {
 		let panel = NSOpenPanel()
 		panel.title = "Select a directory to import."
 
-		panel.allowsMultipleSelection = false
+		panel.allowsMultipleSelection = true
 		panel.canChooseDirectories = true
 		panel.canChooseFiles = false
 
 		panel.begin { response in
 			if response == .OK {
 				Task { @MainActor in
-					completion(panel.url)
+					completion(panel.urls)
 				}
 			}
 		}

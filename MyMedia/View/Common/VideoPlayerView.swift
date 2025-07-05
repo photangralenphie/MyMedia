@@ -9,7 +9,7 @@ import SwiftUI
 import AVKit
 import SwiftData
 import AwesomeSwiftyComponents
-import SwiftUIIntrospect
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct VideoPlayerView: View {
 	
