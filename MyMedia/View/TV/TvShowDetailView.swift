@@ -72,12 +72,18 @@ struct TvShowDetailView: View {
 
 						HStack(alignment: .center) {
 							if let imageData = episode.artwork, let nsImageFromData = NSImage(data: imageData)  {
-								Image(nsImage: nsImageFromData)
+								let episodeImage = Image(nsImage: nsImageFromData)
 									.resizable()
-									.scaledToFit()
-									.frame(width: 150)
-									.clipShape(.rect(cornerRadius: 10))
-									.padding(.trailing)
+								    .scaledToFit()
+								    .frame(width: 150)
+								    .clipShape(.rect(cornerRadius: 10))
+								
+								if #available(macOS 26.0, *) {
+									episodeImage
+										.glassEffect(in: .rect(cornerRadius: 10))
+								} else {
+									episodeImage
+								}
 							}
 							
 							VStack(alignment: .leading, spacing: 5) {
@@ -92,6 +98,7 @@ struct TvShowDetailView: View {
 									.lineLimit(2)
 									.foregroundStyle(.secondary)
 							}
+							.padding(.leading)
 							
 							Spacer()
 							

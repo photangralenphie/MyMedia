@@ -40,10 +40,16 @@ struct CollectionHeaderView: View {
 		}
 		.padding()
 		.toolbar {
-			Menu("Actions", systemImage: "ellipsis.circle") {
-				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet, applyShortcuts: true) {
-					dismiss()
+			ToolbarItemGroup {
+				Menu("Actions", systemImage: "ellipsis.circle") {
+					CollectionActionsView(collection: collection, showEditSheet: $showEditSheet, applyShortcuts: true) {
+						dismiss()
+					}
 				}
+				
+			}
+			if #available(macOS 26.0, *) {
+				ToolbarSpacer()
 			}
 		}
 		.sheet(isPresented: $showEditSheet) {

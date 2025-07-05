@@ -78,22 +78,31 @@ struct GridView<Header: View>: View {
 							}
 
 						} header: {
-							Text(LocalizedStringKey(section))
+							let sectionHeader = Text(LocalizedStringKey(section))
 								.font(.title3)
-								.bold()
-								.padding(.horizontal)
-								.padding(.vertical, 3)
-								.frame(maxWidth: .infinity, alignment: .leading)
-								.background(.regularMaterial)
-								.padding(.horizontal, -LayoutConstants.gridSpacing)
+								   .bold()
+								   .padding(.horizontal)
+								   .padding(.vertical, 3)
+								   .frame(maxWidth: .infinity, alignment: .leading)
+							
+							if #available(macOS 26.0, *) {
+								sectionHeader
+									.glassEffect()
+							} else {
+								sectionHeader
+									.background(.regularMaterial)
+									.padding(.horizontal, -LayoutConstants.gridSpacing)
+							}
 						}
 					}
 				}
 				.padding(.horizontal, LayoutConstants.gridSpacing)
 				.toolbar {
-					Picker("Sort by", systemImage: "arrow.up.arrow.down", selection: $sortOrder) {
-						ForEach(SortOption.allCases) { option in
-							Label(option.title, systemImage: option.systemImageName)
+					ToolbarItemGroup {
+						Picker("Sort by", systemImage: "arrow.up.arrow.down", selection: $sortOrder) {
+							ForEach(SortOption.allCases) { option in
+								Label(option.title, systemImage: option.systemImageName)
+							}
 						}
 					}
 				}
