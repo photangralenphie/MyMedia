@@ -56,6 +56,9 @@ struct MyMediaApp: App {
 			if let ids = ids.wrappedValue {
 				VideoPlayerView(ids: ids, context: sharedModelContainer.mainContext)
 					.frame(idealWidth: 960, idealHeight: 540)
+					.toolbar(removing: .title)
+					.toolbarBackground(.hidden, for: .windowToolbar)
+					.ignoresSafeArea(edges: .top)
 			}
 		}
 		.defaultSize(width: 960, height: 540)
