@@ -27,6 +27,18 @@ public class MediaCollection: IsPinnable
 	var isPinned: Bool = false
 	var sort: SortOption = SortOption.title
 	
+	// Enum don't seem to work in lightweight migrations
+	// https://stackoverflow.com/questions/79255075/how-to-add-enum-field-to-my-swiftdata-model
+	private var viewPreferenceRawValue: Int = 0
+	@Transient var viewPreference: ViewOption {
+		get {
+			ViewOption(rawValue: viewPreferenceRawValue) ?? .grid
+		}
+		set {
+			viewPreferenceRawValue = newValue.rawValue
+		}
+	}
+	
 	@Transient var isWatched: Bool {
 		tvShows.allSatisfy(\.isWatched)
 	}

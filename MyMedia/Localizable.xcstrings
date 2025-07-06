@@ -7,6 +7,9 @@
     "·" : {
       "shouldTranslate" : false
     },
+    "(%@)" : {
+      "shouldTranslate" : false
+    },
     "%@ - (%@)" : {
       "localizations" : {
         "en" : {
@@ -472,6 +475,16 @@
         }
       }
     },
+    "Grid" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Raster"
+          }
+        }
+      }
+    },
     "Height" : {
       "localizations" : {
         "de" : {
@@ -622,6 +635,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bibliothek"
+          }
+        }
+      }
+    },
+    "List" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste"
           }
         }
       }
@@ -1039,6 +1062,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Version %@"
+          }
+        }
+      }
+    },
+    "View" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ansicht"
           }
         }
       }

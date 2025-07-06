@@ -14,7 +14,7 @@ struct CollectionCellView: View {
 	
     var body: some View {
 		NavigationLink {
-			GridView(mediaItems: collection.mediaItems, sorting: Bindable(collection).sort, navTitle: LocalizedStringKey(collection.title)) {
+			LayoutSwitchingView(mediaItems: collection.mediaItems, sorting: Bindable(collection).sort, viewPreference: Bindable(collection).viewPreference, navTitle: LocalizedStringKey(collection.title)) {
 				CollectionHeaderView(collection: collection)
 			}
 			.environment(\.mediaContext, .collection(collection))

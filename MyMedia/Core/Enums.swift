@@ -42,6 +42,31 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 	var id: Self { return self }
 }
 
+enum ViewOption: Int, CaseIterable, Identifiable, Codable {
+	case grid = 0
+	case list = 1
+	
+	var title: LocalizedStringKey {
+		switch self {
+			case .grid:
+				return LocalizedStringKey("Grid")
+			case .list:
+				return LocalizedStringKey("List")
+		}
+	}
+	
+	var symbolName: String {
+		switch self {
+			case .grid:
+				return "square.grid.2x2"
+			case .list:
+				return "list.bullet"
+		}
+	}
+	
+	var id: Self { return self }
+}
+
 enum MediaContext {
 	case normal
 	case collection(_ collection: MediaCollection)
