@@ -10,6 +10,9 @@
     "(%@)" : {
       "shouldTranslate" : false
     },
+    "%@" : {
+      "shouldTranslate" : false
+    },
     "%@ - (%@)" : {
       "localizations" : {
         "en" : {
@@ -60,6 +63,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "^[%lld Element](inflect: true)"
+          }
+        }
+      }
+    },
+    "^[%lld Season](inflect: true)\n^[%lld Episode](inflect: true) " : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%1$lld Staffel](inflect: true)\n^[%2$lld Episode](inflect: true) "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "^[%1$lld Season](inflect: true)\n^[%2$lld Episode](inflect: true) "
           }
         }
       }
@@ -338,6 +357,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beschreibung\n(optional)"
+          }
+        }
+      }
+    },
+    "Detail List" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detail Liste"
+          }
+        }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
           }
         }
       }
@@ -816,6 +855,16 @@
         }
       }
     },
+    "Poster" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poster"
+          }
+        }
+      }
+    },
     "Producers" : {
       "localizations" : {
         "de" : {
@@ -1076,6 +1125,16 @@
         }
       }
     },
+    "Watched" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesehen"
+          }
+        }
+      }
+    },
     "Width" : {
       "localizations" : {
         "de" : {
@@ -1088,6 +1147,16 @@
     },
     "x" : {
       "shouldTranslate" : false
+    },
+    "Year" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jahr"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -40,9 +40,7 @@ struct GenresView: View {
 			}
 
 			if let selectedGenre {
-				ScrollView {
-					LayoutSwitchingView(mediaItems: mediaItemsByGenre[selectedGenre] ?? [], sorting: $sortOrder, viewPreference: $viewPreference, navTitle: LocalizedStringKey(selectedGenre))
-				}
+				LayoutSwitchingView(mediaItems: mediaItemsByGenre[selectedGenre] ?? [], sorting: $sortOrder, viewPreference: $viewPreference, navTitle: LocalizedStringKey(selectedGenre))
 			} else {
 				ContentUnavailableView("Select a genre", systemImage: "square.on.square")
 					.frame(maxWidth: .infinity)

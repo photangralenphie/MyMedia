@@ -45,6 +45,7 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 	case grid = 0
 	case list = 1
+	case detailList = 2
 	
 	var title: LocalizedStringKey {
 		switch self {
@@ -52,6 +53,8 @@ enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 				return LocalizedStringKey("Grid")
 			case .list:
 				return LocalizedStringKey("List")
+			case .detailList:
+				return LocalizedStringKey("Detail List")
 		}
 	}
 	
@@ -61,6 +64,8 @@ enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 				return "square.grid.2x2"
 			case .list:
 				return "list.bullet"
+			case .detailList:
+				return "tablecells"
 		}
 	}
 	

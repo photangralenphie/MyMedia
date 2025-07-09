@@ -53,11 +53,10 @@ struct LayoutCellView: View {
 					}
 					Spacer()
 				}
+			case .detailList:
+				Image(systemName: "chevron.right.circle")
 		}
 	}
-	
-	
-	private let scale = 0.4
 	
     var body: some View {
 		NavigationLink {
@@ -74,15 +73,7 @@ struct LayoutCellView: View {
 				.contextMenu {
 					MediaItemActionsView(mediaItem: mediaItem, applyShortcuts: false) { }
 				}
-				.draggable(mediaItem.id.uuidString) {
-					VStack(alignment: .leading) {
-						ArtworkView(imageData: mediaItem.artwork, title: mediaItem.title, subtitle: "", scale: scale)
-						Text("\(mediaItem.title) - (\(String(mediaItem.year)))")
-					}
-					.padding(5)
-					.background(Material.regular)
-					.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius * scale))
-				}
+				.mediaItemDraggable(mediaItem: mediaItem)
 		}
 		.buttonStyle(PlainButtonStyle()) // IDKW but .plain isn't working
 		.padding(.bottom)

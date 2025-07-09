@@ -68,27 +68,36 @@ struct LayoutSwitchingView<Header: View>: View {
 	
     var body: some View {
 		NavigationStack {
-			ScrollView {
-				header
-
+			Group {
 				switch viewPreference {
 					case .grid:
-						GridView(groupedWatchables: groupedWatchables)
+						ScrollView {
+							header
+							GridView(groupedWatchables: groupedWatchables)
+						}
 					case .list:
-						ListView(groupedWatchables: groupedWatchables)
+						ScrollView {
+							header
+							ListView(groupedWatchables: groupedWatchables)
+						}
+					case .detailList:
+						header
+						DetailListView(filteredMediaItems: filteredMediaItems)
 				}
 			}
 			.toolbar {
-				ToolbarItem {
-					Picker("Sort by", systemImage: "arrow.up.arrow.down", selection: $sortOrder) {
-						ForEach(SortOption.allCases) { option in
-							Label(option.title, systemImage: option.systemImageName)
+				if viewPreference != .detailList {
+					ToolbarItem {
+						Picker("Sort by", systemImage: "arrow.up.arrow.down", selection: $sortOrder) {
+							ForEach(SortOption.allCases) { option in
+								Label(option.title, systemImage: option.systemImageName)
+							}
 						}
 					}
-				}
-				
-				if #available(macOS 26.0, *) {
-					ToolbarSpacer(.fixed)
+					
+					if #available(macOS 26.0, *) {
+						ToolbarSpacer(.fixed)
+					}
 				}
 				
 				ToolbarItem {
