@@ -24,6 +24,17 @@
       },
       "shouldTranslate" : false
     },
+    "%@ - %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ - %2$@"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
     "%@ (%@)" : {
       "localizations" : {
         "en" : {
@@ -534,6 +545,16 @@
         }
       }
     },
+    "If available show the short description of the media item." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bevorzuge eine kurze Beschreibung - wenn verfügbar."
+          }
+        }
+      }
+    },
     "Image" : {
       "localizations" : {
         "de" : {
@@ -861,6 +882,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Poster"
+          }
+        }
+      }
+    },
+    "Prefer short Description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurze Beschreibung bevorzugen"
           }
         }
       }

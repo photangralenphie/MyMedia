@@ -26,13 +26,33 @@ struct MetadataUtil {
 	
 	public static func getRating(ratingString: String?) -> String? {
 		if let ratingString = ratingString {
-			if let firstPipe = ratingString.firstIndex(of: "|"), let secondPipe = ratingString[firstPipe...].dropFirst().firstIndex(of: "|") {
+			if let firstPipe = ratingString.firstIndex(of: "|"), let end = ratingString[firstPipe...].dropFirst().firstIndex(of: "|") {
 				let start = ratingString.index(after: firstPipe)
-				let end = secondPipe
 				return String(ratingString[start..<end])
 			}
 		}
 		return nil
+	}
+	
+	public static func getDescription(mediaItem: any MediaItem) -> String? {
+		let preferShortDescription = UserDefaults.standard.bool(forKey: PreferenceKeys.preferShortDescription)
+		
+		switch mediaItem {
+			case let tvShow as TvShow:
+				return tvShow.showDescription
+			case let movie as Movie:
+				if preferShortDescription {
+					return movie.shortDescription ?? movie.longDescription
+				}
+				return movie.longDescription ?? movie.shortDescription
+			case let episode as Episode:
+				if preferShortDescription {
+					return episode.episodeShortDescription ?? episode.episodeLongDescription
+				}
+				return episode.episodeLongDescription ?? episode.episodeLongDescription
+			default:
+				return nil
+		}
 	}
 	
 	public static func getMaxImageSize() -> CGSize {

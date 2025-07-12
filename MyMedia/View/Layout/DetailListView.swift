@@ -48,15 +48,16 @@ struct DetailListView: View {
 	
 	init(filteredMediaItems: [any MediaItem]) {
 		self.mediaItemsWrapper = filteredMediaItems
-			.sorted(by: {$0.title < $1.title})
 			.map(TableRowData.init)
+			.sorted(by: {$0.title < $1.title})
 	}
 	
 	@State private var sortOrder = [
-		KeyPathComparator(\TableRowData.mediaItem.title),
+		KeyPathComparator(\TableRowData.title),
 		KeyPathComparator(\TableRowData.year),
 		KeyPathComparator(\TableRowData.dateAdded),
 	]
+	
 	@State private var selectedId: TableRowData.ID?
 	
     var body: some View {
@@ -64,10 +65,11 @@ struct DetailListView: View {
 			TableColumn("Poster") { rowData in
 				ArtworkView(imageData: rowData.mediaItem.artwork, title: rowData.mediaItem.title, subtitle: "\(rowData.mediaItem.title)", scale: 0.3)
 					.mediaItemDraggable(mediaItem: rowData.mediaItem)
+					.onTapGesture { selectedId = rowData.id }
 			}
 			.width(LayoutConstants.artworkWidth * 0.3)
 			
-			TableColumn("Title", value: \.mediaItem.title)
+			TableColumn("Title", value: \.title)
 			
 			TableColumn("Year", value: \.year) { rowData in
 				Text(String(rowData.year))

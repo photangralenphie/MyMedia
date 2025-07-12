@@ -59,7 +59,7 @@ struct TvShowDetailView: View {
 						.keyboardShortcut("p", modifiers: .command)
 				}
 				
-				if let description = tvShow.showDescription {
+				if let description = MetadataUtil.getDescription(mediaItem: tvShow) {
 					Text(description)
 						.foregroundStyle(.secondary)
 				}

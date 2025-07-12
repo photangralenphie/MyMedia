@@ -17,6 +17,7 @@ struct SettingsView: View {
 	@AppStorage(PreferenceKeys.playerStyle) private var playerStyle: AVPlayerViewControlsStyle = .floating
 	@AppStorage(PreferenceKeys.autoQuit) private var autoQuit: Bool = false
 	@AppStorage(PreferenceKeys.downSizeArtwork) private var downSizeArtwork: Bool = true
+	@AppStorage(PreferenceKeys.preferShortDescription) private var preferShortDescription: Bool = false
 	
 	@AppStorage(PreferenceKeys.downSizeArtworkWidth) private var downSizeArtworkWidth: Int = 1000
 	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1000
@@ -27,8 +28,7 @@ struct SettingsView: View {
 				Form {
 					Toggle("Auto Quit", isOn: $autoQuit)
 					Text("Automatically quit the app when the last window is closed.")
-						.font(.footnote)
-						.foregroundStyle(.secondary)
+						.settingDescriptionTextStyle()
 				}
 			}
 			
@@ -52,6 +52,9 @@ struct SettingsView: View {
 			Tab("Metadata", systemImage: "list.bullet.rectangle") {
 				Form {
 					Toggle("Show Languages as Flags", isOn: $showLanguageFlags)
+					Toggle("Prefer short Description", isOn: $preferShortDescription)
+					Text("If available show the short description of the media item.")
+						.settingDescriptionTextStyle()
 					
 					Divider()
 						.padding(.vertical, 3)

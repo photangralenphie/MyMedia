@@ -16,6 +16,14 @@ struct CreditHeadingStyle: ViewModifier {
 	}
 }
 
+struct SettingsDescriptionStyle: ViewModifier {
+	func body(content: Content) -> some View {
+		content
+			.font(.footnote)
+			.foregroundStyle(.secondary)
+	}
+}
+
 struct MediaItemDraggableModifier: ViewModifier {
 	private let mediaItem: any MediaItem
 	
@@ -54,5 +62,9 @@ struct MediaItemDraggableModifier: ViewModifier {
 extension View {
 	func mediaItemDraggable(mediaItem: any MediaItem) -> some View {
 		self.modifier(MediaItemDraggableModifier(mediaItem: mediaItem))
+	}
+	
+	func settingDescriptionTextStyle() -> some View {
+		self.modifier(SettingsDescriptionStyle())
 	}
 }

@@ -79,7 +79,8 @@ struct MovieDetailView: View {
 			}
 			.listRowSeparator(.hidden)
 			
-			if let description = getDescription() {
+			
+			if let description = MetadataUtil.getDescription(mediaItem: movie) {
 				VStack(alignment: .leading) {
 					Text("Summary")
 						.textCase(.uppercase)
@@ -105,17 +106,5 @@ struct MovieDetailView: View {
 	
 	func popNavigation() {
 		dismiss()
-	}
-	
-	func getDescription() -> String? {
-		if movie.longDescription != nil {
-			return movie.longDescription
-		}
-		
-		if movie.shortDescription != nil {
-			return movie.shortDescription
-		}
-		
-		return nil
 	}
 }
