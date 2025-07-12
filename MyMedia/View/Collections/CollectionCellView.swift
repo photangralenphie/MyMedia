@@ -14,7 +14,13 @@ struct CollectionCellView: View {
 	
     var body: some View {
 		NavigationLink {
-			LayoutSwitchingView(mediaItems: collection.mediaItems, sorting: Bindable(collection).sort, viewPreference: Bindable(collection).viewPreference, navTitle: LocalizedStringKey(collection.title)) {
+			LayoutSwitchingView(
+				mediaItems: collection.mediaItems,
+				sorting: Bindable(collection).sort,
+				viewPreference: Bindable(collection).viewPreference,
+				useSections: Bindable(collection).useSections,
+				navTitle: LocalizedStringKey(collection.title))
+			{
 				CollectionHeaderView(collection: collection)
 			}
 			.environment(\.mediaContext, .collection(collection))

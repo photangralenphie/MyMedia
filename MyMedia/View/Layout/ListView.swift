@@ -10,20 +10,29 @@ import OrderedCollections
 
 struct ListView: View {
 	
-	let groupedWatchables: OrderedDictionary<String, [any MediaItem]>
+	let useSections: Bool
+	let groupedMediaItems: OrderedDictionary<String, [any MediaItem]>
+	let filteredMediaItems: [any MediaItem]
 	
 	var body: some View {
 		LazyVStack(pinnedViews: [.sectionHeaders]) {
-			ForEach(Array(groupedWatchables.keys), id: \.self) { section in
-				Section {
-					ForEach(groupedWatchables[section] ?? [], id: \.id) { mediaItem in
-						LayoutCellView(mediaItem: mediaItem, layout: .list)
-							.listRowSeparator(.hidden)
+			if useSections {
+				ForEach(Array(groupedMediaItems.keys), id: \.self) { section in
+					Section {
+						ForEach(groupedMediaItems[section] ?? [], id: \.id) { mediaItem in
+							LayoutCellView(mediaItem: mediaItem, layout: .list)
+								.listRowSeparator(.hidden)
+						}
+					} header: {
+						LayoutSectionHeader(section: section)
 					}
-				} header: {
-					LayoutSectionHeader(section: section)
+				}
+			} else {
+				ForEach(filteredMediaItems, id: \.id) { mediaItem in
+					LayoutCellView(mediaItem: mediaItem, layout: .list)
 				}
 			}
+			
 		}
 		.padding(.horizontal, LayoutConstants.gridSpacing)
 	}

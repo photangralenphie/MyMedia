@@ -10,20 +10,28 @@ import OrderedCollections
 
 struct GridView: View {
 	
-	let groupedWatchables: OrderedDictionary<String, [any MediaItem]>
+	let useSections: Bool
+	let groupedMediaItems: OrderedDictionary<String, [any MediaItem]>
+	let filteredMediaItems: [any MediaItem]
 	
 	private let layout = [GridItem(.adaptive(minimum: LayoutConstants.artworkWidth), spacing: LayoutConstants.gridSpacing, alignment: .top)]
 	
     var body: some View {
 		LazyVGrid(columns: layout, pinnedViews: [.sectionHeaders]) {
-			ForEach(Array(groupedWatchables.keys), id: \.self) { section in
-				Section {
-					ForEach(groupedWatchables[section] ?? [], id: \.id) { mediaItem in
-						LayoutCellView(mediaItem: mediaItem, layout: .grid)
+			if useSections {
+				ForEach(Array(groupedMediaItems.keys), id: \.self) { section in
+					Section {
+						ForEach(groupedMediaItems[section] ?? [], id: \.id) { mediaItem in
+							LayoutCellView(mediaItem: mediaItem, layout: .grid)
+						}
+						
+					} header: {
+						LayoutSectionHeader(section: section)
 					}
-
-				} header: {
-					LayoutSectionHeader(section: section)
+				}
+			} else {
+				ForEach(filteredMediaItems, id: \.id) { mediaItem in
+					LayoutCellView(mediaItem: mediaItem, layout: .grid)
 				}
 			}
 		}

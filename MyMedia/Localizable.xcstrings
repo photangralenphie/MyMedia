@@ -1096,6 +1096,16 @@
         }
       }
     },
+    "Toggle sections" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abschnitte ein-/ausblenden"
+          }
+        }
+      }
+    },
     "TV Shows" : {
       "localizations" : {
         "de" : {

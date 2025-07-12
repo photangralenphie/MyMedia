@@ -38,6 +38,7 @@ public class MediaCollection: IsPinnable
 			viewPreferenceRawValue = newValue.rawValue
 		}
 	}
+	var useSections = true
 	
 	@Transient var isWatched: Bool {
 		tvShows.allSatisfy(\.isWatched)

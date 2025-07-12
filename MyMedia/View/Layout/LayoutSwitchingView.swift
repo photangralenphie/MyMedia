@@ -18,16 +18,17 @@ struct LayoutSwitchingView<Header: View>: View {
 	
 	@Binding private var sortOrder: SortOption
 	@Binding private var viewPreference: ViewOption
+	@Binding private var useSections: Bool
 	
 	@State private var searchText: String = ""
 
 	@Environment(\.modelContext) private var moc
 	
-	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, viewPreference: Binding<ViewOption>, navTitle: LocalizedStringKey) where Header == EmptyView {
-		self.init(mediaItems: mediaItems, sorting: sorting, viewPreference: viewPreference, navTitle: navTitle, header: { EmptyView() })
+	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, viewPreference: Binding<ViewOption>, useSections: Binding<Bool>, navTitle: LocalizedStringKey) where Header == EmptyView {
+		self.init(mediaItems: mediaItems, sorting: sorting, viewPreference: viewPreference, useSections: useSections, navTitle: navTitle, header: { EmptyView() })
 	}
 	
-	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, viewPreference: Binding<ViewOption>, navTitle: LocalizedStringKey, @ViewBuilder header: @escaping () -> Header) {
+	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, viewPreference: Binding<ViewOption>, useSections: Binding<Bool>, navTitle: LocalizedStringKey, @ViewBuilder header: @escaping () -> Header) {
 		switch sorting.wrappedValue {
 			case .title:
 				self.mediaItems = mediaItems.sorted(by: { $0.title < $1.title })
@@ -39,6 +40,8 @@ struct LayoutSwitchingView<Header: View>: View {
 		
 		_sortOrder = sorting
 		_viewPreference = viewPreference
+		_useSections = useSections
+		
 		self.navTitle = navTitle
 		self.header = header()
 	}
@@ -53,7 +56,7 @@ struct LayoutSwitchingView<Header: View>: View {
 		}
 	}
 	
-	var groupedWatchables: OrderedDictionary<String, [any MediaItem]> {
+	var groupedMediaItems: OrderedDictionary<String, [any MediaItem]> {
 		OrderedDictionary(grouping: filteredMediaItems) {
 			switch sortOrder {
 				case .releaseDate:
@@ -73,12 +76,12 @@ struct LayoutSwitchingView<Header: View>: View {
 					case .grid:
 						ScrollView {
 							header
-							GridView(groupedWatchables: groupedWatchables)
+							GridView(useSections: useSections, groupedMediaItems: groupedMediaItems, filteredMediaItems: filteredMediaItems)
 						}
 					case .list:
 						ScrollView {
 							header
-							ListView(groupedWatchables: groupedWatchables)
+							ListView(useSections: useSections, groupedMediaItems: groupedMediaItems, filteredMediaItems: filteredMediaItems)
 						}
 					case .detailList:
 						header
@@ -107,6 +110,17 @@ struct LayoutSwitchingView<Header: View>: View {
 						}
 					}
 					.pickerStyle(.segmented)
+				}
+				
+				if #available(macOS 26.0, *) {
+					ToolbarSpacer(.fixed)
+				}
+				
+				if viewPreference != .detailList {
+					ToolbarItem {
+						Toggle("Toggle sections", systemImage: "rectangle.grid.1x2", isOn: $useSections)
+							.tint(Color.accentColor.opacity(0.3))
+					}
 				}
 			}
 			.searchable(text: $searchText, placement: .automatic, prompt: "Search")

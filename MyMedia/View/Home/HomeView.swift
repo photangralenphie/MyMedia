@@ -35,6 +35,14 @@ struct HomeView: View {
 	@AppStorage("viewPreferenceTvShows") private var viewPreferenceTvShows = ViewOption.grid
 	@AppStorage("viewPreferenceTvShowsGenre") private var viewPreferenceTvShowsGenre = ViewOption.grid
 	
+	@AppStorage("useSectionsUnwatched") private var useSectionsUnwatched = true
+	@AppStorage("useSectionsFavorites") private var useSectionsFavorites = true
+	@AppStorage("useSectionsGenres") private var useSectionsGenres = true
+	@AppStorage("useSectionsMovies") private var useSectionsMovies = true
+	@AppStorage("useSectionsMoviesGenre") private var useSectionsMoviesGenre = true
+	@AppStorage("useSectionsTvShows") private var useSectionsTvShows = true
+	@AppStorage("useSectionsTvShowsGenre") private var useSectionsTvShowsGenre = true
+	
 	var pinnedItems: [any IsPinnable] {
 		(tvShows + movies + collections).filter({ $0.isPinned })
 	}
@@ -48,22 +56,39 @@ struct HomeView: View {
 			TabSection("Library") {
 				Tab("Unwatched", systemImage: "eye.slash", value: Tabs.unwatched) {
 					let unwatched: [any MediaItem] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
-					LayoutSwitchingView(mediaItems: unwatched, sorting: $sortOrderUnwatched, viewPreference: $viewPreferenceUnwatched, navTitle: "Unwatched")
-						.navigationTitle("Unwatched")
-						.id(Tabs.unwatched)
+					LayoutSwitchingView(
+						mediaItems: unwatched,
+						sorting: $sortOrderUnwatched,
+						viewPreference: $viewPreferenceUnwatched,
+						useSections: $useSectionsUnwatched,
+						navTitle: "Unwatched"
+					)
+					.navigationTitle("Unwatched")
+					.id(Tabs.unwatched)
 				}
 				.customizationID(Tabs.unwatched)
 				
 				Tab("Favorites", systemImage: "star.fill", value: Tabs.favourites) {
 					let favourites: [any MediaItem] = tvShows.filter({ $0.isFavorite }) + movies.filter({ $0.isFavorite })
-					LayoutSwitchingView(mediaItems: favourites, sorting: $sortOrderFavorites, viewPreference: $viewPreferenceFavorites, navTitle: "Favorites")
-						.id(Tabs.favourites)
+					LayoutSwitchingView(
+						mediaItems: favourites,
+						sorting: $sortOrderFavorites,
+						viewPreference: $viewPreferenceFavorites,
+						useSections: $useSectionsFavorites,
+						navTitle: "Favorites"
+					)
+					.id(Tabs.favourites)
 				}
 				.customizationID(Tabs.favourites)
 				
 				Tab("Genres", systemImage: SystemImages.genres, value: Tabs.genres) {
-					GenresView(mediaItems: tvShows + movies, sortOrder: $sortOrderGenres, viewPreference: $viewPreferenceGenres)
-						.id(Tabs.genres)
+					GenresView(
+						mediaItems: tvShows + movies,
+						sortOrder: $sortOrderGenres,
+						viewPreference: $viewPreferenceGenres,
+						useSections: $useSectionsGenres
+					)
+					.id(Tabs.genres)
 				}
 				
 				Tab("Collections", systemImage: SystemImages.collections, value: Tabs.collections) {
@@ -81,14 +106,25 @@ struct HomeView: View {
 			
 			TabSection("Movies") {
 				Tab("All Movies", systemImage: SystemImages.movie, value: Tabs.movies) {
-					LayoutSwitchingView(mediaItems: movies, sorting: $sortOrderMovies, viewPreference: $viewPreferenceMovies, navTitle: "Movies")
-						.id(Tabs.movies)
+					LayoutSwitchingView(
+						mediaItems: movies,
+						sorting: $sortOrderMovies,
+						viewPreference: $viewPreferenceMovies,
+						useSections: $useSectionsMovies,
+						navTitle: "Movies"
+					)
+					.id(Tabs.movies)
 				}
 				.customizationID(Tabs.movies)
 				
 				Tab("Genres", systemImage: SystemImages.genres, value: Tabs.movieGenres) {
-					GenresView(mediaItems: movies, sortOrder: $sortOrderMoviesGenre, viewPreference: $viewPreferenceMoviesGenre)
-						.id(Tabs.movieGenres)
+					GenresView(
+						mediaItems: movies,
+						sortOrder: $sortOrderMoviesGenre,
+						viewPreference: $viewPreferenceMoviesGenre,
+						useSections: $useSectionsMoviesGenre
+					)
+					.id(Tabs.movieGenres)
 				}
 				.customizationID(Tabs.movieGenres)
 			}
@@ -96,14 +132,25 @@ struct HomeView: View {
 			
 			TabSection("TV Shows") {
 				Tab("All TV Shows", systemImage: SystemImages.tvShow, value: Tabs.tvShows) {
-					LayoutSwitchingView(mediaItems: tvShows, sorting: $sortOrderTvShows, viewPreference: $viewPreferenceTvShows, navTitle: "TV Shows")
-						.id(Tabs.tvShows)
+					LayoutSwitchingView(
+						mediaItems: tvShows,
+						sorting: $sortOrderTvShows,
+						viewPreference: $viewPreferenceTvShows,
+						useSections: $useSectionsTvShows,
+						navTitle: "TV Shows"
+					)
+					.id(Tabs.tvShows)
 				}
 				.customizationID(Tabs.tvShows)
 				
 				Tab("Genres", systemImage: SystemImages.genres, value: Tabs.tvShowsGenres) {
-					GenresView(mediaItems: tvShows, sortOrder: $sortOrderTvShowsGenre, viewPreference: $viewPreferenceTvShowsGenre)
-						.id(Tabs.tvShowsGenres)
+					GenresView(
+						mediaItems: tvShows,
+						sortOrder: $sortOrderTvShowsGenre,
+						viewPreference: $viewPreferenceTvShowsGenre,
+						useSections: $useSectionsGenres
+					)
+					.id(Tabs.tvShowsGenres)
 				}
 				.customizationID(Tabs.tvShowsGenres)
 			}
@@ -116,7 +163,13 @@ struct HomeView: View {
 
 						if let collection = pinnedItem as? MediaCollection {
 							Tab(collection.title, systemImage: collection.systemImageName, value: collection.id.uuidString) {
-								LayoutSwitchingView(mediaItems: collection.mediaItems, sorting: Bindable(collection).sort, viewPreference: Bindable(collection).viewPreference, navTitle: LocalizedStringKey(collection.title)) {
+								LayoutSwitchingView(
+									mediaItems: collection.mediaItems,
+									sorting: Bindable(collection).sort,
+									viewPreference: Bindable(collection).viewPreference,
+									useSections: Bindable(collection).useSections,
+									navTitle: LocalizedStringKey(collection.title)
+								) {
 									CollectionHeaderView(collection: collection)
 								}
 								.environment(\.mediaContext, .collection(collection))
