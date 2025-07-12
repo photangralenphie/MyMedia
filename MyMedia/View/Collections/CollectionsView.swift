@@ -44,13 +44,8 @@ struct CollectionsView: View {
 							}
 
 						} header: {
-							Text(section)
-								.font(.title3)
-								.bold()
+							LayoutSectionHeader(section: section)
 								.padding(.horizontal)
-								.padding(.vertical, 3)
-								.frame(maxWidth: .infinity, alignment: .leading)
-								.background(.regularMaterial)
 						}
 					}
 				}
