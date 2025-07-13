@@ -40,18 +40,18 @@ struct ArtworkView: View {
 				if #available(macOS 26.0, *) {
 					backgroundImage
 					mainImage
-						.glassEffect(in: .rect(cornerRadius: cornerRadius))
+						.glassEffect(in: .rect(cornerRadius: cornerRadius, style: .continuous))
 				} else {
 					backgroundImage
 						.overlay(.ultraThinMaterial)
 					mainImage
 				}
 			}
-			.clipShape(.rect(cornerRadius: cornerRadius))
+			.clipShape(.rect(cornerRadius: cornerRadius, style: .continuous))
 		} else {
 			Color.accentColor
 				.frame(width: size.width, height: size.height)
-				.clipShape(.rect(cornerRadius: cornerRadius))
+				.clipShape(.rect(cornerRadius: cornerRadius, style: .continuous))
 				.overlay(alignment: .center) {
 					VStack {
 						Text(LocalizedStringKey(title))

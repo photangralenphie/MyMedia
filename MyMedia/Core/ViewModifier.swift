@@ -48,12 +48,12 @@ struct MediaItemDraggableModifier: ViewModifier {
 				
 				if #available(macOS 26.0, *) {
 					dragPreview
-						.glassEffect(in: .rect(cornerRadius: cornerRadius))
-						.clipShape(.rect(cornerRadius: cornerRadius))
+						.glassEffect(in: .rect(cornerRadius: cornerRadius, style: .continuous))
+						.clipShape(.rect(cornerRadius: cornerRadius, style: .continuous))
 				} else {
 					dragPreview
 						.background(Material.regular)
-						.clipShape(.rect(cornerRadius: cornerRadius))
+						.clipShape(.rect(cornerRadius: cornerRadius, style: .continuous))
 				}
 			}
 	}

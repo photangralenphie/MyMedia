@@ -130,8 +130,8 @@ enum ImportError: LocalizedError {
 		switch self {
 			case .fileNotAccessible: return "Could not access file."
 			case .missingMetadata(let type): return metadataError(metadataType: type)
-			case .unknown(let message): return "Unknown Error while reading file: \(message)."
-			case .noMetadataFound(let fileName): return "No metadata found in file: \(fileName). Please add metadata before importing."
+			case .unknown(let message): return "Unknown Error while reading file:\n\n\(message)."
+			case .noMetadataFound(let fileName):  return "No metadata found in file:\n\n\(fileName)\n\nPlease add metadata before importing."
 		}
 	}
 	

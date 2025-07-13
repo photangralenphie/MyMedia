@@ -25,7 +25,7 @@ actor MediaImporter {
 		let kind = await self.tryGetIntMetaDataValue(metadata: metadata, for: "itsk/stik")
 		
 		if kind == nil  {
-			throw ImportError.noMetadataFound(fileName: path.absoluteString)
+			throw ImportError.noMetadataFound(fileName: path.lastPathComponent)
 		}
 		
 		if(kind == 9){
