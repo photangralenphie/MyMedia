@@ -180,15 +180,17 @@ struct HomeView: View {
 							.customizationID(pinnedItem.id.uuidString)
 						} else {
 							Tab(pinnedItem.title, systemImage: pinnedItem.systemImageName, value: pinnedItem.id.uuidString) {
-								switch pinnedItem {
-									case let tvShow as TvShow:
-										TvShowDetailView(tvShow: tvShow)
-											.id(tvShow.id.uuidString)
-									case let movie as Movie:
-										MovieDetailView(movie: movie)
-											.id(movie.id.uuidString)
-									default:
-										EmptyView()
+								NavigationStack {
+									switch pinnedItem {
+										case let tvShow as TvShow:
+											TvShowDetailView(tvShow: tvShow)
+												.id(tvShow.id.uuidString)
+										case let movie as Movie:
+											MovieDetailView(movie: movie)
+												.id(movie.id.uuidString)
+										default:
+											EmptyView()
+									}
 								}
 							}
 							.contextMenu { unpinButton }

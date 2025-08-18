@@ -13,10 +13,8 @@ struct TvShowDetailView: View {
 	let tvShow: TvShow
 	private let titleAndData: String
 	private let episodes: [[Episode]]
-	
-	@Environment(\.dismiss) private var dismiss
 
-	
+
 	init(tvShow: TvShow) {
 		self.tvShow = tvShow
 		self.titleAndData = "\(tvShow.title) (\(String(tvShow.year)))"
@@ -28,6 +26,9 @@ struct TvShowDetailView: View {
 	}
 	
     var body: some View {
+		
+		let _ = Self._printChanges()
+		
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .bottom, spacing: 20) {
@@ -68,47 +69,50 @@ struct TvShowDetailView: View {
 			
 			ForEach(episodes, id: \.first?.season) { season in
 				Section {
-					ForEach(season, id: \.self) { episode in
-
-						HStack(alignment: .center) {
-							if let imageData = episode.artwork, let nsImageFromData = NSImage(data: imageData)  {
-								let episodeImage = Image(nsImage: nsImageFromData)
-									.resizable()
-								    .scaledToFit()
-								    .frame(width: 150)
-								    .clipShape(.rect(cornerRadius: 10))
-								
-								if #available(macOS 26.0, *) {
-									episodeImage
-										.glassEffect(in: .rect(cornerRadius: 10))
-								} else {
-									episodeImage
+					ForEach(season, id: \.id) { episode in
+						NavigationLink {
+							EpisodeDetailView(episode: episode, tvShow: tvShow)
+						} label: {
+							HStack(alignment: .center) {
+								if let imageData = episode.artwork, let nsImageFromData = NSImage(data: imageData)  {
+									let episodeImage = Image(nsImage: nsImageFromData)
+										.resizable()
+										.scaledToFit()
+										.frame(width: 150)
+										.clipShape(.rect(cornerRadius: 10, style: .continuous))
+									
+									if #available(macOS 26.0, *) {
+										episodeImage
+											.glassEffect(in: .rect(cornerRadius: 10, style: .continuous))
+									} else {
+										episodeImage
+									}
 								}
+								
+								VStack(alignment: .leading, spacing: 5) {
+									Text("Episode \(episode.episode)")
+										.textCase(.uppercase)
+										.bold()
+										.foregroundStyle(.secondary)
+										.font(.body)
+									Text(episode.title)
+										.font(.title2)
+									Text(episode.episodeShortDescription ?? "")
+										.lineLimit(2)
+										.foregroundStyle(.secondary)
+								}
+								.padding(.leading)
+								
+								Spacer()
+								
+								Text(MetadataUtil.formatRuntime(minutes: episode.durationMinutes))
+								
+								PlayButton(mediaItem: episode)
 							}
-							
-							VStack(alignment: .leading, spacing: 5) {
-								Text("Episode \(episode.episode)")
-									.textCase(.uppercase)
-									.bold()
-									.foregroundStyle(.secondary)
-									.font(.body)
-								Text(episode.title)
-									.font(.title2)
-								Text(episode.episodeShortDescription ?? "")
-									.lineLimit(2)
-									.foregroundStyle(.secondary)
+							.padding(.vertical, 5)
+							.contextMenu {
+								MediaItemActionsView(mediaItem: episode, applyShortcuts: false) {}
 							}
-							.padding(.leading)
-							
-							Spacer()
-							
-							Text(MetadataUtil.formatRuntime(minutes: episode.durationMinutes))
-							
-							PlayButton(mediaItem: episode)
-						}
-						.padding(.vertical, 5)
-						.contextMenu {
-							MediaItemActionsView(mediaItem: episode, applyShortcuts: false) {}
 						}
 					}
 				} header: {
@@ -128,6 +132,7 @@ struct TvShowDetailView: View {
     }
 	
 	func popNavigation() {
+		let dismiss = Environment(\.dismiss).wrappedValue
 		dismiss()
 	}
 }
