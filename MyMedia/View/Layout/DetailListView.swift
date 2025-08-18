@@ -7,11 +7,13 @@
 
 import SwiftUI
 
-struct TableRowData: Identifiable {
+private struct TableRowData: Identifiable {
 	let mediaItem: any MediaItem
 	let title: String
 	let year: Int
 	let dateAdded: Date
+	let numEpisode: Int
+	let runtime: Int
 	
 	var id: UUID { mediaItem.id }
 	
@@ -39,12 +41,24 @@ struct TableRowData: Identifiable {
 		self.title = mediaItem.title
 		self.year = mediaItem.year
 		self.dateAdded = mediaItem.dateAdded
+		
+		switch mediaItem {
+			case let movie as Movie:
+				self.numEpisode = 0
+				self.runtime = movie.durationMinutes
+			case let tvShow as TvShow:
+				self.numEpisode = tvShow.episodes.count
+				self.runtime = 0
+			default:
+				self.numEpisode = 0
+				self.runtime = 0
+		}
 	}
 }
 
 struct DetailListView: View {
 	
-	@State var mediaItemsWrapper: [TableRowData]
+	@State private var mediaItemsWrapper: [TableRowData]
 	
 	init(filteredMediaItems: [any MediaItem]) {
 		self.mediaItemsWrapper = filteredMediaItems
@@ -76,13 +90,28 @@ struct DetailListView: View {
 			}
 			.width(60)
 			
-			TableColumn("Date Added", value: \.dateAdded) { rowData in
-				Text(rowData.dateAdded, style: .date)
+			if mediaItemsWrapper.allSatisfy({ $0.mediaItem is Movie }) {
+				TableColumn("Runtime", value: \.runtime) { rowData in
+					Text(rowData.details)
+				}
+			}
+			
+			if mediaItemsWrapper.allSatisfy({ $0.mediaItem is TvShow }) {
+				TableColumn("# Episodes", value: \.numEpisode) { rowData in
+					Text(rowData.details)
+						.lineLimit(2)
+				}
+			}
+			
+			if !mediaItemsWrapper.allSatisfy({ $0.mediaItem is Movie }) && !mediaItemsWrapper.allSatisfy({ $0.mediaItem is TvShow }) {
+				TableColumn("Details") { rowData in
+					Text(rowData.details)
+						.lineLimit(2)
+				}
 			}
 
-			TableColumn("Details") { rowData in
-				Text(rowData.details)
-					.lineLimit(2)
+			TableColumn("Date Added", value: \.dateAdded) { rowData in
+				Text(rowData.dateAdded, style: .date)
 			}
 			
 			TableColumn("\(Image(systemName: "eye"))") { rowData in

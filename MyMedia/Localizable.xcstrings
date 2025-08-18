@@ -10,6 +10,16 @@
     "(%@)" : {
       "shouldTranslate" : false
     },
+    "# Episodes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "# Episoden"
+          }
+        }
+      }
+    },
     "%@" : {
       "shouldTranslate" : false
     },
@@ -962,6 +972,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bild entfernen"
+          }
+        }
+      }
+    },
+    "Runtime" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laufzeit"
           }
         }
       }
