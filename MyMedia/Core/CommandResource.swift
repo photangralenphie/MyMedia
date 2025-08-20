@@ -13,5 +13,6 @@ class CommandResource {
 	public var showFileImporter: Bool = false
 	public var showDirectoryImporter: Bool = false
 	
+	public var collectionEditVm: CollectionEditVm?
 	public init() { }
 }

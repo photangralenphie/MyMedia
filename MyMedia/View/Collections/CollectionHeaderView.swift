@@ -11,10 +11,10 @@ import MarkdownUI
 struct CollectionHeaderView: View {
 	
 	let collection: MediaCollection
+	@Environment(CommandResource.self) private var commandResource
 	@Environment(\.dismiss) private var dismiss
 	
 	@State private var showEditSheet: Bool = false
-	 
     var body: some View {
 		HStack(alignment: .bottom) {
 			ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "^[\(collection.mediaItems.count) Item](inflect: true)", scale: 1.3)
@@ -38,6 +38,9 @@ struct CollectionHeaderView: View {
 			Spacer()
 		}
 		.padding()
+		.sheet(item: Bindable(commandResource).collectionEditVm) { vm in
+			CollectionEditView(vm: vm )
+		}
 		.toolbar {
 			if #available(macOS 26.0, *) {
 				ToolbarSpacer(.fixed)
@@ -45,14 +48,11 @@ struct CollectionHeaderView: View {
 
 			ToolbarItem {
 				Menu("Actions", systemImage: "ellipsis.circle") {
-					CollectionActionsView(collection: collection, showEditSheet: $showEditSheet, applyShortcuts: true) {
+					CollectionActionsView(collection: collection, applyShortcuts: true) {
 						dismiss()
 					}
 				}
 			}
-		}
-		.sheet(isPresented: $showEditSheet) {
-			CollectionEditView(collection: collection)
 		}
     }
 }

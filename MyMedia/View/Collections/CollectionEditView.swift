@@ -11,21 +11,12 @@ import AwesomeSwiftyComponents
 
 struct CollectionEditView: View {
 	
-	@State private var vm: CollectionEditVm
+	public var vm: CollectionEditVm
 	
 	@State private var showImageRemoveButton: Bool = false
 
-	
 	@Environment(\.dismiss) private var dismiss
 	@Environment(\.modelContext) private var moc
-	
-	init() {
-		self.vm = CollectionEditVm()
-	}
-	
-	init(collection: MediaCollection) {
-		self.vm = CollectionEditVm(collection: collection)
-	}
 	
     var body: some View {
 		Form {
@@ -62,13 +53,14 @@ struct CollectionEditView: View {
 						}
 					}
 				}
+				.padding(.bottom, 3)
 			}
 			
 			LabeledContent {
 				Button("Browse", systemImage: "folder", action: vm.loadImage)
 					.padding(.trailing)
 				
-				PhotosPicker(selection: $vm.photoPickerItem, matching: .images, preferredItemEncoding: .compatible) {
+				PhotosPicker(selection: Bindable(vm).photoPickerItem, matching: .images, preferredItemEncoding: .compatible) {
 					Label("Image Library", systemImage: "photo")
 				}
 			} label: {
@@ -76,10 +68,10 @@ struct CollectionEditView: View {
 			}
 			.labelStyle(.titleAndIcon)
 			
-			TextField("Title", text: $vm.title)
+			TextField("Title", text: Bindable(vm).title)
 			
 			LabeledContent {
-				TextEditor(text: $vm.description)
+				TextEditor(text: Bindable(vm).description)
 			} label: {
 				Text("Description\n(optional)")
 					.multilineTextAlignment(.trailing)
@@ -95,7 +87,7 @@ struct CollectionEditView: View {
 			}
 		}
 		.scenePadding()
-		.alert("Error loading image: \(vm.imageLoadError ?? "Unknown Error")", isPresented: $vm.imageLoadError.isNotNil()) {
+		.alert("Error loading image: \(vm.imageLoadError ?? "Unknown Error")", isPresented: Bindable(vm).imageLoadError.isNotNil()) {
 			Button("OK") { vm.imageLoadError = nil	}
 		}
     }

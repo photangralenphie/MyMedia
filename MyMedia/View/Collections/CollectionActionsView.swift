@@ -9,11 +9,11 @@ import SwiftUI
 
 struct CollectionActionsView: View {
 
-	@State public var collection: MediaCollection
-	@Binding public var showEditSheet: Bool
+	let collection: MediaCollection
 	public var applyShortcuts: Bool
 	
 	@Environment(\.modelContext) private var moc
+	@Environment(CommandResource.self) private var commandResource
 	@State private var updateError: String? = nil
 	
 	let onDelete: () -> Void
@@ -30,10 +30,8 @@ struct CollectionActionsView: View {
 		
 		Divider()
 		
-		Button("Edit", systemImage: "pencil") {
-			showEditSheet.toggle()
-		}
-		.keyboardShortcut(applyShortcuts ? KeyboardShortcut("e", modifiers: .command) : nil)
+		Button("Edit", systemImage: "pencil", action: editCollection)
+			.keyboardShortcut(applyShortcuts ? KeyboardShortcut("e", modifiers: .command) : nil)
 	}
 	
 	func deleteCollection() {
@@ -41,5 +39,9 @@ struct CollectionActionsView: View {
 			moc.delete(collection)
 			onDelete()
 		}
+	}
+	
+	func editCollection() {
+		commandResource.collectionEditVm = CollectionEditVm(collection: collection)
 	}
 }

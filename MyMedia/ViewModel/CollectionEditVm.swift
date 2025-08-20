@@ -25,7 +25,8 @@ struct LibraryImageData: Transferable {
 
 @MainActor
 @Observable
-class CollectionEditVm {
+class CollectionEditVm: Identifiable {
+	@ObservationIgnored
 	var collection: MediaCollection?
 	
 	var title: String
@@ -34,14 +35,20 @@ class CollectionEditVm {
 		didSet { self.setMaxAndDownsizedResolution() }
 	}
 	
+	@ObservationIgnored
 	var originalImageSize: CGSize?
+	@ObservationIgnored
 	var downsizedImageSize: CGSize?
+	@ObservationIgnored
 	var canDownsize: Bool {
 		guard let originalImageSize else { return false }
 		return originalImageSize.width > maxResolution.width || originalImageSize.height > maxResolution.height
 	}
+	@ObservationIgnored
 	private var maxResolution: CGSize = { MetadataUtil.getMaxImageSize() }()
+	@ObservationIgnored
 	private var _downSizeImage: Bool = { UserDefaults.standard.bool(forKey: PreferenceKeys.downSizeCollectionArtwork) }()
+
 	var downSizeImage: Bool {
 		get { return _downSizeImage }
 		set {

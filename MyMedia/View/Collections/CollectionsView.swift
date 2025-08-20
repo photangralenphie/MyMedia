@@ -13,7 +13,8 @@ struct CollectionsView: View {
 	
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 	@State private var searchText: String = ""
-	@State private var showAddCollectionSheet: Bool = false
+	
+	@Environment(CommandResource.self) private var commandResource
 
 	private let layout = [GridItem(.adaptive(minimum: 300), spacing: 20, alignment: .top)]
 
@@ -34,6 +35,7 @@ struct CollectionsView: View {
 	}
 	
 	var body: some View {
+		
 		NavigationStack {
 			ScrollView {
 				LazyVGrid(columns: layout, pinnedViews: [.sectionHeaders]) {
@@ -53,11 +55,15 @@ struct CollectionsView: View {
 			.searchable(text: $searchText, placement: .automatic, prompt: "Search")
 			.navigationTitle("Collections")
 			.toolbar {
-				Button("Create Collection", systemImage: "plus") { showAddCollectionSheet.toggle() }
+				Button("Create Collection", systemImage: "plus", action: createCollection)
 			}
-			.sheet(isPresented: $showAddCollectionSheet) {
-				CollectionEditView()
+			.sheet(item: Bindable(commandResource).collectionEditVm) { vm in
+				CollectionEditView(vm: vm )
 			}
 		}
+	}
+	
+	func createCollection() {
+		commandResource.collectionEditVm = CollectionEditVm()
 	}
 }

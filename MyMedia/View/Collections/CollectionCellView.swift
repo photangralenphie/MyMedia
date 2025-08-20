@@ -36,13 +36,10 @@ struct CollectionCellView: View {
 					.foregroundStyle(.secondary)
 			}
 			.contextMenu {
-				CollectionActionsView(collection: collection, showEditSheet: $showEditSheet, applyShortcuts: false) { }
+				CollectionActionsView(collection: collection, applyShortcuts: false) { }
 			}
 		}
 		.buttonStyle(.plain)
 		.padding(.bottom)
-		.sheet(isPresented: $showEditSheet) {
-			CollectionEditView(collection: collection)
-		}
     }
 }
