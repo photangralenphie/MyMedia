@@ -58,12 +58,11 @@ private struct TableRowData: Identifiable {
 
 struct DetailListView: View {
 	
-	@State private var mediaItemsWrapper: [TableRowData]
-	
-	init(filteredMediaItems: [any MediaItem]) {
-		self.mediaItemsWrapper = filteredMediaItems
+	public let filteredMediaItems: [any MediaItem]
+	private var mediaItemsWrapper: [TableRowData] {
+		filteredMediaItems
 			.map(TableRowData.init)
-			.sorted(by: {$0.title < $1.title})
+			.sorted(using: sortOrder)
 	}
 	
 	@State private var sortOrder = [
@@ -133,9 +132,6 @@ struct DetailListView: View {
 					MediaItemActionsView(mediaItem: rowData.mediaItem, applyShortcuts: false) { }
 				}
 			}
-		}
-		.onChange(of: sortOrder) { _, sortOrder in
-			mediaItemsWrapper = mediaItemsWrapper.sorted(using: sortOrder)
 		}
 		.navigationDestination(item: $selectedId) { id in
 			let mediaItem = mediaItemsWrapper.first { $0.id == id }?.mediaItem
