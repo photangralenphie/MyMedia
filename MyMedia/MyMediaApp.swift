@@ -22,9 +22,12 @@ struct MyMediaApp: App {
         }
     }()
 	
-	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-	@State private var commandResource = CommandResource()
 	@Environment(\.openWindow) var openWindow
+	
+	private var commandResource = CommandResource.shared
+	
+	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+	
 
     var body: some Scene {
         WindowGroup {

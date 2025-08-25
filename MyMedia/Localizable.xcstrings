@@ -4,6 +4,9 @@
     "" : {
       "shouldTranslate" : false
     },
+    "\n" : {
+      "shouldTranslate" : false
+    },
     "·" : {
       "shouldTranslate" : false
     },
@@ -203,26 +206,6 @@
         }
       }
     },
-    "An Error occurred while importing." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ein Fehler ist während des Importieren aufgetreten."
-          }
-        }
-      }
-    },
-    "An Error occurred while updating." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ein Fehler ist während des Aktualisieren aufgetreten"
-          }
-        }
-      }
-    },
     "Auto Quit" : {
       "localizations" : {
         "de" : {
@@ -325,6 +308,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Komponist"
+          }
+        }
+      }
+    },
+    "Could not access file." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf die Datei konnte nicht zugegriffen werden."
           }
         }
       }
@@ -462,12 +455,52 @@
         }
       }
     },
+    "Error accessing media file" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Zugriff auf die Mediendatei"
+          }
+        }
+      }
+    },
+    "Error code: #%lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler Code"
+          }
+        }
+      }
+    },
     "Error loading image: %@" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fehler beim laden des Bildes: %@"
+          }
+        }
+      }
+    },
+    "Error reading file at %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim lesen der Datei %@"
+          }
+        }
+      }
+    },
+    "Error while Importing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Importieren"
           }
         }
       }
@@ -481,6 +514,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ausführende Produzenten"
+          }
+        }
+      }
+    },
+    "Failed to gain access to the file %@." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Zugriff auf die Datei %@."
+          }
+        }
+      }
+    },
+    "Failed to gain access to the selected folder." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim Zugriff auf den Ordner"
+          }
+        }
+      }
+    },
+    "Failed to open Subler: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim öffnen von Subler: %@"
+          }
+        }
+      }
+    },
+    "Failed to resolve bookmark for %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler beim auflösen des Bookmark for %@"
           }
         }
       }
@@ -805,6 +878,26 @@
         }
       }
     },
+    "No %@ found in metadata." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Wert für %@ in den Metadaten gefunden"
+          }
+        }
+      }
+    },
+    "No metadata found in file:\n\n%@\n\nPlease add metadata before importing." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Metadaten in Datei:\n\n%@\n\nBitte vor dem Importieren Metadaten hinzufügen."
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "de" : {
@@ -1076,6 +1169,16 @@
         }
       }
     },
+    "Subler Error" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subler Feher"
+          }
+        }
+      }
+    },
     "Summary" : {
       "localizations" : {
         "de" : {
@@ -1132,6 +1235,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Serien"
+          }
+        }
+      }
+    },
+    "Unknown Error" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannter Fehler"
+          }
+        }
+      }
+    },
+    "Unknown Error while reading file:\n\n%@." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannter Fehler beim Lesen der Datei:\n\n%@."
           }
         }
       }

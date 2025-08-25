@@ -13,14 +13,10 @@ struct ImportingView: View {
 	@State private var currentImportFile: String?
 	@State private var showImportOverlay: Bool = false
 	
-	@State private var errorMessage: String?
-	
 	@Environment(CommandResource.self) var commandResource
 	@Environment(\.modelContext) private var moc
 	
     var body: some View {
-		
-		@Bindable var commandResource = commandResource
 		
 		VStack(alignment: .leading) {
 			if let importRange {
@@ -63,11 +59,6 @@ struct ImportingView: View {
 			.padding(.vertical, 6)
 			.padding(.horizontal, 3)
 		}
-		.alert("An Error occurred while importing.", isPresented: $errorMessage.isNotNil()) {
-			Button("OK"){ errorMessage = nil }
-		} message: {
-			Text(errorMessage ?? "")
-		}
 		.onChange(of: commandResource.showDirectoryImporter) {
 			if commandResource.showDirectoryImporter {
 				importNewFilesFromFolder()
@@ -91,7 +82,7 @@ struct ImportingView: View {
 			for file in files {
 				if !file.startAccessingSecurityScopedResource() {
 					Task { @MainActor in
-						errorMessage = "Failed to gain access to the file \(file.absoluteString)."
+						commandResource.showError(message: "Failed to gain access to the file \(file.absoluteString).", title: "Error while Importing", errorCode: 8)
 					}
 					return;
 				}
@@ -110,7 +101,7 @@ struct ImportingView: View {
 			for folderURL in folderURLs {
 				if !folderURL.startAccessingSecurityScopedResource() {
 					Task { @MainActor in
-						errorMessage = "Failed to gain access to the selected folder."
+						commandResource.showError(message: "Failed to gain access to the selected folder.", title: "Error while Importing", errorCode: 9)
 					}
 					return
 				}
@@ -126,7 +117,7 @@ struct ImportingView: View {
 							}
 						} catch {
 							Task { @MainActor in
-								errorMessage = "Error reading file at \(fileURL.absoluteString)"
+								commandResource.showError(message: "Error reading file at \(fileURL.absoluteString)", title: "Error while Importing", errorCode: 10)
 							}
 							folderURL.stopAccessingSecurityScopedResource()
 							return
@@ -186,11 +177,11 @@ struct ImportingView: View {
 					currentImportFile = url.lastPathComponent
 					try await assembler.importFromFile(path: url)
 					withAnimation { importRange = (index + 1)...urls.count }
-				} catch(let importError) {
-					if errorMessage == nil {
-						errorMessage = importError.localizedDescription
+				} catch let importError as ImportError {
+					if commandResource.errorMessage == nil {
+						MediaImporter.showImportError(importError)
 					} else {
-						errorMessage! += "\n\(importError.localizedDescription)"
+						commandResource.appendErrorMessage(importError.errorDescription, errorCode: importError.errorCode)
 					}
 				}
 			}

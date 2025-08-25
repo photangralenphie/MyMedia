@@ -20,8 +20,6 @@ struct MediaItemActionsView: View {
 	@Environment(\.modelContext) private var moc
 	@Environment(\.mediaContext) private var mediaContext
 	
-	@State private var updateError: String? = nil
-	
     var body: some View {
 		Button(mediaItem.isWatched ? "Mark Unwatched" : "Mark Watched", systemImage: mediaItem.isWatched ? "eye.slash" : "eye") { mediaItem.toggleWatched() }
 			.keyboardShortcut(applyShortcuts ? KeyboardShortcut("w", modifiers: .command) : nil)
@@ -71,11 +69,6 @@ struct MediaItemActionsView: View {
 		}
 		
 		Button("Re-import", systemImage: "arrow.trianglehead.counterclockwise", action: reImportToLibrary)
-			.alert("An Error occurred while updating.", isPresented: $updateError.isNotNil()) {
-				Button("OK"){ updateError = nil }
-			} message: {
-				Text(updateError ?? "")
-			}
 		
 		if case let tvShow as TvShow = mediaItem, tvShow.episodes.count == 0 {
 			// Show button only if tvShow has episodes
@@ -115,8 +108,8 @@ struct MediaItemActionsView: View {
 			let mediaImporter = MediaImporter(modelContainer: moc.container)
 			do {
 				try await mediaImporter.updateMediaItem(mediaItem: currentMediaItem)
-			} catch(let importError) {
-				updateError = importError.localizedDescription
+			} catch let importError as ImportError {
+				MediaImporter.showImportError(importError)
 			}
 		}
 	}

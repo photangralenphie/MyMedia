@@ -153,7 +153,10 @@ extension IsWatchable {
 					}
 					return resolvedURL
 				} catch {
-					print("Failed to resolve bookmark: \(error)")
+					let watchableTitel = self.title
+					Task { @MainActor in
+						CommandResource.shared.showError(message: "Failed to resolve bookmark for \(watchableTitel)", title: "Error accessing media file", errorCode: 1);
+					}
 					return nil
 				}
 			}

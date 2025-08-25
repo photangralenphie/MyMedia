@@ -43,6 +43,8 @@ struct HomeView: View {
 	@AppStorage("useSectionsTvShows") private var useSectionsTvShows = true
 	@AppStorage("useSectionsTvShowsGenre") private var useSectionsTvShowsGenre = true
 	
+	@Environment(CommandResource.self) private var commandResource
+	
 	var pinnedItems: [any IsPinnable] {
 		(tvShows + movies + collections).filter({ $0.isPinned })
 	}
@@ -206,6 +208,11 @@ struct HomeView: View {
 		.tabViewSidebarBottomBar() {
 			ImportingView()
 		}
+		.alert(commandResource.errorTitle, isPresented: .constant(commandResource.errorMessage != nil)) {
+			Button("OK"){ commandResource.clearError() }
+		} message: {
+			commandResource.errorMessage ?? Text("Unknown Error")
+		}
     }
 	
 	func dropMediaItemOnCollection(target: MediaCollection, ids: [any Transferable]) {
@@ -227,3 +234,4 @@ struct HomeView: View {
 		}
 	}
 }
+

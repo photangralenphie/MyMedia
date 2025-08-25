@@ -429,6 +429,12 @@ actor MediaImporter {
 		let resolutionIndex = await tryGetIntMetaDataValue(metadata: metadata, for: "itsk/hdvd") ?? 0 // When hd is not found it's SD quality
 		return HDVideoQuality(rawValue: resolutionIndex) ?? .sd
 	}
+	
+	public static func showImportError(_ error: ImportError) {
+		Task { @MainActor in
+			CommandResource.shared.showError(message: error.errorDescription, title: "Error while Importing", errorCode: error.errorCode)
+		}
+	}
 }
 
 extension AVURLAsset {
