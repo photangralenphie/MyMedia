@@ -190,7 +190,7 @@ extension IsWatchable {
 			do {
 				try process.run()
 				let data = pipe.fileHandleForReading.readDataToEndOfFile()
-				if let output = String(data: data, encoding: .utf8) {
+				if let output = String(data: data, encoding: .utf8), !output.isEmpty {
 					CommandResource.shared.showError(message: "Failed to open Subler: \(output)", title: "Subler Error", errorCode: 2);
 				}
 			} catch {
