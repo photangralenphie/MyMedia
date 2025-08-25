@@ -174,18 +174,30 @@ extension IsWatchable {
 		}
 	}
 	
+	@MainActor
 	func openInSubler() {
 		guard let url = self.url else { return }
-		let appPath = "/Applications/Subler.app"
-
-		let process = Process()
-		process.executableURL = URL(fileURLWithPath: "/usr/bin/open")
-		process.arguments = ["-a", appPath, url.path]
 		
-		do {
-			try process.run()
-		} catch {
-			print("Failed to open file: \(error)")
+		if url.startAccessingSecurityScopedResource() {
+
+			let appPath = "/Applications/Subler.app"
+
+			let process = Process()
+			process.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+			process.arguments = ["-a", appPath, url.path]
+			let pipe = Pipe()
+				process.standardError = pipe
+			do {
+				try process.run()
+				let data = pipe.fileHandleForReading.readDataToEndOfFile()
+				if let output = String(data: data, encoding: .utf8) {
+					CommandResource.shared.showError(message: "Failed to open Subler: \(output)", title: "Subler Error", errorCode: 2);
+				}
+			} catch {
+				CommandResource.shared.showError(message: "Failed to open Subler: \(error.localizedDescription)", title: "Subler Error", errorCode: 3);
+			}
+			url.stopAccessingSecurityScopedResource()
 		}
 	}
 }
+
