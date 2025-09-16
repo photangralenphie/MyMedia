@@ -10,7 +10,7 @@ import AVKit
 import SwiftData
 import AwesomeSwiftyComponents
 import MediaPlayer
-@_spi(Advanced) import SwiftUIIntrospect
+import SwiftUIIntrospect
 
 struct VideoPlayerView: View {
 	
@@ -60,10 +60,9 @@ struct VideoPlayerView: View {
 				updateNowPlayingInfo()
 			}
 			.onDisappear(perform: onDisappear)
-			.introspect(.videoPlayer, on: .macOS(.v15...)) { AVPlayerView in
+			.introspect(.videoPlayer, on: .macOS(.v15, .v26)) { AVPlayerView in
 				AVPlayerView.allowsPictureInPicturePlayback = true
 				AVPlayerView.controlsStyle = playerStyle
-				AVPlayerView.showsFullScreenToggleButton = true
 				AVPlayerView.showsSharingServiceButton = true
 				AVPlayerView.showsTimecodes = true
 			}
