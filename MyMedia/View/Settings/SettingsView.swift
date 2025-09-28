@@ -37,7 +37,7 @@ struct SettingsView: View {
 					Toggle("AutoPlay next Episode", isOn: $autoPlay)
 					Toggle("Use in-app Player", isOn: $useInAppPlayer)
 					
-					Divider()
+					SettingsDivider()
 					
 					Picker("Player Style", selection: $playerStyle) {
 						ForEach(AVPlayerViewControlsStyle.userSelectableStyles, id: \.self) { playerStyle in
@@ -56,8 +56,7 @@ struct SettingsView: View {
 					Text("If available show the short description of the media item.")
 						.settingDescriptionTextStyle()
 					
-					Divider()
-						.padding(.vertical, 3)
+					SettingsDivider()
 					
 					ImageDownsizeToggle(isOn: $downSizeArtwork)
 					
@@ -74,6 +73,8 @@ struct SettingsView: View {
 							}
 						}
 					}
+					
+					SettingsDivider()
 					
 					Link(destination: URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Tagging")!) {
 						Label("Metadata help", systemImage: "arrow.up.forward.square")

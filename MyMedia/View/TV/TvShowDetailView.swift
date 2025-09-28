@@ -27,8 +27,6 @@ struct TvShowDetailView: View {
 	
     var body: some View {
 		
-		let _ = Self._printChanges()
-		
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .bottom, spacing: 20) {
@@ -62,6 +60,7 @@ struct TvShowDetailView: View {
 				
 				if let description = MetadataUtil.getDescription(mediaItem: tvShow) {
 					Text(description)
+						.font(.body.leading(.loose))
 						.foregroundStyle(.secondary)
 				}
 			}
@@ -99,6 +98,7 @@ struct TvShowDetailView: View {
 										.font(.title2)
 									Text(episode.episodeShortDescription ?? "")
 										.lineLimit(2)
+										.font(.body.leading(.loose))
 										.foregroundStyle(.secondary)
 								}
 								.padding(.leading)

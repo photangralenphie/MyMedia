@@ -16,8 +16,6 @@ struct EpisodeDetailView: View {
 	
 	var body: some View {
 		
-		let _ = Self._printChanges()
-		
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .center, spacing: 20) {
@@ -73,6 +71,7 @@ struct EpisodeDetailView: View {
 						.padding(.bottom, 1)
 					
 					Text(description)
+						.font(.body.leading(.loose))
 				}
 				.padding(.vertical)
 			}

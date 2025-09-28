@@ -110,6 +110,7 @@ struct CreditsView: View {
 				.textCase(.uppercase)
 				.modifier(CreditHeadingStyle())
 			Text(credits[creditKey] ?? "")
+				.font(.body.leading(.loose))
 		}
 		.frame(width: 150, alignment: .leading)
 	}

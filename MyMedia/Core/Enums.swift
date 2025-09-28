@@ -39,6 +39,15 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 		}
 	}
 	
+	var pickerWidth: CGFloat {
+		switch self {
+			case .title:
+				return 70
+			default:
+				return 55
+		}
+	}
+	
 	var id: Self { return self }
 }
 

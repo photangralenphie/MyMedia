@@ -78,11 +78,13 @@ struct LayoutSwitchingView<Header: View>: View {
 							header
 							GridView(useSections: useSections, groupedMediaItems: groupedMediaItems, filteredMediaItems: filteredMediaItems)
 						}
+						.scrollClipDisabled()
 					case .list:
 						ScrollView {
 							header
 							ListView(useSections: useSections, groupedMediaItems: groupedMediaItems, filteredMediaItems: filteredMediaItems)
 						}
+						.scrollClipDisabled()
 					case .detailList:
 						header
 						DetailListView(filteredMediaItems: filteredMediaItems)
@@ -91,11 +93,12 @@ struct LayoutSwitchingView<Header: View>: View {
 			.toolbar {
 				if viewPreference != .detailList {
 					ToolbarItem {
-						Picker("Sort by", systemImage: "arrow.up.arrow.down", selection: $sortOrder) {
+						Picker("Sort by", systemImage: "arrow.up.arrow.down", selection: $sortOrder.animation()) {
 							ForEach(SortOption.allCases) { option in
 								Label(option.title, systemImage: option.systemImageName)
 							}
 						}
+						.frame(width: sortOrder.pickerWidth)
 					}
 					
 					if #available(macOS 26.0, *) {
@@ -104,7 +107,7 @@ struct LayoutSwitchingView<Header: View>: View {
 				}
 				
 				ToolbarItem {
-					Picker("View", selection: $viewPreference) {
+					Picker("View", selection: $viewPreference.animation()) {
 						ForEach(ViewOption.allCases) { option in
 							Label(option.title, systemImage: option.symbolName)
 						}
@@ -118,7 +121,7 @@ struct LayoutSwitchingView<Header: View>: View {
 				
 				if viewPreference != .detailList {
 					ToolbarItem {
-						Toggle("Toggle sections", systemImage: "rectangle.grid.1x2", isOn: $useSections)
+						Toggle("Toggle sections", systemImage: "rectangle.grid.1x2", isOn: $useSections.animation())
 							.tint(Color.accentColor.opacity(0.3))
 					}
 				}

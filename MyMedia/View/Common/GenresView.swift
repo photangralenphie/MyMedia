@@ -40,7 +40,10 @@ struct GenresView: View {
 					selectedGenre = oldValue
 				}
 			}
-
+			.frame(width: 200)
+			
+			Divider()
+			
 			if let selectedGenre {
 				LayoutSwitchingView(
 					mediaItems: mediaItemsByGenre[selectedGenre] ?? [],
@@ -48,6 +51,7 @@ struct GenresView: View {
 					viewPreference: $viewPreference,
 					useSections: $useSections,
 					navTitle: LocalizedStringKey(selectedGenre))
+				.padding(.top, 7)
 			} else {
 				ContentUnavailableView("Select a genre", systemImage: "square.on.square")
 					.frame(maxWidth: .infinity)

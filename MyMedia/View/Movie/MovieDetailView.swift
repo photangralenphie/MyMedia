@@ -90,6 +90,7 @@ struct MovieDetailView: View {
 						.padding(.bottom, 1)
 					
 					Text(description)
+						.font(.body.leading(.loose))
 				}
 				.padding(.vertical)
 			}
