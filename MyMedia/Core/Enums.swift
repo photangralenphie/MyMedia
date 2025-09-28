@@ -82,7 +82,7 @@ enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 }
 
 enum MediaContext {
-	case normal
+	case single
 	case collection(_ collection: MediaCollection)
 }
 

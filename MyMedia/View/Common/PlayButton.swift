@@ -12,37 +12,65 @@ struct PlayButton: View {
 	
 	let mediaItem: any MediaItem
 	
-	var text: String {
+	var playType: PlayType {
 		if mediaItem.isWatched {
-			return "Play Again"
+			return PlayType.playAgain
 		}
 		
 		switch mediaItem {
 			case let tvShow as TvShow :
 				if tvShow.episodes.allSatisfy({ !$0.isWatched }) {
-					return "Play"
+					return PlayType.play
 				}
-				return "Play Next Episode"
+				if let firstUnwatchedEpisode = tvShow.episodes.filter({ !$0.isWatched }).first {
+					if firstUnwatchedEpisode.progressMinutes != 0 {
+						return PlayType.resumeCurrentEpisode
+					}
+				}
+				return PlayType.playNextEpisode
 			case let movie as Movie:
 				if movie.progressMinutes == 0 {
-					return "Play"
+					return PlayType.play
 				}
-				return "Resume"
+				return PlayType.resume
 			case let episode as Episode:
 				if episode.progressMinutes == 0 {
-					return "Play"
+					return PlayType.play
 				}
-				return "Resume"
+				return PlayType.resume
 			default:
-				return "Play"
+				return PlayType.play
 		}
 	}
 	
 	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = true
 	@Environment(\.openWindow) private var openWindow
+	@State private var isHovered: Bool = false
 	
     var body: some View {
-		Button(text, systemImage: "play.fill") { mediaItem.play(useInAppPlayer: useInAppPlayer, openWindow: openWindow) }
-			.buttonStyle(iOSBorderedProminentForMacOS())
+
+		if #available(macOS 26.0, *) {
+			Button(playType.text, systemImage: "play.fill", action: playAction)
+				.glassEffect(.clear.tint(.accentColor.opacity(isHovered ? 1 : 0.7)).interactive())
+				.onHover(perform: onHover)
+		} else {
+			Button(playType.text, systemImage: "play.fill", action: playAction)
+				.buttonStyle(iOSBorderedProminentForMacOS())
+		}
+
     }
+	
+	func playAction() {
+		if useInAppPlayer {
+			mediaItem.play(playType: playType, openWindow: openWindow)
+		} else {
+			mediaItem.playWithDefaultPlayer()
+		}
+	}
+	
+	private func onHover(isHovering: Bool) {
+		withAnimation {
+			isHovered = isHovering
+		}
+	}
 }

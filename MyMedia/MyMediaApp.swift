@@ -55,9 +55,9 @@ struct MyMediaApp: App {
 			}
 		}
 		
-		WindowGroup(for: [PersistentIdentifier].self) { ids in
-			if let ids = ids.wrappedValue {
-				VideoPlayerView(ids: ids, context: sharedModelContainer.mainContext)
+		WindowGroup(for: PlayAction.self) { playAction in
+			if let playAction = playAction.wrappedValue {
+				VideoPlayerView(playAction: playAction, context: sharedModelContainer.mainContext)
 					.frame(idealWidth: 960, idealHeight: 540)
 					.toolbar(removing: .title)
 					.toolbarBackground(.hidden, for: .windowToolbar)

@@ -13,6 +13,7 @@ struct MovieDetailView: View {
 	private let titleAndData: String
 	
 	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
+	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
 	
 	@Environment(\.modelContext) private var moc
 	@Environment(\.dismiss) private var dismiss
@@ -27,6 +28,7 @@ struct MovieDetailView: View {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .center, spacing: 20) {
 					ArtworkView(imageData: movie.artwork, title: movie.title, subtitle: "(\(String(movie.year)))")
+						.overlay { if playButtonInArtwork { PlayButtonOverlayView(mediaItem: movie) } }
 					
 					VStack(alignment: .leading, spacing: 5) {
 						Spacer()
@@ -73,8 +75,10 @@ struct MovieDetailView: View {
 					
 					Spacer()
 					
-					PlayButton(mediaItem: movie)
-						.keyboardShortcut("p", modifiers: .command)
+					if !playButtonInArtwork {
+						PlayButton(mediaItem: movie)
+							.keyboardShortcut("p", modifiers: .command)
+					}
 				}
 			}
 			.listRowSeparator(.hidden)

@@ -8,7 +8,7 @@ import SwiftUI
 import AVKit
 
 extension EnvironmentValues{
-	@Entry var mediaContext: MediaContext = .normal
+	@Entry var mediaContext: MediaContext = .single
 }
 
 extension AVPlayerViewControlsStyle {

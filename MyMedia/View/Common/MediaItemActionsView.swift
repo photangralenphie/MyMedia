@@ -73,7 +73,7 @@ struct MediaItemActionsView: View {
 		if case let tvShow as TvShow = mediaItem, tvShow.episodes.count == 0 {
 			// Show button only if tvShow has episodes
 		} else {
-			Button("Play with default Player", systemImage: "play.rectangle.on.rectangle.fill") { mediaItem.play(useInAppPlayer: false) }
+			Button("Play with default Player", systemImage: "play.rectangle.on.rectangle.fill") { mediaItem.playWithDefaultPlayer() }
 				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: [.command, .shift]) : nil)
 		}
     }

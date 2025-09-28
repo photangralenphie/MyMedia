@@ -16,6 +16,7 @@ struct VideoPlayerView: View {
 	
 	@State private var errorText: String = ""
 	@State private var showErrorSheet: Bool = false
+	private var playType: PlayType
 	
 	@State private var queue: [any IsWatchable]
 	@State private var currentWatchable: (any IsWatchable)?
@@ -29,9 +30,9 @@ struct VideoPlayerView: View {
 	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
 	@AppStorage(PreferenceKeys.playerStyle) private var playerStyle: AVPlayerViewControlsStyle = .floating
 	
-	init(ids: [PersistentIdentifier], context: ModelContext) {
+	init(playAction: PlayAction, context: ModelContext) {
 		var initQueue: [any IsWatchable] = []
-		for id in ids {
+		for id in playAction.identifiers {
 			let object = context.model(for: id)
 			if(object is (any IsWatchable)) {
 				initQueue.append(object as! (any IsWatchable))
@@ -41,10 +42,12 @@ struct VideoPlayerView: View {
 		if initQueue.isEmpty {
 			self.currentWatchable = nil
 			self.queue = []
+			self.playType = .play
 			return
 		}
 		
 		self.queue = initQueue
+		self.playType = playAction.playType
 	}
 	
 	var body: some View {
@@ -90,6 +93,11 @@ struct VideoPlayerView: View {
 		currentWatchable = queue.removeFirst()
 		player.preventsDisplaySleepDuringVideoPlayback = true
 		player.play()
+		
+		if playType == .resume || playType == .resumeCurrentEpisode {
+			let progressSeconds = Double((currentWatchable?.progressMinutes ?? 0) * 60)
+			self.player.seek(to: CMTime(seconds: progressSeconds, preferredTimescale: 1))
+		}
 	}
 	
 	func videoDidFinish() {

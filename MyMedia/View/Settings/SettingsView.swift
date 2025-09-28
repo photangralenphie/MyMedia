@@ -11,14 +11,19 @@ import AVKit
 
 struct SettingsView: View {
 
-	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = true
-	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
-	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
-	@AppStorage(PreferenceKeys.playerStyle) private var playerStyle: AVPlayerViewControlsStyle = .floating
+	// General Tab
 	@AppStorage(PreferenceKeys.autoQuit) private var autoQuit: Bool = false
-	@AppStorage(PreferenceKeys.downSizeArtwork) private var downSizeArtwork: Bool = true
-	@AppStorage(PreferenceKeys.preferShortDescription) private var preferShortDescription: Bool = false
+	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
 	
+	// Player Tab
+	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
+	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = true
+	@AppStorage(PreferenceKeys.playerStyle) private var playerStyle: AVPlayerViewControlsStyle = .floating
+
+	// Metadata
+	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
+	@AppStorage(PreferenceKeys.preferShortDescription) private var preferShortDescription: Bool = false
+	@AppStorage(PreferenceKeys.downSizeArtwork) private var downSizeArtwork: Bool = true
 	@AppStorage(PreferenceKeys.downSizeArtworkWidth) private var downSizeArtworkWidth: Int = 1000
 	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1000
 	
@@ -26,9 +31,22 @@ struct SettingsView: View {
 		TabView {
 			Tab("General", systemImage: "gearshape") {
 				Form {
-					Toggle("Auto Quit", isOn: $autoQuit)
-					Text("Automatically quit the app when the last window is closed.")
-						.settingDescriptionTextStyle()
+					Section("App Behaviour") {
+						Toggle("Auto Quit", isOn: $autoQuit)
+						Text("Automatically quit the app when the last window is closed.")
+							.settingDescriptionTextStyle()
+					}
+					
+					SettingsDivider()
+					
+					Section("User Interface") {
+						Picker("Play Button", selection: $playButtonInArtwork) {
+							Label("In Artwork", systemImage: "play.rectangle")
+								.tag(true)
+							Label("As separate Button", systemImage: "play.square.fill")
+								.tag(false)
+						}
+					}
 				}
 			}
 			

@@ -14,7 +14,8 @@ struct TvShowDetailView: View {
 	private let titleAndData: String
 	private let episodes: [[Episode]]
 
-
+	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = false
+	
 	init(tvShow: TvShow) {
 		self.tvShow = tvShow
 		self.titleAndData = "\(tvShow.title) (\(String(tvShow.year)))"
@@ -31,6 +32,7 @@ struct TvShowDetailView: View {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .bottom, spacing: 20) {
 					ArtworkView(imageData: tvShow.artwork, title: tvShow.title, subtitle: "(\(String(tvShow.year)))")
+						.overlay { if playButtonInArtwork { PlayButtonOverlayView(mediaItem: tvShow) } }
 					VStack(alignment: .leading, spacing: 5) {
 						Text(tvShow.title)
 							.font(.largeTitle)
@@ -54,8 +56,10 @@ struct TvShowDetailView: View {
 					
 					Spacer()
 					
-					PlayButton(mediaItem: tvShow)
-						.keyboardShortcut("p", modifiers: .command)
+					if !playButtonInArtwork {
+						PlayButton(mediaItem: tvShow)
+							.keyboardShortcut("p", modifiers: .command)
+					}
 				}
 				
 				if let description = MetadataUtil.getDescription(mediaItem: tvShow) {
@@ -77,8 +81,14 @@ struct TvShowDetailView: View {
 									let episodeImage = Image(nsImage: nsImageFromData)
 										.resizable()
 										.scaledToFit()
-										.frame(width: 150)
-										.clipShape(.rect(cornerRadius: 10, style: .continuous))
+										.frame(width: LayoutConstants.artworkWidth / 2)
+										.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius / 2, style: .continuous))
+										.overlay {
+											if playButtonInArtwork {
+												let height = nsImageFromData.size.height * (CGFloat(LayoutConstants.artworkWidth / 2) / nsImageFromData.size.width)
+												PlayButtonOverlayView(mediaItem: episode, width: LayoutConstants.artworkWidth / 2, height: height)
+											}
+										}
 									
 									if #available(macOS 26.0, *) {
 										episodeImage
@@ -107,7 +117,9 @@ struct TvShowDetailView: View {
 								
 								Text(MetadataUtil.formatRuntime(minutes: episode.durationMinutes))
 								
-								PlayButton(mediaItem: episode)
+								if !playButtonInArtwork {
+									PlayButton(mediaItem: episode)
+								}
 							}
 							.padding(.vertical, 5)
 							.contextMenu {

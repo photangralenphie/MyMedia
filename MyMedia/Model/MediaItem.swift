@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 protocol IsPinnable {
 	var id: UUID { get }
@@ -103,29 +104,32 @@ extension MediaItem {
 	}
 	
 	@MainActor
-	func play(useInAppPlayer: Bool, openWindow: OpenWindowAction? = nil) {
-		if let openWindow, useInAppPlayer {
-			switch self {
-				case let tvShow as TvShow :
-					openWindow(value: tvShow.findEpisodesToPlay().map(\.persistentModelID))
-				case let movie as Movie:
-					openWindow(value: [movie.persistentModelID])
-				case let episode as Episode:
-					openWindow(value: [episode.persistentModelID])
-				default: break
-			}
-		} else {
-			switch self {
-				case let tvShow as TvShow :
-					if let url = tvShow.findEpisodesToPlay().first?.url {
-						NSWorkspace.shared.open(url)
-					}
-				case let isWatchable as any IsWatchable:
-					if let url = isWatchable.url {
-						NSWorkspace.shared.open(url)
-					}
-				default: break
-			}
+	func play(playType: PlayType, openWindow: OpenWindowAction) {
+		let ids: [PersistentIdentifier] = switch self {
+			case let tvShow as TvShow :
+				tvShow.findEpisodesToPlay().map(\.persistentModelID)
+			case let movie as Movie:
+				[movie.persistentModelID]
+			case let episode as Episode:
+				[episode.persistentModelID]
+			default: []
+		}
+		
+		let playAction = PlayAction(identifiers: ids, playType: playType)
+		openWindow(value: playAction)
+	}
+	
+	func playWithDefaultPlayer() {
+		switch self {
+			case let tvShow as TvShow :
+				if let url = tvShow.findEpisodesToPlay().first?.url {
+					NSWorkspace.shared.open(url)
+				}
+			case let isWatchable as any IsWatchable:
+				if let url = isWatchable.url {
+					NSWorkspace.shared.open(url)
+				}
+			default: break
 		}
 	}
 }

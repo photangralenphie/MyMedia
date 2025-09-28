@@ -51,6 +51,7 @@ public struct PreferenceKeys {
 	public static let downSizeArtworkWidth: String = "downSizeArtworkWidth"
 	public static let downSizeArtworkHeight: String = "downSizeArtworkHeight"
 	public static let downSizeCollectionArtwork: String = "downSizeCollectionArtwork"
+	public static let playButtonInArtwork: String = "playButtonInArtwork"
 	public static let playerStyle: String = "playerStyle"
 	public static let preferShortDescription = "preferShortDescription"
 	public static let showLanguageFlags: String = "showLanguageFlags"

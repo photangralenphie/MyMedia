@@ -13,6 +13,7 @@ struct EpisodeDetailView: View {
 	let tvShow: TvShow
 	
 	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
+	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
 	
 	var body: some View {
 		
@@ -20,6 +21,7 @@ struct EpisodeDetailView: View {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .center, spacing: 20) {
 					ArtworkView(imageData: episode.artwork, title: episode.title, subtitle: "(\(String(episode.year)))")
+						.overlay { if playButtonInArtwork { PlayButtonOverlayView(mediaItem: episode) } }
 					
 					VStack(alignment: .leading, spacing: 5) {
 						Spacer()
@@ -55,8 +57,10 @@ struct EpisodeDetailView: View {
 					
 					Spacer()
 					
-					PlayButton(mediaItem: episode)
-						.keyboardShortcut("p", modifiers: .command)
+					if !playButtonInArtwork {
+						PlayButton(mediaItem: episode)
+							.keyboardShortcut("p", modifiers: .command)
+					}
 				}
 			}
 			.listRowSeparator(.hidden)
