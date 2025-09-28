@@ -143,19 +143,22 @@ extension IsWatchable {
 						relativeTo: nil,
 						bookmarkDataIsStale: &isStale
 					)
-					if isStale {
-						let newBookmark = try resolvedURL.bookmarkData(
-							options: [.securityScopeAllowOnlyReadAccess],
-							includingResourceValuesForKeys: nil,
-							relativeTo: nil
-						)
-						UserDefaults.standard.set(newBookmark, forKey: self.id.uuidString)
+					if isStale  {
+						if resolvedURL.startAccessingSecurityScopedResource() {
+							defer { resolvedURL.stopAccessingSecurityScopedResource() }
+							let newBookmark = try resolvedURL.bookmarkData(
+								options: [.securityScopeAllowOnlyReadAccess],
+								includingResourceValuesForKeys: nil,
+								relativeTo: nil
+							)
+							UserDefaults.standard.set(newBookmark, forKey: self.id.uuidString)
+						}
 					}
 					return resolvedURL
 				} catch {
 					let watchableTitel = self.title
 					Task { @MainActor in
-						CommandResource.shared.showError(message: "Failed to resolve bookmark for \(watchableTitel)", title: "Error accessing media file", errorCode: 1);
+						CommandResource.shared.showError(message: "Failed to resolve bookmark for \(watchableTitel).", title: "Error accessing media file", errorCode: 1);
 					}
 					return nil
 				}
