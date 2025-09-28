@@ -206,6 +206,26 @@
         }
       }
     },
+    "App Behaviour" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Verhalten"
+          }
+        }
+      }
+    },
+    "As separate Button" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Separarater Button"
+          }
+        }
+      }
+    },
     "Auto Quit" : {
       "localizations" : {
         "de" : {
@@ -548,12 +568,12 @@
         }
       }
     },
-    "Failed to resolve bookmark for %@" : {
+    "Failed to resolve bookmark for %@." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fehler beim auflösen des Bookmark for %@"
+            "value" : "Fehler beim auflösen des Bookmark for %@."
           }
         }
       }
@@ -604,6 +624,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Genres"
+          }
+        }
+      }
+    },
+    "Get Help" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hilfe erhalten"
           }
         }
       }
@@ -718,6 +748,16 @@
         }
       }
     },
+    "In Artwork" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Vorschaubild"
+          }
+        }
+      }
+    },
     "Inline" : {
       "localizations" : {
         "de" : {
@@ -828,6 +868,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Metadaten"
+          }
+        }
+      }
+    },
+    "Metadata help" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hilfe für Metadaten (Englisch)"
           }
         }
       }
@@ -949,12 +999,52 @@
         }
       }
     },
+    "Play" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergeben"
+          }
+        }
+      }
+    },
+    "Play Again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut Wiedergeben"
+          }
+        }
+      }
+    },
+    "Play Button" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe Button"
+          }
+        }
+      }
+    },
+    "Play next Episode" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächste Episode wiedergeben"
+          }
+        }
+      }
+    },
     "Play with default Player" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abspielen mit standard Player"
+            "value" : "Wiedergeben mit standard Player"
           }
         }
       }
@@ -1065,6 +1155,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bild entfernen"
+          }
+        }
+      }
+    },
+    "Resume" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsetzen"
+          }
+        }
+      }
+    },
+    "Resume Current Episode" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuelle Folge Fortsetzen"
           }
         }
       }
@@ -1285,6 +1395,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "In-App Player benutzen"
+          }
+        }
+      }
+    },
+    "User Interface" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzeroberfläche"
           }
         }
       }
