@@ -45,6 +45,8 @@ struct HomeView: View {
 	
 	@Environment(CommandResource.self) private var commandResource
 	
+	@Environment(\.openURL) private var openURL
+	
 	var pinnedItems: [any IsPinnable] {
 		(tvShows + movies + collections).filter({ $0.isPinned })
 	}
@@ -210,6 +212,7 @@ struct HomeView: View {
 		}
 		.alert(commandResource.errorTitle, isPresented: .constant(commandResource.errorMessage != nil)) {
 			Button("OK"){ commandResource.clearError() }
+			Button("Get Help") { openURL(URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Help-%E2%80%90-Error-Codes")!) }
 		} message: {
 			commandResource.errorMessage ?? Text("Unknown Error")
 		}

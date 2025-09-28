@@ -74,6 +74,10 @@ struct SettingsView: View {
 							}
 						}
 					}
+					
+					Link(destination: URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Tagging")!) {
+						Label("Metadata help", systemImage: "arrow.up.forward.square")
+					}
 				}
 			}
 		}
