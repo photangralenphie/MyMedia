@@ -36,6 +36,9 @@ struct MyMediaApp: App {
 					try? sharedModelContainer.mainContext.save()
 				}
 				.environment(commandResource)
+				.onAppear {
+					NSWindow.allowsAutomaticWindowTabbing = false
+				}
         }
 		.modelContainer(sharedModelContainer)
 		.commands {
@@ -53,6 +56,7 @@ struct MyMediaApp: App {
 			CommandGroup(replacing: .appInfo) {
 				Button("About", systemImage: "info.circle") { openWindow(id: "about") }
 			}
+			SidebarCommands()
 		}
 		
 		WindowGroup(for: PlayAction.self) { playAction in
