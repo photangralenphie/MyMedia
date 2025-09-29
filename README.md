@@ -23,6 +23,11 @@ It is currently not supported and planned to edit metadata directly in MyMedia.
     - English
     - German
 
+## Installation
+ 1. Open [Releases](https://github.com/photangralenphie/MyMedia/releases/) and download the latest MyMedia.dmg
+ 2. Open the downloaded file
+ 3. Drag MyMedia into the Applications folder.
+
 ## Roadmap
 These features are currently planned (not in a particular order):
  - [x] ~~Collections: Group several movies or TV Shows together.~~ (V1.1)
