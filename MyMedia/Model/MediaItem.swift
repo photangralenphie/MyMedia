@@ -206,5 +206,12 @@ extension IsWatchable {
 			url.stopAccessingSecurityScopedResource()
 		}
 	}
+	
+	@MainActor
+	func openInFinder() {
+		guard let url = self.url, url.startAccessingSecurityScopedResource() else { return }
+		NSWorkspace.shared.activateFileViewerSelecting([url])
+		url.stopAccessingSecurityScopedResource()
+	}
 }
 

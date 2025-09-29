@@ -1099,16 +1099,6 @@
         }
       }
     },
-    "Re-import" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erneut importieren"
-          }
-        }
-      }
-    },
     "Release Date" : {
       "localizations" : {
         "de" : {
@@ -1259,6 +1249,16 @@
         }
       }
     },
+    "Show in Finder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Finder anzeigen"
+          }
+        }
+      }
+    },
     "Show Languages as Flags" : {
       "localizations" : {
         "de" : {
@@ -1385,6 +1385,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ungesehen"
+          }
+        }
+      }
+    },
+    "Update Metadata" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update Metadaten"
           }
         }
       }

@@ -62,13 +62,16 @@ struct MediaItemActionsView: View {
 		
 		Divider()
 		
-		if isSublerInstalled() {
-			if let isWatchable = mediaItem as? any IsWatchable {
+		if let isWatchable = mediaItem as? any IsWatchable {
+			if isSublerInstalled() {
 				Button("Open in Subler", systemImage: "square.and.arrow.up") { isWatchable.openInSubler() }
 			}
+		
+			Button("Show in Finder", systemImage: "finder") { isWatchable.openInFinder() }
 		}
 		
-		Button("Re-import", systemImage: "arrow.trianglehead.counterclockwise", action: reImportToLibrary)
+		
+		Button("Update Metadata", systemImage: "arrow.trianglehead.counterclockwise", action: reImportToLibrary)
 		
 		if case let tvShow as TvShow = mediaItem, tvShow.episodes.count == 0 {
 			// Show button only if tvShow has episodes
