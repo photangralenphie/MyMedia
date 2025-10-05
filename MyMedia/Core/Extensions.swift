@@ -29,3 +29,14 @@ extension AVPlayerViewControlsStyle {
 		return [.floating, .inline, .minimal]
 	}
 }
+
+extension View {
+	@ViewBuilder
+	func scrollEdgeSoftTopIfAvailable() -> some View {
+		if #available(macOS 26.0, *) {
+			self.scrollEdgeEffectStyle(.soft, for: .top)
+		} else {
+			self
+		}
+	}
+}

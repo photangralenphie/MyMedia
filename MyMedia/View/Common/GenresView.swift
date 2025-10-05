@@ -40,7 +40,6 @@ struct GenresView: View {
 					selectedGenre = oldValue
 				}
 			}
-			.frame(width: 200)
 			
 			Divider()
 			
@@ -57,5 +56,6 @@ struct GenresView: View {
 					.frame(maxWidth: .infinity)
 			}
 		}
+		.scrollEdgeSoftTopIfAvailable()
     }
 }
