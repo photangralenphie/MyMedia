@@ -20,7 +20,7 @@ struct VideoPlayerView: View {
 	
 	@State private var queue: [any IsWatchable]
 	@State private var currentWatchable: (any IsWatchable)?
-	private var player = AVQueuePlayer()
+	@State private var player = AVQueuePlayer()
 
 	@State private var currentNowPlayingWatchableId = UUID()
 	let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
@@ -89,7 +89,7 @@ struct VideoPlayerView: View {
 		if autoPlay {
 			player.actionAtItemEnd = .advance
 		}
-
+		
 		currentWatchable = queue.removeFirst()
 		player.preventsDisplaySleepDuringVideoPlayback = true
 		player.play()
