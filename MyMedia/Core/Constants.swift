@@ -18,6 +18,8 @@ public struct LayoutConstants {
 	
 	// Grid
 	public static let gridSpacing: CGFloat = 20
+	
+	private init() {}
 }
 
 public struct SystemImages {
@@ -26,6 +28,8 @@ public struct SystemImages {
 	public static let collections = "star.square.on.square"
 	
 	public static let genres = "theatermasks"
+	
+	private init() {}
 }
 
 public struct Tabs {
@@ -42,6 +46,8 @@ public struct Tabs {
 	public static let moviesSection: String = "moviesSection"
 	public static let tvShowsSection: String = "tvShowsSection"
 	public static let pinnedSection: String = "pinnedSection"
+	
+	private init() {}
 }
 
 public struct PreferenceKeys {
@@ -56,4 +62,6 @@ public struct PreferenceKeys {
 	public static let preferShortDescription = "preferShortDescription"
 	public static let showLanguageFlags: String = "showLanguageFlags"
 	public static let useInAppPlayer: String = "useInAppPlayer"
+	
+	private init() {}
 }

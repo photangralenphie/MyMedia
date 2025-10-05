@@ -17,7 +17,10 @@ struct MediaItemActionsView: View {
 
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 	
-	@Environment(\.modelContext) private var moc
+	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = false;
+	
+	@Environment(\.modelContext) private var modelContext
+	@Environment(\.openWindow) private var openWindow
 	@Environment(\.mediaContext) private var mediaContext
 	
     var body: some View {
@@ -76,7 +79,7 @@ struct MediaItemActionsView: View {
 		if case let tvShow as TvShow = mediaItem, tvShow.episodes.count == 0 {
 			// Show button only if tvShow has episodes
 		} else {
-			Button("Play with default Player", systemImage: "play.rectangle.on.rectangle.fill") { mediaItem.playWithDefaultPlayer() }
+			Button(useInAppPlayer ? "Play with default Player" : "Play with built-in Player", systemImage: "play.rectangle.on.rectangle.fill", action: playWithAlternatePlayer)
 				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: [.command, .shift]) : nil)
 		}
     }
@@ -84,11 +87,11 @@ struct MediaItemActionsView: View {
 	func removeFromLibrary() {
 		switch mediaItem {
 			case let movie as Movie:
-				moc.delete(movie)
+				modelContext.delete(movie)
 			case let tvShow as TvShow:
-				moc.delete(tvShow)
+				modelContext.delete(tvShow)
 			case let episode as Episode:
-				moc.delete(episode)
+				modelContext.delete(episode)
 			default:
 				break
 		}
@@ -108,12 +111,20 @@ struct MediaItemActionsView: View {
 	func reImportToLibrary() {
 		let currentMediaItem = mediaItem
 		Task {
-			let mediaImporter = MediaImporter(modelContainer: moc.container)
+			let mediaImporter = MediaImporter(modelContainer: modelContext.container)
 			do {
 				try await mediaImporter.updateMediaItem(mediaItem: currentMediaItem)
 			} catch let importError as ImportError {
 				MediaImporter.showImportError(importError)
 			}
+		}
+	}
+	
+	func playWithAlternatePlayer() {
+		if useInAppPlayer {
+			mediaItem.playWithDefaultPlayer()
+		} else {
+			mediaItem.play(playType: .play, openWindow: openWindow)
 		}
 	}
 }

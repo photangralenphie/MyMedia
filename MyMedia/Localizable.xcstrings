@@ -1039,6 +1039,16 @@
         }
       }
     },
+    "Play with built-in Player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergeben mit eingebautem Player"
+          }
+        }
+      }
+    },
     "Play with default Player" : {
       "localizations" : {
         "de" : {
