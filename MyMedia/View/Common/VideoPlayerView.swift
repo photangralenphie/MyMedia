@@ -72,6 +72,10 @@ struct VideoPlayerView: View {
 	}
 	
 	func createPlaybackQueue() {
+		if queue.isEmpty {
+			return
+		}
+		
 		let avItems = queue.compactMap {
 			if let url = $0.url {
 				if url.startAccessingSecurityScopedResource() {

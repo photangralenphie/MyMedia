@@ -82,6 +82,7 @@ struct MyMediaApp: App {
 		}
 		.windowResizability(.contentSize)
 		.restorationBehavior(.disabled)
+		.defaultLaunchBehavior(.suppressed)
 		
 		Settings {
 			SettingsView()
