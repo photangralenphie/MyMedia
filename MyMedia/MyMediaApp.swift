@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import AVKit
 
 @main
 struct MyMediaApp: App {
@@ -22,42 +21,21 @@ struct MyMediaApp: App {
         }
     }()
 	
-	@Environment(\.openWindow) var openWindow
-	
 	private var commandResource = CommandResource.shared
 	
 	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-	
 
     var body: some Scene {
         WindowGroup {
 			HomeView()
+				.environment(commandResource)
+				.onAppear { NSWindow.allowsAutomaticWindowTabbing = false }
 				.onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { _ in
 					try? sharedModelContainer.mainContext.save()
 				}
-				.environment(commandResource)
-				.onAppear {
-					NSWindow.allowsAutomaticWindowTabbing = false
-				}
         }
 		.modelContainer(sharedModelContainer)
-		.commands {
-			CommandGroup(replacing: .undoRedo) { EmptyView() }
-			CommandGroup(replacing: .systemServices) { EmptyView() }
-			CommandGroup(replacing: .pasteboard) { EmptyView() }
-			CommandGroup(replacing: .importExport) {
-				Button("Import Files", systemImage: "document.badge.plus") { commandResource.showFileImporter.toggle() }
-					.keyboardShortcut("i", modifiers: .command)
-					.labelStyle(.titleAndIcon)
-				Button("Import Directory", systemImage: "folder.badge.plus") { commandResource.showDirectoryImporter.toggle() }
-					.keyboardShortcut("i", modifiers: [.command, .shift])
-					.labelStyle(.titleAndIcon)
-			}
-			CommandGroup(replacing: .appInfo) {
-				Button("About", systemImage: "info.circle") { openWindow(id: "about") }
-			}
-			SidebarCommands()
-		}
+		.commands { MenuBarCommands(commandResource: commandResource) }
 		
 		WindowGroup(for: PlayAction.self) { playAction in
 			if let playAction = playAction.wrappedValue {
