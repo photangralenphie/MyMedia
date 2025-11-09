@@ -35,7 +35,7 @@ struct MediaItemActionsView: View {
 				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: .command) : nil)
 			
 			if !collections.isEmpty {
-				Menu("Add to Collection", systemImage: SystemImages.collections) {
+				Menu("Add to Collection", systemImage: Tabs.collections.systemImage) {
 					ForEach(collections) { collection in
 						Button {
 							collection.addMediaItem(mediaItem)

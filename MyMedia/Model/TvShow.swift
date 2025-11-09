@@ -8,6 +8,13 @@
 import SwiftData
 import Foundation
 
+fileprivate let miniSeriesGenres: Set<String> = [
+	// English
+	"Mini-Series", "Mini Series",
+	// German
+	"Mini Serie", "Miniserie", "Mini-Serie"
+]
+
 @Model
 class TvShow: HasGenre {
 	@Attribute(.unique) var id = UUID()
@@ -30,6 +37,10 @@ class TvShow: HasGenre {
 	
 	@Transient var networks: [String] {
 		return Array(Set(episodes.compactMap(\.network)))
+	}
+	
+	@Transient var isMiniSeries: Bool {
+		return !Set(genre).isDisjoint(with: miniSeriesGenres)
 	}
 	
 	init(title: String, year: Int, genre: [String], showDescription: String?, episodes: [Episode] = [], artwork: Data?) {

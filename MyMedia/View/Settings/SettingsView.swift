@@ -14,6 +14,7 @@ struct SettingsView: View {
 	// General Tab
 	@AppStorage(PreferenceKeys.autoQuit) private var autoQuit: Bool = false
 	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
+	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = true
 	
 	// Player Tab
 	@AppStorage(PreferenceKeys.autoPlay) private var autoPlay: Bool = true
@@ -33,12 +34,9 @@ struct SettingsView: View {
 				Form {
 					Section("App Behaviour") {
 						Toggle("Auto Quit", isOn: $autoQuit)
-						Text("Automatically quit the app when the last window is closed.")
-							.settingDescriptionTextStyle()
+							.settingDescription("Automatically quit the app when the last window is closed.")
 					}
-					
-					SettingsDivider()
-					
+		
 					Section("User Interface") {
 						Picker("Play Button", selection: $playButtonInArtwork) {
 							Label("In Artwork", systemImage: "play.rectangle")
@@ -46,8 +44,13 @@ struct SettingsView: View {
 							Label("As separate Button", systemImage: "play.square.fill")
 								.tag(false)
 						}
+						
+						Toggle("Mini-Series", isOn: $useMiniSeries)
+							.settingDescription("If enabled, a new entry in the sidebar appears which allows to only show Mini-(or Limited) Series.")
 					}
 				}
+				.frame(height: 300)
+				.formStyle(.grouped)
 			}
 			
 			Tab("Player", systemImage: "play.rectangle.on.rectangle.fill") {
@@ -55,53 +58,50 @@ struct SettingsView: View {
 					Toggle("AutoPlay next Episode", isOn: $autoPlay)
 					Toggle("Use in-app Player", isOn: $useInAppPlayer)
 					
-					SettingsDivider()
-					
 					Picker("Player Style", selection: $playerStyle) {
 						ForEach(AVPlayerViewControlsStyle.userSelectableStyles, id: \.self) { playerStyle in
 							Text(playerStyle.name)
 								.tag(playerStyle)
 						}
 					}
-					.frame(width: 180)
 				}
+				.frame(height: 160)
+				.formStyle(.grouped)
 			}
 			
 			Tab("Metadata", systemImage: "list.bullet.rectangle") {
 				Form {
 					Toggle("Show Languages as Flags", isOn: $showLanguageFlags)
 					Toggle("Prefer short Description", isOn: $preferShortDescription)
-					Text("If available show the short description of the media item.")
-						.settingDescriptionTextStyle()
+						.settingDescription("If available show the short description of the media item.")
 					
-					SettingsDivider()
-					
-					ImageDownsizeToggle(isOn: $downSizeArtwork)
-					
-					if downSizeArtwork {
-						LabeledContent("Max Size:") {
-							HStack {
-								TextField("Width", value: $downSizeArtworkWidth, format: .number)
-									.labelsHidden()
-									.frame(width: 50)
-								Text("x")
-								TextField("Height", value: $downSizeArtworkHeight, format: .number)
-									.labelsHidden()
-									.frame(width: 50)
+					Section("Artwork") {
+						ImageDownsizeToggle(isOn: $downSizeArtwork.animation())
+						
+						if downSizeArtwork {
+							LabeledContent("Max Size:") {
+								HStack {
+									TextField("Width", value: $downSizeArtworkWidth, format: .number)
+										.labelsHidden()
+										.frame(width: 50)
+									Text("x")
+									TextField("Height", value: $downSizeArtworkHeight, format: .number)
+										.labelsHidden()
+										.frame(width: 50)
+								}
 							}
 						}
 					}
-					
-					SettingsDivider()
 					
 					Link(destination: URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Tagging")!) {
 						Label("Metadata help", systemImage: "arrow.up.forward.square")
 					}
 				}
+				.frame(height: 310)
+				.formStyle(.grouped)
 			}
 		}
 		.frame(width: LayoutConstants.settingsWidth)
-		.scenePadding()
 	}
 }
 

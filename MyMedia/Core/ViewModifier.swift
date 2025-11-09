@@ -16,11 +16,23 @@ struct CreditHeadingStyle: ViewModifier {
 	}
 }
 
-struct SettingsDescriptionStyle: ViewModifier {
+fileprivate struct SettingsDescriptionStyle: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.font(.footnote)
 			.foregroundStyle(.secondary)
+	}
+}
+
+fileprivate struct SettingsDescription: ViewModifier {
+	let description: LocalizedStringKey
+	func body(content: Content) -> some View {
+		VStack(alignment: .leading) {
+			content
+			Text(description)
+				.font(.footnote)
+				.foregroundStyle(.secondary)
+		}
 	}
 }
 
@@ -66,5 +78,9 @@ extension View {
 	
 	func settingDescriptionTextStyle() -> some View {
 		self.modifier(SettingsDescriptionStyle())
+	}
+	
+	func settingDescription(_ description: LocalizedStringKey) -> some View {
+		self.modifier(SettingsDescription(description: description))
 	}
 }

@@ -19,11 +19,11 @@ extension IsPinnable {
 	var systemImageName: String {
 		switch self {
 			case is TvShow:
-				return SystemImages.tvShow
+				return Tabs.tvShows.systemImage
 			case is Movie:
-				return SystemImages.movie
+				return Tabs.movies.systemImage
 			case is MediaCollection:
-				return SystemImages.collections
+				return Tabs.collections.systemImage
 			default:
 				return "questionmark"
 		}

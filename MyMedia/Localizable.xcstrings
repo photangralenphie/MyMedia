@@ -186,6 +186,16 @@
         }
       }
     },
+    "All" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle"
+          }
+        }
+      }
+    },
     "All Movies" : {
       "localizations" : {
         "de" : {
@@ -212,6 +222,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App Verhalten"
+          }
+        }
+      }
+    },
+    "Artwork" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschaubild"
           }
         }
       }
@@ -362,6 +382,16 @@
         }
       }
     },
+    "Credits" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credts"
+          }
+        }
+      }
+    },
     "Credits:" : {
       "shouldTranslate" : false
     },
@@ -381,6 +411,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sammlung löschen"
+          }
+        }
+      }
+    },
+    "Description" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschreibung"
           }
         }
       }
@@ -658,12 +698,32 @@
         }
       }
     },
+    "Hide" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausblenden"
+          }
+        }
+      }
+    },
     "If available show the short description of the media item." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bevorzuge eine kurze Beschreibung - wenn verfügbar."
+          }
+        }
+      }
+    },
+    "If enabled, a new entry in the sidebar appears which allows to only show Mini-(or Limited) Series." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn aktiviert, erscheint in der Seitenleiste ein neuer Eintrag, mit dem sich nur Mini Serien anzeigen lassen"
           }
         }
       }
@@ -882,6 +942,16 @@
         }
       }
     },
+    "Mini-Series" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mini Serien"
+          }
+        }
+      }
+    },
     "Minimal" : {
       "localizations" : {
         "de" : {
@@ -937,6 +1007,12 @@
           }
         }
       }
+    },
+    "No matching Description" : {
+
+    },
+    "No matching Titles" : {
+
     },
     "No metadata found in file:\n\n%@\n\nPlease add metadata before importing." : {
       "localizations" : {
@@ -1159,6 +1235,9 @@
         }
       }
     },
+    "Results for: %@" : {
+
+    },
     "Resume" : {
       "localizations" : {
         "de" : {
@@ -1219,6 +1298,9 @@
         }
       }
     },
+    "Search Scope" : {
+
+    },
     "Season %@" : {
       "localizations" : {
         "de" : {
@@ -1275,6 +1357,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sprachen als Länderflaggen anzeigen"
+          }
+        }
+      }
+    },
+    "Sidebar Entries" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sidebar Einträge"
           }
         }
       }

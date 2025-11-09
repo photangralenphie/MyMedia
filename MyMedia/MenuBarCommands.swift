@@ -32,6 +32,13 @@ struct MenuBarCommands: Commands {
 			Button("About", systemImage: "info.circle") { openWindow(id: "about") }
 		}
 		
+		CommandGroup(after: .sidebar) {
+			Menu("Sidebar Entries", systemImage: "checklist") {
+				Toggle("Mini-Series", systemImage: "rectangle.stack.badge.play", isOn: $useMiniSeries)
+			}
+			Divider()
+		}
+		
 		SidebarCommands()
 		ToolbarCommands()
     }
