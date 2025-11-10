@@ -62,6 +62,9 @@ struct HomeView: View {
 		} message: {
 			commandResource.errorMessage ?? Text("Unknown Error")
 		}
+		.sheet(item: Bindable(commandResource).tvShowArtworkToEdit) { tvShow in
+			ArtworkSelectorView(tvShow: tvShow)
+		}
 //		.onKeyPress { keyPress in
 //			if keyPress.characters == "f" && keyPress.modifiers == [.command] {
 //				selectedTab = Tabs.search.id

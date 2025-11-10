@@ -16,13 +16,15 @@ class CommandResource {
 	public static let shared = CommandResource()
 	private init() { }
 	
-	
 	// Importing
 	public var showFileImporter: Bool = false
 	public var showDirectoryImporter: Bool = false
 	
 	// Collections
 	public var collectionEditVm: CollectionEditVm?
+
+	// TV Shows
+	public var tvShowArtworkToEdit: TvShow?
 	
 	// Error Handling - curent # of error codes: 10
 	private var _errorMessageLines: [LocalizedStringKey]?

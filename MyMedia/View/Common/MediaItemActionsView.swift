@@ -22,6 +22,7 @@ struct MediaItemActionsView: View {
 	@Environment(\.modelContext) private var modelContext
 	@Environment(\.openWindow) private var openWindow
 	@Environment(\.mediaContext) private var mediaContext
+	@Environment(CommandResource.self) private var commandResource
 	
     var body: some View {
 		Button(mediaItem.isWatched ? "Mark Unwatched" : "Mark Watched", systemImage: mediaItem.isWatched ? "eye.slash" : "eye") { mediaItem.toggleWatched() }
@@ -81,6 +82,12 @@ struct MediaItemActionsView: View {
 		} else {
 			Button(useInAppPlayer ? "Play with default Player" : "Play with built-in Player", systemImage: "play.rectangle.on.rectangle.fill", action: playWithAlternatePlayer)
 				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: [.command, .shift]) : nil)
+		}
+		
+		if case let tvShow as TvShow = mediaItem {
+			Button("Select Artwork", systemImage: "photo.badge.checkmark.fill"){
+				commandResource.tvShowArtworkToEdit = tvShow
+			}
 		}
     }
 	

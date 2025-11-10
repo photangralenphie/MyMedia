@@ -236,6 +236,16 @@
         }
       }
     },
+    "Artwork:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschaubild:"
+          }
+        }
+      }
+    },
     "As separate Button" : {
       "localizations" : {
         "de" : {
@@ -405,6 +415,16 @@
         }
       }
     },
+    "Deep Scan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiefe Suche"
+          }
+        }
+      }
+    },
     "Delete Collection" : {
       "localizations" : {
         "de" : {
@@ -461,6 +481,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Regisseur"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erledigt"
           }
         }
       }
@@ -1024,6 +1054,16 @@
         }
       }
     },
+    "None:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keins:"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "de" : {
@@ -1317,6 +1357,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Genre auswählen"
+          }
+        }
+      }
+    },
+    "Select Artwork" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschaubild auswählen"
           }
         }
       }

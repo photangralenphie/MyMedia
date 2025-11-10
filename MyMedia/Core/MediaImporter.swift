@@ -275,6 +275,16 @@ actor MediaImporter {
 		}
 	}
 	
+	public func getArtworks(url: URL?) async throws -> Data? {
+		if let url, url.startAccessingSecurityScopedResource() {
+			defer { url.stopAccessingSecurityScopedResource() }
+			
+			let (_, metadata) = try await getAssetAndMetadata(path: url)
+			return await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .tvPoster)
+		}
+		return nil
+	}
+	
 	private func getStringMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> String {
 		if let stringValue = await tryGetStringMetaDataValue(metadata: metadata, for: identifier) {
 			return stringValue
