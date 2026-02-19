@@ -397,8 +397,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/photangralenphie/AwesomeSwiftyComponents";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.10;
 			};
 		};
 		DDA200532DD8C21A00C1F7F8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
