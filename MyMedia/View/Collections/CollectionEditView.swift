@@ -7,7 +7,6 @@
 
 import SwiftUI
 import PhotosUI
-import AwesomeSwiftyComponents
 
 struct CollectionEditView: View {
 	

@@ -19,7 +19,6 @@ actor MediaImporter {
 	}
 	
 	public func importFromFile(path: URL) async throws {
-
 		let (asset, metadata) = try await getAssetAndMetadata(path: path)
 		
 		let kind = await self.tryGetIntMetaDataValue(metadata: metadata, for: "itsk/stik")
@@ -29,7 +28,7 @@ actor MediaImporter {
 		}
 		
 		if(kind == 9){
-			 try await readMovieMetadata(metadata: metadata, asset: asset)
+			try await readMovieMetadata(metadata: metadata, asset: asset)
 		}
 	
 		if(kind == 10) {
@@ -436,7 +435,7 @@ actor MediaImporter {
 	}
 	
 	private func getResolution(metadata: [AVMetadataItem]) async throws -> HDVideoQuality {
-		let resolutionIndex = await tryGetIntMetaDataValue(metadata: metadata, for: "itsk/hdvd") ?? 0 // When hd is not found it's SD quality
+		let resolutionIndex = await tryGetIntMetaDataValue(metadata: metadata, for: "itsk/hdvd") ?? HDVideoQuality.sd.rawValue // When hd is not found it's SD quality
 		return HDVideoQuality(rawValue: resolutionIndex) ?? .sd
 	}
 	

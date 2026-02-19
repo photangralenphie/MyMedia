@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AwesomeSwiftyComponents
 import AVKit
 
 struct SettingsView: View {

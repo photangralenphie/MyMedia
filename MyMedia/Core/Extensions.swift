@@ -14,14 +14,10 @@ extension EnvironmentValues{
 extension AVPlayerViewControlsStyle {
 	var name: LocalizedStringKey {
 		switch self {
-			case .inline:
-				return "Inline"
-			case .minimal:
-				return "Minimal"
-			case .floating:
-				return "Floating"
-			default:
-				return ""
+			case .inline: return "Inline"
+			case .minimal: return "Minimal"
+			case .floating: return "Floating"
+			default: return ""
 		}
 	}
 	

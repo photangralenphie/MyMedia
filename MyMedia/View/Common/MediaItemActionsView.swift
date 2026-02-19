@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AwesomeSwiftyComponents
 import SwiftData
 
 struct MediaItemActionsView: View {

@@ -7,9 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import AwesomeSwiftyComponents
-
-
 
 struct HomeView: View {
 	
