@@ -30,6 +30,9 @@ struct MenuBarCommands: Commands {
 		
 		CommandGroup(replacing: .appInfo) {
 			Button("About", systemImage: "info.circle") { openWindow(id: "about") }
+			Link(destination: URL(string: "https://github.com/photangralenphie/MyMedia")!) {
+				Label("Show on GitHub", systemImage: "chevron.left.forwardslash.chevron.right")
+			}
 		}
 		
 		CommandGroup(after: .sidebar) {
@@ -37,6 +40,13 @@ struct MenuBarCommands: Commands {
 				Toggle("Mini-Series", systemImage: "rectangle.stack.badge.play", isOn: $useMiniSeries)
 			}
 			Divider()
+		}
+		
+		CommandGroup(replacing: .help) {
+			Link(destination: URL(string: "https://github.com/photangralenphie/MyMedia/wiki")!) {
+				Label("MyMedia Help", systemImage: "lightbulb.led")
+			}
+			.keyboardShortcut("?", modifiers: .command)
 		}
 		
 		SidebarCommands()
