@@ -53,11 +53,18 @@ class TvShow: HasGenre {
 	}
 	
 	func findEpisodesToPlay() -> [Episode] {
-		let unwatched = self.episodes.filter{ !$0.isWatched }
+		let sortedEpisodes = self.episodes.sorted {
+			if $0.season == $1.season {
+				return $0.episode < $1.episode
+			}
+			return $0.season < $1.season
+		}
+		
+		let unwatched = sortedEpisodes.filter { !$0.isWatched }
 		if(unwatched.count > 0) {
 			return unwatched
 		} else {
-			return self.episodes
+			return sortedEpisodes
 		}
 	}
 }
