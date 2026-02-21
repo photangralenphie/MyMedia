@@ -18,6 +18,7 @@ struct HomeView: View {
 	
 	@AppStorage("selectedTab") private var selectedTab: String = Tabs.unwatched.id
 	@AppStorage("sidebarCustomizations") private var tabViewCustomization: TabViewCustomization
+	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = true
 	
 	@Environment(CommandResource.self) private var commandResource
 	@Environment(\.openURL) private var openURL
@@ -42,7 +43,9 @@ struct HomeView: View {
 			TabSection("TV Shows") {
 				TvShowsTab(tvShows: tvShows)
 				TvShowsGenresTab(tvShows: tvShows)
-				TvShowsMiniSeriesTab(tvShows: tvShows)
+				if useMiniSeries {
+					TvShowsMiniSeriesTab(tvShows: tvShows)
+				}
 			}
 			.customizationID(Tabs.tvShowsSection)
 			

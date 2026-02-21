@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TvShowsGenresTab: TabContent {
+struct TvShowsMiniSeriesTab: TabContent {
 	
 	let tvShows: [TvShow]
 	
@@ -31,7 +31,7 @@ struct TvShowsGenresTab: TabContent {
 		}
 		.contextMenu {
 			Button("Hide", systemImage: "eye.slash") {
-				useMiniSeries = false
+				withAnimation { useMiniSeries = false }
 			}
 		}
 	}

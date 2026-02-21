@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TvShowsMiniSeriesTab: TabContent {
+struct TvShowsGenresTab: TabContent {
 	
 	let tvShows: [TvShow]
 	
