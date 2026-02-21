@@ -100,6 +100,8 @@ jobs:
             -scheme "$SCHEME" \
             -configuration Release \
             -derivedDataPath build \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             clean build
