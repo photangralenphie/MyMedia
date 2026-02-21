@@ -147,7 +147,24 @@ jobs:
             --apple-id "$APPLE_ID" \
             --team-id "$APPLE_TEAM_ID" \
             --password "$APPLE_APP_SPECIFIC_PASSWORD" \
-            --wait
+            --wait \
+            --output-format json > notary-result.json
+
+          NOTARY_ID="$(plutil -extract id raw -o - notary-result.json)"
+          NOTARY_STATUS="$(plutil -extract status raw -o - notary-result.json)"
+          echo "Notarization ID: $NOTARY_ID"
+          echo "Notarization status: $NOTARY_STATUS"
+
+          if [[ "$NOTARY_STATUS" != "Accepted" ]]; then
+            echo "Notarization failed. Fetching detailed notary log..."
+            xcrun notarytool log "$NOTARY_ID" \
+              --apple-id "$APPLE_ID" \
+              --team-id "$APPLE_TEAM_ID" \
+              --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+              notary-log.json
+            cat notary-log.json
+            exit 1
+          fi
 
           xcrun stapler staple "dist/$APP_FILENAME"
 
