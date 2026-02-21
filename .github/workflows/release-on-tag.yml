@@ -22,7 +22,6 @@ jobs:
       SCHEME: MyMedia
       PROJECT_PATH: MyMedia.xcodeproj
       ENTITLEMENTS_PATH: MyMedia/MyMedia.entitlements
-      EULA_FILE: LICENSE
 
     steps:
       - name: Checkout
@@ -113,7 +112,6 @@ jobs:
             -derivedDataPath build \
             -skipMacroValidation \
             -skipPackagePluginValidation \
-            ASSETCATALOG_COMPILER_APPICON_NAME= \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             clean build
@@ -198,7 +196,6 @@ jobs:
 
           create-dmg \
             --volname "$APP_NAME" \
-            --eula "$EULA_FILE" \
             --window-size 600 400 \
             --icon-size 120 \
             --icon "$APP_FILENAME" 175 190 \

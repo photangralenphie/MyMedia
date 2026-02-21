@@ -69,10 +69,10 @@
               }
             }
           ],
-          "image-name" : "baseIconTriangle 2.svg",
+          "image-name" : "baseIconTriangle.png",
           "name" : "baseIconTriangle",
           "position" : {
-            "scale" : 0.16,
+            "scale" : 0.13,
             "translation-in-points" : [
               40,
               0
@@ -85,7 +85,7 @@
             "automatic-gradient" : "extended-gray:1.00000,1.00000"
           },
           "glass" : true,
-          "image-name" : "baseIconCircle.svg",
+          "image-name" : "baseIconCircle.png",
           "name" : "baseIconCircle"
         }
       ],
