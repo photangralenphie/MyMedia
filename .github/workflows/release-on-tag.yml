@@ -109,11 +109,12 @@ jobs:
             -sdk macosx \
             -destination 'platform=macOS' \
             -derivedDataPath build \
-            -skipMacroValidation \
-            -skipPackagePluginValidation \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Developer ID Application" \
-            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+              -skipMacroValidation \
+              -skipPackagePluginValidation \
+              ASSETCATALOG_COMPILER_APPICON_NAME= \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="Developer ID Application" \
+              DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
             clean build
 
       - name: Collect artifact
