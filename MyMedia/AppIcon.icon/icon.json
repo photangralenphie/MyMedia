@@ -15,9 +15,19 @@
             {
               "value" : {
                 "linear-gradient" : [
-                  "srgb:1.00000,0.69979,0.00000,1.00000",
-                  "srgb:1.00000,0.52214,0.00000,1.00000"
-                ]
+                  "srgb:1.00000,0.69020,0.00000,1.00000",
+                  "srgb:1.00000,0.52157,0.00000,1.00000"
+                ],
+                "orientation" : {
+                  "start" : {
+                    "x" : 0.5,
+                    "y" : 0.2600977565638869
+                  },
+                  "stop" : {
+                    "x" : 0.5,
+                    "y" : 1
+                  }
+                }
               }
             },
             {
@@ -26,17 +36,46 @@
                 "linear-gradient" : [
                   "extended-gray:0.25000,1.00000",
                   "extended-gray:0.00000,1.00000"
-                ]
+                ],
+                "orientation" : {
+                  "start" : {
+                    "x" : 0.5329867485219302,
+                    "y" : 0.19767991938543217
+                  },
+                  "stop" : {
+                    "x" : 0.5,
+                    "y" : 1
+                  }
+                }
+              }
+            },
+            {
+              "appearance" : "tinted",
+              "value" : {
+                "linear-gradient" : [
+                  "extended-gray:0.50000,1.00000",
+                  "extended-gray:0.25000,1.00000"
+                ],
+                "orientation" : {
+                  "start" : {
+                    "x" : 0.5,
+                    "y" : 0.13079309089995206
+                  },
+                  "stop" : {
+                    "x" : 0.5,
+                    "y" : 1
+                  }
+                }
               }
             }
           ],
-          "image-name" : "baseIconTriangle.svg",
+          "image-name" : "baseIconTriangle 2.svg",
           "name" : "baseIconTriangle",
           "position" : {
-            "scale" : 0.25,
+            "scale" : 0.16,
             "translation-in-points" : [
-              22,
-              -9
+              40,
+              0
             ]
           }
         },
