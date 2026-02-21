@@ -1,0 +1,155 @@
+name: Build, Notarize, and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag in format vMajor.minor.fix (example: v1.2.3)'
+        required: true
+        type: string
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-notarize-release:
+    runs-on: macos-latest
+    env:
+      APP_NAME: MyMedia
+      SCHEME: MyMedia
+      PROJECT_PATH: MyMedia.xcodeproj
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate tag and derive artifact names
+        shell: bash
+        env:
+          RELEASE_TAG_INPUT: ${{ github.event.inputs.release_tag }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            TAG="${RELEASE_TAG_INPUT}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
+
+          if [[ ! "$TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Invalid tag format: $TAG"
+            echo "Expected format: vMajor.minor.fix (example: v1.2.3)"
+            exit 1
+          fi
+
+          TAG_FOR_FILENAME="${TAG/./-}"
+          APP_FILENAME="${APP_NAME}-(${TAG_FOR_FILENAME}).app"
+          DMG_FILENAME="${APP_NAME}-(${TAG_FOR_FILENAME}).dmg"
+
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          echo "APP_FILENAME=$APP_FILENAME" >> "$GITHUB_ENV"
+          echo "DMG_FILENAME=$DMG_FILENAME" >> "$GITHUB_ENV"
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Import Developer ID certificate
+        env:
+          DEVELOPER_ID_APP_CERT_BASE64: ${{ secrets.DEVELOPER_ID_APP_CERT_BASE64 }}
+          DEVELOPER_ID_APP_CERT_PASSWORD: ${{ secrets.DEVELOPER_ID_APP_CERT_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          CERT_PATH="$RUNNER_TEMP/developer_id_app.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+
+          echo "$DEVELOPER_ID_APP_CERT_BASE64" | base64 -D > "$CERT_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$DEVELOPER_ID_APP_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security default-keychain -d user -s "$KEYCHAIN_PATH"
+
+      - name: Build Release app
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -euo pipefail
+
+          xcodebuild \
+            -project "$PROJECT_PATH" \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Developer ID Application" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            clean build
+
+      - name: Collect artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          APP_SOURCE="build/Build/Products/Release/${APP_NAME}.app"
+          if [[ ! -d "$APP_SOURCE" ]]; then
+            echo "Built app not found at $APP_SOURCE"
+            exit 1
+          fi
+
+          mkdir -p dist
+          cp -R "$APP_SOURCE" "dist/$APP_FILENAME"
+
+      - name: Notarize app and staple
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          APP_ZIP="dist/${APP_FILENAME}.zip"
+          ditto -c -k --sequesterRsrc --keepParent "dist/$APP_FILENAME" "$APP_ZIP"
+
+          xcrun notarytool submit "$APP_ZIP" \
+            --apple-id "$APPLE_ID" \
+            --team-id "$APPLE_TEAM_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+            --wait
+
+          xcrun stapler staple "dist/$APP_FILENAME"
+
+      - name: Create DMG
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p dmg-src
+          cp -R "dist/$APP_FILENAME" dmg-src/
+
+          create-dmg \
+            --volname "$APP_NAME" \
+            --window-size 600 400 \
+            --icon-size 120 \
+            --icon "$APP_FILENAME" 175 190 \
+            --app-drop-link 425 190 \
+            "dist/$DMG_FILENAME" \
+            "dmg-src"
+
+      - name: Create GitHub release and upload DMG
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Release ${{ env.TAG }}
+          draft: ${{ github.event_name == 'workflow_dispatch' }}
+          files: |
+            dist/${{ env.DMG_FILENAME }}
+          generate_release_notes: true
