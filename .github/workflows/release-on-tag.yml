@@ -21,7 +21,6 @@ jobs:
       APP_NAME: MyMedia
       SCHEME: MyMedia
       PROJECT_PATH: MyMedia.xcodeproj
-      ENTITLEMENTS_PATH: MyMedia/MyMedia.entitlements
       EULA_FILE: LICENSE
 
     steps:
@@ -89,18 +88,17 @@ jobs:
           echo "Available code signing identities in temp keychain:"
           security find-identity -v -p codesigning "$KEYCHAIN_PATH" || true
 
-          IDENTITY_LINE="$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep 'Developer ID Application:' | head -n 1 || true)"
-          SIGNING_IDENTITY="$(printf '%s\n' "$IDENTITY_LINE" | sed -E 's/.*\"([^\"]+)\".*/\1/')"
-          if [[ -z "$SIGNING_IDENTITY" ]]; then
+          if ! security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep -q 'Developer ID Application:'; then
             echo "No Developer ID Application signing identity found in imported keychain."
             echo "Make sure DEVELOPER_ID_APP_CERT_BASE64 is a .p12 exported from Keychain that includes the private key."
             exit 1
           fi
 
           echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
-          echo "SIGNING_IDENTITY=$SIGNING_IDENTITY" >> "$GITHUB_ENV"
 
       - name: Build Release app
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           set -euo pipefail
 
@@ -113,8 +111,9 @@ jobs:
             -derivedDataPath build \
             -skipMacroValidation \
             -skipPackagePluginValidation \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Developer ID Application" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
             clean build
 
       - name: Collect artifact
@@ -130,19 +129,6 @@ jobs:
 
           mkdir -p dist
           cp -R "$APP_SOURCE" "dist/$APP_FILENAME"
-
-      - name: Sign app with Developer ID
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          codesign --force --deep --options runtime --timestamp \
-            --keychain "$KEYCHAIN_PATH" \
-            --sign "$SIGNING_IDENTITY" \
-            --entitlements "$ENTITLEMENTS_PATH" \
-            "dist/$APP_FILENAME"
-
-          codesign --verify --deep --strict --verbose=2 "dist/$APP_FILENAME"
 
       - name: Notarize app and staple
         env:
