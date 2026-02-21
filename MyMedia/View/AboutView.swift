@@ -58,6 +58,10 @@ struct AboutView: View {
 						licence = .apache(name: "swift-collections", author: "Apple", year: currentYear)
 					}
 					
+					Button("swift-syntax") {
+						licence = .apache(name: "swift-syntax", author: "Apple", year: "2024")
+					}
+					
 					Button("swift-markdown-ui") {
 						licence = .mit(name: "swift-markdown-ui", author: "Guillermo Gonzalez", year: "2020")
 					}
