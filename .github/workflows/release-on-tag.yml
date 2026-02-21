@@ -21,6 +21,7 @@ jobs:
       APP_NAME: MyMedia
       SCHEME: MyMedia
       PROJECT_PATH: MyMedia.xcodeproj
+      ENTITLEMENTS_PATH: MyMedia/MyMedia.entitlements
       EULA_FILE: LICENSE
 
     steps:
@@ -88,17 +89,18 @@ jobs:
           echo "Available code signing identities in temp keychain:"
           security find-identity -v -p codesigning "$KEYCHAIN_PATH" || true
 
-          if ! security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep -q 'Developer ID Application:'; then
+          IDENTITY_LINE="$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep 'Developer ID Application:' | head -n 1 || true)"
+          SIGNING_IDENTITY="$(printf '%s\n' "$IDENTITY_LINE" | sed -E 's/.*\"([^\"]+)\".*/\1/')"
+          if [[ -z "$SIGNING_IDENTITY" ]]; then
             echo "No Developer ID Application signing identity found in imported keychain."
             echo "Make sure DEVELOPER_ID_APP_CERT_BASE64 is a .p12 exported from Keychain that includes the private key."
             exit 1
           fi
 
           echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+          echo "SIGNING_IDENTITY=$SIGNING_IDENTITY" >> "$GITHUB_ENV"
 
       - name: Build Release app
-        env:
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           set -euo pipefail
 
@@ -109,12 +111,11 @@ jobs:
             -sdk macosx \
             -destination 'platform=macOS' \
             -derivedDataPath build \
-              -skipMacroValidation \
-              -skipPackagePluginValidation \
-              ASSETCATALOG_COMPILER_APPICON_NAME= \
-              CODE_SIGN_STYLE=Manual \
-              CODE_SIGN_IDENTITY="Developer ID Application" \
-              DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            -skipMacroValidation \
+            -skipPackagePluginValidation \
+            ASSETCATALOG_COMPILER_APPICON_NAME= \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
             clean build
 
       - name: Collect artifact
@@ -130,6 +131,25 @@ jobs:
 
           mkdir -p dist
           cp -R "$APP_SOURCE" "dist/$APP_FILENAME"
+
+      - name: Sign app with Developer ID
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          codesign --force --deep --options runtime --timestamp \
+            --keychain "$KEYCHAIN_PATH" \
+            --sign "$SIGNING_IDENTITY" \
+            --entitlements "$ENTITLEMENTS_PATH" \
+            "dist/$APP_FILENAME"
+
+          codesign --verify --deep --strict --verbose=2 "dist/$APP_FILENAME"
+          codesign -d --entitlements :- "dist/$APP_FILENAME" > effective-entitlements.plist 2>/dev/null || true
+          if grep -q "com.apple.security.get-task-allow" effective-entitlements.plist; then
+            echo "get-task-allow entitlement is present after signing; cannot notarize."
+            cat effective-entitlements.plist
+            exit 1
+          fi
 
       - name: Notarize app and staple
         env:
