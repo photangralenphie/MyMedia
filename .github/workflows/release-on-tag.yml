@@ -26,6 +26,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Select latest Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
       - name: Validate tag and derive artifact names
         shell: bash
         env:
@@ -99,6 +107,8 @@ jobs:
             -project "$PROJECT_PATH" \
             -scheme "$SCHEME" \
             -configuration Release \
+            -sdk macosx \
+            -destination 'platform=macOS' \
             -derivedDataPath build \
             -skipMacroValidation \
             -skipPackagePluginValidation \
