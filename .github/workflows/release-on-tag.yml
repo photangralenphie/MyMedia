@@ -77,9 +77,14 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security default-keychain -d user -s "$KEYCHAIN_PATH"
 
-          SIGNING_IDENTITY="$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | sed -n 's/.*\"\\(Developer ID Application:.*\\)\"/\\1/p' | head -n 1)"
+          echo "Available code signing identities in temp keychain:"
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH" || true
+
+          IDENTITY_LINE="$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep 'Developer ID Application:' | head -n 1 || true)"
+          SIGNING_IDENTITY="$(printf '%s\n' "$IDENTITY_LINE" | sed -E 's/.*\"([^\"]+)\".*/\1/')"
           if [[ -z "$SIGNING_IDENTITY" ]]; then
             echo "No Developer ID Application signing identity found in imported keychain."
+            echo "Make sure DEVELOPER_ID_APP_CERT_BASE64 is a .p12 exported from Keychain that includes the private key."
             exit 1
           fi
 
