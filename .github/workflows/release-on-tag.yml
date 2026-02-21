@@ -21,6 +21,8 @@ jobs:
       APP_NAME: MyMedia
       SCHEME: MyMedia
       PROJECT_PATH: MyMedia.xcodeproj
+      ENTITLEMENTS_PATH: MyMedia/MyMedia.entitlements
+      EULA_FILE: LICENSE
 
     steps:
       - name: Checkout
@@ -53,9 +55,8 @@ jobs:
             exit 1
           fi
 
-          TAG_FOR_FILENAME="${TAG/./-}"
-          APP_FILENAME="${APP_NAME}-(${TAG_FOR_FILENAME}).app"
-          DMG_FILENAME="${APP_NAME}-(${TAG_FOR_FILENAME}).dmg"
+          APP_FILENAME="${APP_NAME}.app"
+          DMG_FILENAME="${APP_NAME}-${TAG}.dmg"
 
           echo "TAG=$TAG" >> "$GITHUB_ENV"
           echo "APP_FILENAME=$APP_FILENAME" >> "$GITHUB_ENV"
@@ -138,6 +139,7 @@ jobs:
           codesign --force --deep --options runtime --timestamp \
             --keychain "$KEYCHAIN_PATH" \
             --sign "$SIGNING_IDENTITY" \
+            --entitlements "$ENTITLEMENTS_PATH" \
             "dist/$APP_FILENAME"
 
           codesign --verify --deep --strict --verbose=2 "dist/$APP_FILENAME"
@@ -172,6 +174,7 @@ jobs:
 
           create-dmg \
             --volname "$APP_NAME" \
+            --eula "$EULA_FILE" \
             --window-size 600 400 \
             --icon-size 120 \
             --icon "$APP_FILENAME" 175 190 \
