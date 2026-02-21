@@ -34,6 +34,7 @@ struct MyMediaApp: App {
 					try? sharedModelContainer.mainContext.save()
 				}
         }
+		.defaultSize(width: 1200, height: 700)
 		.modelContainer(sharedModelContainer)
 		.commands { MenuBarCommands(commandResource: commandResource) }
 		
