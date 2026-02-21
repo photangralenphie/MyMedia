@@ -72,7 +72,7 @@
           "image-name" : "baseIconTriangle.png",
           "name" : "baseIconTriangle",
           "position" : {
-            "scale" : 0.13,
+            "scale" : 0.11,
             "translation-in-points" : [
               40,
               0
