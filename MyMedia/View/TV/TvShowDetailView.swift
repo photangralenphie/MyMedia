@@ -14,7 +14,7 @@ struct TvShowDetailView: View {
 	private let titleAndData: String
 	private let episodes: [[Episode]]
 
-	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = false
+	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
 	
 	init(tvShow: TvShow) {
 		self.tvShow = tvShow

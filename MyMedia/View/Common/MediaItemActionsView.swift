@@ -16,7 +16,7 @@ struct MediaItemActionsView: View {
 
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 	
-	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = false;
+	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = true
 	
 	@Environment(\.modelContext) private var modelContext
 	@Environment(\.openWindow) private var openWindow

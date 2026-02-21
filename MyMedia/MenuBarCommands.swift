@@ -12,7 +12,7 @@ struct MenuBarCommands: Commands {
 	let commandResource: CommandResource
 	
 	@Environment(\.openWindow) private var openWindow
-	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = false
+	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = true
 	
     var body: some Commands {
 		CommandGroup(replacing: .undoRedo) { EmptyView() }
