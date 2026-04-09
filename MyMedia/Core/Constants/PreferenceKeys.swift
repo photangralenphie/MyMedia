@@ -1,26 +1,10 @@
 //
-//  LayoutConstant.swift
+//  PreferenceKeys.swift
 //  MyMedia
 //
-//  Created by Jonas Helmer on 12.04.25.
+//  Created by Jonas Helmer on 10.04.26.
 //
 
-import CoreFoundation
-
-public struct LayoutConstants {
-	// Artwork
-	public static let cornerRadius: CGFloat = 20
-	public static let artworkWidth: CGFloat = 300
-	public static let artworkHeight: CGFloat = 168.75
-	
-	// Settings
-	public static let settingsWidth: CGFloat = 350
-	
-	// Grid
-	public static let gridSpacing: CGFloat = 20
-	
-	private init() {}
-}
 
 public struct PreferenceKeys {
 	public static let autoPlay: String = "autoPlay"

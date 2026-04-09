@@ -36,11 +36,11 @@ struct PlayButtonOverlayView: View {
 		return width * progress
 	}
 	
-	init(mediaItem: any MediaItem, width: CGFloat = LayoutConstants.artworkWidth, height: CGFloat = LayoutConstants.artworkHeight, scale: CGFloat = 1.0) {
+	init(mediaItem: any MediaItem, width: CGFloat = LayoutConstants.defaultArtworkWidth, height: CGFloat = LayoutConstants.defaultArtworkHeight, scale: CGFloat = 1.0) {
 		self.mediaItem = mediaItem
 		self.width = width * scale
 		self.height = height * scale
-		self.cornerRadius = LayoutConstants.cornerRadius * (width / LayoutConstants.artworkWidth) * scale
+		self.cornerRadius = LayoutConstants.cornerRadius * (width / LayoutConstants.defaultArtworkWidth) * scale
 	}
 	
 	private let progressBarHeight: CGFloat = 5

@@ -13,10 +13,7 @@ struct CollectionsView: View {
 	
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 	@State private var searchText: String = ""
-	
 	@Environment(CommandResource.self) private var commandResource
-
-	private let layout = [GridItem(.adaptive(minimum: 300), spacing: 20, alignment: .top)]
 
 	var filteredCollections: [MediaCollection] {
 		if searchText.isEmpty { return collections }
@@ -38,19 +35,19 @@ struct CollectionsView: View {
 		
 		NavigationStack {
 			ScrollView {
-				LazyVGrid(columns: layout, pinnedViews: [.sectionHeaders]) {
+				LazyVGrid(columns: LayoutConstants.gridLayout, pinnedViews: [.sectionHeaders]) {
 					ForEach(Array(groupedCollections.keys), id: \.self) { section in
 						Section {
 							ForEach(groupedCollections[section] ?? [], id: \.id) { collection in
-								CollectionCellView(collection: collection)
+								LayoutCellView(collection: collection, layout: .grid)
 							}
 
 						} header: {
 							LayoutSectionHeader(section: section)
-								.padding(.horizontal)
 						}
 					}
 				}
+				.padding(.horizontal, LayoutConstants.gridSpacing)
 			}
 			.searchable(text: $searchText, placement: .automatic, prompt: "Search")
 			.navigationTitle("Collections")
@@ -58,7 +55,7 @@ struct CollectionsView: View {
 				Button("Create Collection", systemImage: "plus", action: createCollection)
 			}
 			.sheet(item: Bindable(commandResource).collectionEditVm) { vm in
-				CollectionEditView(vm: vm )
+				CollectionEditView(vm: vm)
 			}
 		}
 	}

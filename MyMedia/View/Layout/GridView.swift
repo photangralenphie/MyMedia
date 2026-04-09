@@ -14,10 +14,8 @@ struct GridView: View {
 	let groupedMediaItems: OrderedDictionary<String, [any MediaItem]>
 	let filteredMediaItems: [any MediaItem]
 	
-	private let layout = [GridItem(.adaptive(minimum: LayoutConstants.artworkWidth), spacing: LayoutConstants.gridSpacing, alignment: .top)]
-	
     var body: some View {
-		LazyVGrid(columns: layout, pinnedViews: [.sectionHeaders]) {
+		LazyVGrid(columns: LayoutConstants.gridLayout, pinnedViews: [.sectionHeaders]) {
 			if useSections {
 				ForEach(Array(groupedMediaItems.keys), id: \.self) { section in
 					Section {

@@ -80,7 +80,7 @@ struct DetailListView: View {
 					.mediaItemDraggable(mediaItem: rowData.mediaItem)
 					.onTapGesture { selectedId = rowData.id }
 			}
-			.width(LayoutConstants.artworkWidth * 0.3)
+			.width(LayoutConstants.defaultArtworkWidth * 0.3)
 			
 			TableColumn("Title", value: \.title)
 			

@@ -18,6 +18,7 @@ struct CollectionEditView: View {
 	@Environment(\.modelContext) private var moc
 	
     var body: some View {
+		
 		Form {
 			Text(vm.sheetTitle)
 				.font(.title)

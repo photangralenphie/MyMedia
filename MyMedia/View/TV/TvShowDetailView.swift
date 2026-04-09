@@ -81,12 +81,12 @@ struct TvShowDetailView: View {
 									let episodeImage = Image(nsImage: nsImageFromData)
 										.resizable()
 										.scaledToFit()
-										.frame(width: LayoutConstants.artworkWidth / 2)
+										.frame(width: LayoutConstants.defaultArtworkWidth / 2)
 										.clipShape(.rect(cornerRadius: LayoutConstants.cornerRadius / 2, style: .continuous))
 										.overlay {
 											if playButtonInArtwork {
-												let height = nsImageFromData.size.height * (CGFloat(LayoutConstants.artworkWidth / 2) / nsImageFromData.size.width)
-												PlayButtonOverlayView(mediaItem: episode, width: LayoutConstants.artworkWidth / 2, height: height)
+												let height = nsImageFromData.size.height * (CGFloat(LayoutConstants.defaultArtworkWidth / 2) / nsImageFromData.size.width)
+												PlayButtonOverlayView(mediaItem: episode, width: LayoutConstants.defaultArtworkWidth / 2, height: height)
 											}
 										}
 									

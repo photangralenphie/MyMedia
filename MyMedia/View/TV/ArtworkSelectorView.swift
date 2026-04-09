@@ -26,7 +26,7 @@ struct ArtworkSelectorView: View {
 		self.tvShow = tvShow
 		
 		let scale = 0.65
-		self.pickerWidth = LayoutConstants.artworkWidth * scale + 20
+		self.pickerWidth = LayoutConstants.defaultArtworkWidth * scale + 20
 		self.scale = scale
 	}
 	

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AppKit
 
 struct MetadataUtil {
 	private init() { }

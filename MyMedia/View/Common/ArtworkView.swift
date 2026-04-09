@@ -21,7 +21,15 @@ struct ArtworkView: View {
 		self.title = title
 		self.subtitle = subtitle
 		self.cornerRadius = LayoutConstants.cornerRadius * scale
-		self.size = CGSize(width: LayoutConstants.artworkWidth * scale, height: LayoutConstants.artworkHeight * scale)
+		self.size = CGSize(width: LayoutConstants.defaultArtworkWidth * scale, height: LayoutConstants.defaultArtworkHeight * scale)
+	}
+	
+	init(imageData: Data?, title: String, subtitle: String, size: CGSize) {
+		self.imageData = imageData
+		self.title = title
+		self.subtitle = subtitle
+		self.cornerRadius = LayoutConstants.cornerRadius * (size.width / LayoutConstants.defaultArtworkWidth)
+		self.size = size
 	}
 	
 	var body: some View {
