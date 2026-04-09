@@ -22,26 +22,16 @@ enum Tabs: String, Hashable {
 	
 	var title: LocalizedStringKey {
 		switch self {
-			case .unwatched:
-				return LocalizedStringKey("Unwatched")
-			case .favorites:
-				return LocalizedStringKey("Favorites")
-			case .genres:
-				return LocalizedStringKey("Genres")
-			case .collections:
-				return LocalizedStringKey("Collections")
-			case .search:
-				return LocalizedStringKey("Search")
-			case .movies:
-				return LocalizedStringKey("All Movies")
-			case .moviesGenres:
-				return LocalizedStringKey("Genres")
-			case .tvShows:
-				return LocalizedStringKey("All TV Shows")
-			case .tvShowsGenres:
-				return LocalizedStringKey("Genres")
-			case .tvShowsMiniSeries:
-				return LocalizedStringKey("Mini-Series")
+			case .unwatched: "Unwatched"
+			case .favorites: "Favorites"
+			case .genres: "Genres"
+			case .collections: "Collections"
+			case .search: "Search"
+			case .movies: "All Movies"
+			case .moviesGenres: "Genres"
+			case .tvShows: "All TV Shows"
+			case .tvShowsGenres: "Genres"
+			case .tvShowsMiniSeries: "Mini-Series"
 		}
 	}
 	
@@ -49,26 +39,16 @@ enum Tabs: String, Hashable {
 	
 	var systemImage: String {
 		switch self {
-			case .unwatched:
-				return "eye.slash"
-			case .favorites:
-				return "star.fill"
-			case .genres:
-				return "theatermasks"
-			case .collections:
-				return "star.square.on.square"
-			case .search:
-				return "magnifyingglass"
-			case .movies:
-				return "movieclapper"
-			case .moviesGenres:
-				return Self.genres.systemImage
-			case .tvShows:
-				return "tv"
-			case .tvShowsGenres:
-				return Self.genres.systemImage
-			case .tvShowsMiniSeries:
-				return "rectangle.stack.badge.play"
+			case .unwatched: "eye.slash"
+			case .favorites: "star.fill"
+			case .genres: "theatermasks"
+			case .collections: "star.square.on.square"
+			case .search: "magnifyingglass"
+			case .movies: "movieclapper"
+			case .moviesGenres: Self.genres.systemImage
+			case .tvShows: "tv"
+			case .tvShowsGenres: Self.genres.systemImage
+			case .tvShowsMiniSeries: "rectangle.stack.badge.play"
 		}
 	}
 	

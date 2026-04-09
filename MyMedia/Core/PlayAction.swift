@@ -17,16 +17,11 @@ enum PlayType: Codable {
 	
 	var text: LocalizedStringKey {
 		switch self {
-			case .play:
-				return "Play"
-			case .resume:
-				return "Resume"
-			case .playAgain:
-				return "Play Again"
-			case .playNextEpisode:
-				return "Play next Episode"
-			case .resumeCurrentEpisode:
-				return "Resume Current Episode"
+			case .play: "Play"
+			case .resume: "Resume"
+			case .playAgain: "Play Again"
+			case .playNextEpisode: "Play next Episode"
+			case .resumeCurrentEpisode: "Resume Current Episode"
 		}
 	}
 }

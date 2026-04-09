@@ -18,14 +18,10 @@ protocol IsPinnable {
 extension IsPinnable {
 	var systemImageName: String {
 		switch self {
-			case is TvShow:
-				return Tabs.tvShows.systemImage
-			case is Movie:
-				return Tabs.movies.systemImage
-			case is MediaCollection:
-				return Tabs.collections.systemImage
-			default:
-				return "questionmark"
+			case is TvShow: Tabs.tvShows.systemImage
+			case is Movie: Tabs.movies.systemImage
+			case is MediaCollection: Tabs.collections.systemImage
+			default: "questionmark"
 		}
 	}
 }
@@ -68,17 +64,13 @@ extension MediaItem {
 
 		if calendar.isDateInToday(dateAdded) {
 			return "Today"
-		} else if let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now),
-				  dateAdded >= oneWeekAgo {
+		} else if let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now), dateAdded >= oneWeekAgo {
 			return "Last Week"
-		} else if let oneMonthAgo = calendar.date(byAdding: .month, value: -1, to: now),
-				  dateAdded >= oneMonthAgo {
+		} else if let oneMonthAgo = calendar.date(byAdding: .month, value: -1, to: now), dateAdded >= oneMonthAgo {
 			return "Last Month"
-		} else if let threeMonthsAgo = calendar.date(byAdding: .month, value: -3, to: now),
-				  dateAdded >= threeMonthsAgo {
+		} else if let threeMonthsAgo = calendar.date(byAdding: .month, value: -3, to: now), dateAdded >= threeMonthsAgo {
 			return "Last 3 Months"
-		} else if let oneYearAgo = calendar.date(byAdding: .year, value: -1, to: now),
-				  dateAdded >= oneYearAgo {
+		} else if let oneYearAgo = calendar.date(byAdding: .year, value: -1, to: now), dateAdded >= oneYearAgo {
 			return "Last Year"
 		} else {
 			return "Older"

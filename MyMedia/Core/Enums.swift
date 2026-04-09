@@ -19,32 +19,24 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 	
 	var title: LocalizedStringKey {
 		switch self {
-			case .title:
-				return LocalizedStringKey("Title")
-			case .releaseDate:
-				return LocalizedStringKey("Release Date")
-			case .dateAdded:
-				return LocalizedStringKey("Date Added")
+			case .title: LocalizedStringKey("Title")
+			case .releaseDate: LocalizedStringKey("Release Date")
+			case .dateAdded: LocalizedStringKey("Date Added")
 		}
 	}
 	
 	var systemImageName: String {
 		switch self {
-			case .title:
-				return "textformat.characters"
-			case .releaseDate:
-				return "calendar"
-			case .dateAdded:
-				return "plus.square.on.square"
+			case .title: "textformat.characters"
+			case .releaseDate: "calendar"
+			case .dateAdded: "plus.square.on.square"
 		}
 	}
 	
 	var pickerWidth: CGFloat {
 		switch self {
-			case .title:
-				return 70
-			default:
-				return 55
+			case .title: 70
+			default: 55
 		}
 	}
 	
@@ -58,23 +50,17 @@ enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 	
 	var title: LocalizedStringKey {
 		switch self {
-			case .grid:
-				return LocalizedStringKey("Grid")
-			case .list:
-				return LocalizedStringKey("List")
-			case .detailList:
-				return LocalizedStringKey("Detail List")
+			case .grid: LocalizedStringKey("Grid")
+			case .list: LocalizedStringKey("List")
+			case .detailList: LocalizedStringKey("Detail List")
 		}
 	}
 	
 	var symbolName: String {
 		switch self {
-			case .grid:
-				return "square.grid.2x2"
-			case .list:
-				return "list.bullet"
-			case .detailList:
-				return "tablecells"
+			case .grid: "square.grid.2x2"
+			case .list: "list.bullet"
+			case .detailList: "tablecells"
 		}
 	}
 	
@@ -103,12 +89,9 @@ enum ArtworkType {
 	
 	var index: Int {
 		switch self {
-			case .moviePoster:
-				return 0
-			case .tvPoster:
-				return 0
-			case .episodeImage:
-				return 1
+			case .moviePoster: 0
+			case .tvPoster: 0
+			case .episodeImage: 1
 		}
 	}
 }
@@ -121,10 +104,10 @@ enum HDVideoQuality: Int, Codable {
 	
 	var badgeTitle: String {
 		switch self {
-			case .sd: return "SD"
-			case .hd720p: return "Standard HD"
-			case .hd1080p: return "Full HD"
-			case .uhd4k: return "4K"
+			case .sd: "SD"
+			case .hd720p: "Standard HD"
+			case .hd1080p: "Full HD"
+			case .uhd4k: "4K"
 		}
 	}
 }
@@ -133,23 +116,26 @@ enum ImportError: LocalizedError {
 	case fileNotAccessible
 	case noMetadataFound(fileName: String)
 	case missingMetadata(type: String)
+	case failedToBuildCredits
 	case unknown(message: String)
 
 	var errorDescription: LocalizedStringKey {
 		switch self {
-			case .fileNotAccessible: return "Could not access file."
-			case .missingMetadata(let type): return metadataError(metadataType: type)
-			case .unknown(let message): return "Unknown Error while reading file:\n\n\(message)."
-			case .noMetadataFound(let fileName):  return "No metadata found in file:\n\n\(fileName)\n\nPlease add metadata before importing."
+			case .fileNotAccessible: "Could not access file."
+			case .missingMetadata(let type): metadataError(metadataType: type)
+			case .unknown(let message): "Unknown Error while reading file:\n\n\(message)."
+			case .failedToBuildCredits: "Failed to build credits."
+			case .noMetadataFound(let fileName): "No metadata found in file:\n\n\(fileName)\n\nPlease add metadata before importing."
 		}
 	}
 	
 	var errorCode: Int {
 		switch self {
-			case .fileNotAccessible: return 4
-			case .missingMetadata: return 5
-			case .unknown: return 6
-			case .noMetadataFound: return 7
+			case .fileNotAccessible: 4
+			case .missingMetadata: 5
+			case .unknown: 6
+			case .noMetadataFound: 7
+			case .failedToBuildCredits: 8
 		}
 	}
 	
