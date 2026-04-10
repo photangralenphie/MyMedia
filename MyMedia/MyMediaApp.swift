@@ -56,16 +56,7 @@ struct MyMediaApp: App {
 		.commandsRemoved()
 		.defaultLaunchBehavior(.suppressed)
 		
-		Window("About MyMedia", id: "about") {
-			AboutView()
-				.toolbar(removing: .title)
-				.toolbarBackground(.hidden, for: .windowToolbar)
-				.containerBackground(.regularMaterial, for: .window)
-				.windowMinimizeBehavior(.disabled)
-		}
-		.windowResizability(.contentSize)
-		.restorationBehavior(.disabled)
-		.defaultLaunchBehavior(.suppressed)
+		AboutWindow()
 		
 		Settings {
 			SettingsView()
