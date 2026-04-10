@@ -42,19 +42,7 @@ struct MyMediaApp: App {
 		.modelContainer(sharedModelContainer)
 		.commands { MenuBarCommands(commandResource: commandResource) }
 		
-		WindowGroup(for: PlayAction.self) { playAction in
-			if let playAction = playAction.wrappedValue {
-				VideoPlayerView(playAction: playAction, context: sharedModelContainer.mainContext)
-					.frame(idealWidth: 960, idealHeight: 540)
-					.toolbar(removing: .title)
-					.toolbarBackground(.hidden, for: .windowToolbar)
-					.ignoresSafeArea(edges: .top)
-			}
-		}
-		.defaultSize(width: 960, height: 540)
-		.windowStyle(.hiddenTitleBar)
-		.commandsRemoved()
-		.defaultLaunchBehavior(.suppressed)
+		VideoPlayerWindow(context: sharedModelContainer.mainContext)
 		
 		AboutWindow()
 		
