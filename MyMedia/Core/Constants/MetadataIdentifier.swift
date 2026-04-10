@@ -1,0 +1,23 @@
+//
+//  MetadataIdentifier.swift
+//  MyMedia
+//
+//  Created by Jonas Helmer on 10.04.26.
+//
+
+struct MetadataIdentifier {
+	public static let mediaKind = "itsk/stik"
+	public static let description = "itsk/desc"
+	public static let longDescription = "itsk/ldes"
+	public static let seriesDescription = "itsk/sdes"
+	public static let creditDict = "itlk/com.apple.iTunes.iTunMOVI" // TODO
+	public static let executiveProducers = "itsk/%A9xpd"
+	public static let rating = "itlk/com.apple.iTunes.iTunEXTC"
+	public static let seasonNumber = "itsk/tvsn"
+	public static let episodeNumber = "itsk/tves"
+	public static let network = "itsk/tvnn"
+	public static let genre = "itsk/gnre"
+	public static let resolution = "itsk/hdvd"
+	
+	private init() { }
+}
