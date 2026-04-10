@@ -10,7 +10,7 @@ import Foundation
 
 fileprivate let miniSeriesGenres: Set<String> = [
 	// English
-	"Mini-Series", "Mini Series",
+	"Mini-Series", "Mini Series", "Limited-Series", "Limited Series",
 	// German
 	"Mini Serie", "Miniserie", "Mini-Serie"
 ]
