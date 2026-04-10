@@ -10,7 +10,6 @@ import SwiftUI
 struct EpisodeDetailView: View {
 	
 	let episode: Episode
-	let tvShow: TvShow
 	
 	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
 	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
@@ -31,6 +30,8 @@ struct EpisodeDetailView: View {
 							.bold()
 						
 						Group {
+							Text("Season \(episode.season), Episode \(episode.episode)")
+							
 							Text(episode.releaseDate.formatted(date: .abbreviated, time: .omitted))
 								
 							if let studio = episode.studio {
@@ -87,7 +88,7 @@ struct EpisodeDetailView: View {
 				MediaItemActionsView(mediaItem: episode, applyShortcuts: true, onDelete: popNavigation)
 			}
 		}
-		.navigationTitle("\(episode.title) - \(tvShow.title)")
+		.navigationTitle("\(episode.title) - \(episode.tvShow.title)")
 	}
 	
 	func popNavigation() {

@@ -74,7 +74,7 @@ struct TvShowDetailView: View {
 				Section {
 					ForEach(season, id: \.id) { episode in
 						NavigationLink {
-							EpisodeDetailView(episode: episode, tvShow: tvShow)
+							EpisodeDetailView(episode: episode)
 						} label: {
 							HStack(alignment: .center) {
 								if let imageData = episode.artwork, let nsImageFromData = NSImage(data: imageData)  {

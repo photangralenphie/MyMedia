@@ -10,14 +10,17 @@ import SwiftData
 
 @Model
 class Episode: IsWatchable, HasCredits {
-	@Attribute(.unique) var id: UUID = UUID()
+	
+	@Attribute(.unique)
+	var id: UUID = UUID()
 	var dateAdded = Date.now
 	var isWatched: Bool = false
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
 	var progressMinutes: Int = 0
 	
-	@Transient var year: Int {
+	@Transient
+	var year: Int {
 		Calendar.current.component(.year, from: releaseDate)
 	}
 	
@@ -40,6 +43,7 @@ class Episode: IsWatchable, HasCredits {
 	var network: String?
 	var rating: String?
 	var languages: [String]
+	var tvShow: TvShow
 	
 	init(
 		artwork: Data?,
@@ -60,7 +64,8 @@ class Episode: IsWatchable, HasCredits {
 		studio: String?,
 		network: String?,
 		rating: String?,
-		languages: [String]
+		languages: [String],
+		tvShow: TvShow
 	) {
 		self.artwork = artwork
 		self.season = season
@@ -81,5 +86,6 @@ class Episode: IsWatchable, HasCredits {
 		self.network = network
 		self.rating = rating
 		self.languages = languages
+		self.tvShow = tvShow
 	}
 }

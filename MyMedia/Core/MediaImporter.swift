@@ -125,8 +125,8 @@ actor MediaImporter {
 			artwork: artwork
 		)
 	}
-	
-	private func createEpisodeFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Episode {
+
+	private func createEpisodeFromFile(metadata: [AVMetadataItem], asset: AVURLAsset, tvShow: TvShow) async throws -> Episode {
 		let artwork = await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .episodeImage)
 		let seasonNumber = try await self.getIntMetaDataValue(metadata: metadata, for: "itsk/tvsn")
 		let episodeNumber = try await self.getIntMetaDataValue(metadata: metadata, for: "itsk/tves")
@@ -168,6 +168,7 @@ actor MediaImporter {
 			network: network,
 			rating: rating,
 			languages: languages,
+			tvShow: tvShow
 		)
 		
 		episode.url = url
@@ -250,7 +251,7 @@ actor MediaImporter {
 			defer { url.stopAccessingSecurityScopedResource() }
 			
 			let (asset, metadata) = try await getAssetAndMetadata(path: url)
-			let update = try await createEpisodeFromFile(metadata: metadata, asset: asset)
+			let update = try await createEpisodeFromFile(metadata: metadata, asset: asset, tvShow: episode.tvShow)
 			
 			episode.artwork = update.artwork
 			episode.season = update.season
@@ -435,7 +436,7 @@ actor MediaImporter {
 	}
 	
 	private func getResolution(metadata: [AVMetadataItem]) async throws -> HDVideoQuality {
-		let resolutionIndex = await tryGetIntMetaDataValue(metadata: metadata, for: "itsk/hdvd") ?? HDVideoQuality.sd.rawValue // When hd is not found it's SD quality
+		let resolutionIndex = await tryGetIntMetaDataValue(metadata: metadata, for: MetadataIdentifier.resolution) ?? HDVideoQuality.sd.rawValue // When hd is not found it's SD quality
 		return HDVideoQuality(rawValue: resolutionIndex) ?? .sd
 	}
 	

@@ -11,7 +11,8 @@ import Foundation
 @Model
 public class MediaCollection: IsPinnable
 {
-	@Attribute(.unique) public var id: UUID = UUID()
+	@Attribute(.unique)
+	public var id: UUID = UUID()
 	var title: String
 	var collectionDescription: String?
 	var artwork: Data?
@@ -19,7 +20,8 @@ public class MediaCollection: IsPinnable
 	private var movies: [Movie] = []
 	private var episodes: [Episode] = []
 	
-	@Transient var mediaItems: [any MediaItem] {
+	@Transient
+	var mediaItems: [any MediaItem] {
 		(tvShows + movies + episodes).sorted { $0.title < $1.title }
 	}
 	
@@ -30,7 +32,8 @@ public class MediaCollection: IsPinnable
 	// Enum don't seem to work in lightweight migrations
 	// https://stackoverflow.com/questions/79255075/how-to-add-enum-field-to-my-swiftdata-model
 	private var viewPreferenceRawValue: Int = 0
-	@Transient var viewPreference: ViewOption {
+	@Transient
+	var viewPreference: ViewOption {
 		get {
 			ViewOption(rawValue: viewPreferenceRawValue) ?? .grid
 		}
@@ -40,7 +43,8 @@ public class MediaCollection: IsPinnable
 	}
 	var useSections = true
 	
-	@Transient var isWatched: Bool {
+	@Transient
+	var isWatched: Bool {
 		tvShows.allSatisfy(\.isWatched)
 	}
 	

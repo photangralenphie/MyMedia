@@ -17,7 +17,8 @@ fileprivate let miniSeriesGenres: Set<String> = [
 
 @Model
 class TvShow: HasGenre {
-	@Attribute(.unique) var id = UUID()
+	@Attribute(.unique)
+	var id = UUID()
 	
 	var dateAdded = Date.now
 	var title: String
@@ -28,18 +29,22 @@ class TvShow: HasGenre {
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
 	
-	@Relationship(deleteRule: .cascade) var episodes: [Episode]
+	@Relationship(deleteRule: .cascade, inverse: \Episode.tvShow)
+	var episodes: [Episode]
 	
-	@Transient var isWatched: Bool {
+	@Transient
+	var isWatched: Bool {
 		get { episodes.allSatisfy(\.isWatched) }
 		set { episodes.forEach { $0.isWatched = newValue } }
 	}
 	
-	@Transient var networks: [String] {
+	@Transient
+	var networks: [String] {
 		return Array(Set(episodes.compactMap(\.network)))
 	}
 	
-	@Transient var isMiniSeries: Bool {
+	@Transient
+	var isMiniSeries: Bool {
 		return !Set(genre).isDisjoint(with: miniSeriesGenres)
 	}
 	
