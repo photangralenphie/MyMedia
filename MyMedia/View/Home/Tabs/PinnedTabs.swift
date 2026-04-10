@@ -10,13 +10,17 @@ import SwiftUI
 struct PinnedTabs: TabContent {
 	
 	let tvShows: [TvShow]
+	let episodes: [Episode]
 	let movies: [Movie]
 	let collections: [MediaCollection]
 	
 	@Environment(\.modelContext) private var modelContext
 	
 	var pinnedItems: [any IsPinnable] {
-		(tvShows + movies + collections).filter({ $0.isPinned })
+		tvShows.filter({ $0.isPinned }) +
+		episodes.filter({ $0.isPinned }) +
+		movies.filter({ $0.isPinned }) +
+		collections.filter({ $0.isPinned })
 	}
 	
     var body: some TabContent<TabValue> {
@@ -42,19 +46,10 @@ struct PinnedTabs: TabContent {
 						.dropDestination(for: String.self) { ids in dropMediaItemOnCollection(target: collection, ids: ids) }
 						.contextMenu { unpinButton }
 						.customizationID(pinnedItem.id.uuidString)
-					} else {
+					} else if let pinnedItem = pinnedItem as? any MediaItem {
 						Tab(pinnedItem.title, systemImage: pinnedItem.systemImageName, value: pinnedItem.id.uuidString) {
 							NavigationStack {
-								switch pinnedItem {
-									case let tvShow as TvShow:
-										TvShowDetailView(tvShow: tvShow)
-											.id(tvShow.id.uuidString)
-									case let movie as Movie:
-										MovieDetailView(movie: movie)
-											.id(movie.id.uuidString)
-									default:
-										EmptyView()
-								}
+								MediaItemDestinationView(mediaItem: pinnedItem)
 							}
 						}
 						.contextMenu { unpinButton }

@@ -62,14 +62,7 @@ struct LayoutCellView: View {
     var body: some View {
 		NavigationLink {
 			if let mediaItem {
-				switch mediaItem {
-					case let tvShow as TvShow:
-						TvShowDetailView(tvShow: tvShow)
-					case let movie as Movie:
-						MovieDetailView(movie: movie)
-					default:
-						Text("Episodes are not supported in Grid view")
-				}
+				MediaItemDestinationView(mediaItem: mediaItem)
 			}
 			if let collection {
 				LayoutSwitchingView(

@@ -134,14 +134,8 @@ struct DetailListView: View {
 			}
 		}
 		.navigationDestination(item: $selectedId) { id in
-			let mediaItem = mediaItemsWrapper.first { $0.id == id }?.mediaItem
-			switch mediaItem {
-				case let tvShow as TvShow:
-					TvShowDetailView(tvShow: tvShow)
-				case let movie as Movie:
-					MovieDetailView(movie: movie)
-				default:
-					Text("Episodes are not supported in Grid view")
+			if let mediaItem = mediaItemsWrapper.first(where: { $0.id == id })?.mediaItem {
+				MediaItemDestinationView(mediaItem: mediaItem)
 			}
 		}
     }

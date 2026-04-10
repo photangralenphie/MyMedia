@@ -21,6 +21,7 @@ extension IsPinnable {
 			case is TvShow: Tabs.tvShows.systemImage
 			case is Movie: Tabs.movies.systemImage
 			case is MediaCollection: Tabs.collections.systemImage
+			case is Episode: "play.rectangle"
 			default: "questionmark"
 		}
 	}

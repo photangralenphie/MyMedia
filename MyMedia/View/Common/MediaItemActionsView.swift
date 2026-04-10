@@ -27,12 +27,12 @@ struct MediaItemActionsView: View {
 		Button(mediaItem.isWatched ? "Mark Unwatched" : "Mark Watched", systemImage: mediaItem.isWatched ? "eye.slash" : "eye") { mediaItem.toggleWatched() }
 			.keyboardShortcut(applyShortcuts ? KeyboardShortcut("w", modifiers: .command) : nil)
 		
+		Button(mediaItem.isPinned ? "Unpin" : "Pin", systemImage: mediaItem.isPinned ? "pin.slash" : "pin") { mediaItem.togglePinned() }
+			.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: .command) : nil)
+		
 		if !(mediaItem is Episode) {
 			Button(mediaItem.isFavorite ? "Remove from Favourites" : "Add to Favourites", systemImage: mediaItem.isFavorite ? "star.slash" : "star") { mediaItem.toggleFavorite() }
 				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("f", modifiers: [.shift, .command]) : nil)
-			
-			Button(mediaItem.isPinned ? "Unpin" : "Pin", systemImage: mediaItem.isPinned ? "pin.slash" : "pin") { mediaItem.togglePinned() }
-				.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: .command) : nil)
 			
 			if !collections.isEmpty {
 				Menu("Add to Collection", systemImage: Tabs.collections.systemImage) {
@@ -98,8 +98,7 @@ struct MediaItemActionsView: View {
 				modelContext.delete(tvShow)
 			case let episode as Episode:
 				modelContext.delete(episode)
-			default:
-				break
+			default: break
 		}
 		
 		onDelete()
