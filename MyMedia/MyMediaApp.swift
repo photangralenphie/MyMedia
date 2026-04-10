@@ -24,6 +24,10 @@ struct MyMediaApp: App {
 	private var commandResource = CommandResource.shared
 	
 	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+	
+	init() {
+		BookmarkStore.migrateLegacyBookmarksFromUserDefaultsIfNeeded()
+	}
 
     var body: some Scene {
         WindowGroup {

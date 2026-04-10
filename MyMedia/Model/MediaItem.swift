@@ -128,48 +128,52 @@ extension MediaItem {
 
 extension IsWatchable {
 	var url: URL? {
-		get {
-			let bookmarkData = UserDefaults.standard.data(forKey: self.id.uuidString)
-			var isStale = false
-			if let bookmarkData {
-				do {
-					let resolvedURL = try URL(
-						resolvingBookmarkData: bookmarkData,
-						options: [.withSecurityScope],
-						relativeTo: nil,
-						bookmarkDataIsStale: &isStale
-					)
-					if isStale  {
-						if resolvedURL.startAccessingSecurityScopedResource() {
-							defer { resolvedURL.stopAccessingSecurityScopedResource() }
-							let newBookmark = try resolvedURL.bookmarkData(
-								options: [.securityScopeAllowOnlyReadAccess],
-								includingResourceValuesForKeys: nil,
-								relativeTo: nil
-							)
-							UserDefaults.standard.set(newBookmark, forKey: self.id.uuidString)
-						}
-					}
-					return resolvedURL
-				} catch {
-					let watchableTitel = self.title
-					Task { @MainActor in
-						CommandResource.shared.showError(message: "Failed to resolve bookmark for \(watchableTitel).", title: "Error accessing media file", errorCode: 1);
-					}
-					return nil
-				}
-			}
-			return nil
-		}
-		set {
-			if let newValue {
-				let bookmarkData = try? newValue.bookmarkData(
-					options: [.securityScopeAllowOnlyReadAccess],
-					includingResourceValuesForKeys: nil,
-					relativeTo: nil
+		get { getUrl() }
+		set { setUrl(newValue) }
+	}
+	
+	private func getUrl() -> URL? {
+		let bookmarkData = BookmarkStore.getBookmark(forKey: self.id.uuidString)
+		var isStale = false
+		if let bookmarkData {
+			do {
+				let resolvedURL = try URL(
+					resolvingBookmarkData: bookmarkData,
+					options: [.withSecurityScope],
+					relativeTo: nil,
+					bookmarkDataIsStale: &isStale
 				)
-				UserDefaults.standard.set(bookmarkData, forKey: self.id.uuidString)
+				if isStale  {
+					if resolvedURL.startAccessingSecurityScopedResource() {
+						defer { resolvedURL.stopAccessingSecurityScopedResource() }
+						let newBookmark = try resolvedURL.bookmarkData(
+							options: [.securityScopeAllowOnlyReadAccess],
+							includingResourceValuesForKeys: nil,
+							relativeTo: nil
+						)
+						BookmarkStore.setBookmark(newBookmark, forKey: self.id.uuidString)
+					}
+				}
+				return resolvedURL
+			} catch {
+				let watchableTitel = self.title
+				Task { @MainActor in
+					CommandResource.shared.showError(message: "Failed to resolve bookmark for \(watchableTitel).", title: "Error accessing media file", errorCode: 1);
+				}
+				return nil
 			}
+		}
+		return nil
+	}
+	
+	private func setUrl(_ url: URL?) {
+		if let url {
+			let bookmarkData = try? url.bookmarkData(
+				options: [.securityScopeAllowOnlyReadAccess],
+				includingResourceValuesForKeys: nil,
+				relativeTo: nil
+			)
+			BookmarkStore.setBookmark(bookmarkData, forKey: self.id.uuidString)
 		}
 	}
 	
@@ -206,4 +210,3 @@ extension IsWatchable {
 		url.stopAccessingSecurityScopedResource()
 	}
 }
-
