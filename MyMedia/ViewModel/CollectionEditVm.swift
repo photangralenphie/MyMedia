@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import _PhotosUI_SwiftUI
+import PhotosUI
 
 struct LibraryImageData: Transferable {
 	let imageData: Data?
@@ -99,6 +99,8 @@ class CollectionEditVm: Identifiable {
 	
 	private func setMaxAndDownsizedResolution() {
 		guard let imageData, let image = NSImage(data: imageData) else {
+			originalImageSize = nil
+			downsizedImageSize = nil
 			imageSizeDescription = ""
 			return
 		}
@@ -113,20 +115,21 @@ class CollectionEditVm: Identifiable {
 			let downsizedHeight = Int(downsizedImageSize!.height)
 			imageSizeDescription = "\(originalWidth) x \(originalHeight) \(Image(systemName: "arrow.right")) \(downsizedWidth) x \(downsizedHeight)"
 		} else {
+			downsizedImageSize = nil
 			imageSizeDescription = "\(originalWidth) x \(originalHeight)"
 		}
 	}
 	
 	public func getFinalImageData() -> Data? {
-		if !downSizeImage {
-			return imageData
+		guard let imageData else {
+			return nil
 		}
-		
-		if let imageData, let downsizedImageSize {
+
+		if downSizeImage, let downsizedImageSize {
 			return MetadataUtil.downSizeImage(imageData: imageData, newSize: downsizedImageSize)
 		}
 		
-		return nil
+		return imageData
 	}
 	
 	public func loadImage() {
@@ -162,4 +165,3 @@ class CollectionEditVm: Identifiable {
 		}
 	}
 }
-
