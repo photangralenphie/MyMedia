@@ -1,0 +1,31 @@
+//
+//  NoSearchResultsView.swift
+//  MyMedia
+//
+//  Created by Jonas Helmer on 10.04.26.
+//
+
+import SwiftUI
+
+struct NoSearchResultsView: View {
+	
+	let preview: Bool
+	@Environment(SearchVm.self) private var searchVm
+	
+    var body: some View {
+		if preview {
+			Label("No Result", systemImage: "exclamationmark.magnifyingglass")
+		} else {
+			ContentUnavailableView.search(text: "No items with title \(searchVm.searchText) found")
+		}
+    }
+}
+
+#Preview {
+	VStack {
+		NoSearchResultsView(preview: true)
+		Divider()
+		NoSearchResultsView(preview: false)
+	}
+	.environment(SearchVm(mediaItems: []))
+}

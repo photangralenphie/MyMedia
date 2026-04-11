@@ -30,7 +30,7 @@ struct HomeView: View {
 				FavoritesTab(tvShows: tvShows, movies: movies)
 				GenresTab(tvShows: tvShows, movies: movies)
 				CollectionsTab()
-//				SearchTab(tvShows: tvShows, movies: movies, episodes: episodes)
+				SearchTab(tvShows: tvShows, movies: movies, episodes: episodes)
 			}
 			.customizationID(Tabs.generalSection)
 			
@@ -49,7 +49,7 @@ struct HomeView: View {
 			}
 			.customizationID(Tabs.tvShowsSection)
 			
-			PinnedTabs(tvShows: tvShows, movies: movies, collections: collections)
+			PinnedTabs(tvShows: tvShows, episodes: episodes, movies: movies, collections: collections)
 		}
 		.tabViewCustomization($tabViewCustomization)
 		.tabViewStyle(.sidebarAdaptable)
@@ -65,12 +65,13 @@ struct HomeView: View {
 		.sheet(item: Bindable(commandResource).tvShowArtworkToEdit) { tvShow in
 			ArtworkSelectorView(tvShow: tvShow)
 		}
-//		.onKeyPress { keyPress in
-//			if keyPress.characters == "f" && keyPress.modifiers == [.command] {
-//				selectedTab = Tabs.search.id
-//			}
-//
-//			return .handled
-//		}
+		.onKeyPress { keyPress in
+			if keyPress.characters == "f" && keyPress.modifiers == [.command] {
+				selectedTab = Tabs.search.id
+				return .handled
+			}
+
+			return .ignored
+		}
     }
 }

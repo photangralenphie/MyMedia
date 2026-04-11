@@ -17,6 +17,8 @@ class SearchVm {
 	var searchText: String = ""
 	var searchScope: SearchScope = .all
 	
+	var expandedText: AttributedString?
+	
 	var navigationTitle: LocalizedStringKey {
 		if searchText.isEmpty {
 			return "Search"
@@ -26,28 +28,8 @@ class SearchVm {
 	}
 	
 	var mediaItemsFilteredByTitle: [any MediaItem] {
-		mediaItems.filter {
-			return matchesQuery($0.title)
-		}
+		mediaItems.filter { matchesQuery($0.title) }
 	}
-	
-	var mediaItemsFilteredByDescription: [any MediaItem] {
-		mediaItems.filter {
-			if let description = MetadataUtil.getDescription(mediaItem: $0) {
-				return matchesQuery(description)
-			}
-			return false
-		}
-	}
-	
-//	var mediaItemsFilteredByAll: [(any HasCredits, String)] {
-//		var result: [(any HasCredits, String)] = []
-//		mediaItems.forEach { mediaItem in
-//			if let hasCredits = mediaItem as? any HasCredits {
-//				hasCredits.cast
-//			}
-//		}
-//	}
 	
 	init(mediaItems: [any MediaItem]) {
 		self.mediaItems = mediaItems
@@ -60,7 +42,6 @@ class SearchVm {
 	func matchesQuery(_ text: String) -> Bool {
 		return text.range(of: searchText, options: [.caseInsensitive, .diacriticInsensitive, .widthInsensitive]) != nil
 	}
-	
 	
 	static func highlightResult(_ text: String, matching query: String) -> AttributedString {
 		var attributedText = AttributedString(text)
