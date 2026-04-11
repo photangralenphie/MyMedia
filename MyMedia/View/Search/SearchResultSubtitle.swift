@@ -1,0 +1,37 @@
+//
+//  SearchResultSubtitle.swift
+//  MyMedia
+//
+//  Created by Jonas Helmer on 11.04.26.
+//
+
+import SwiftUI
+
+struct SearchResultSubtitle: View {
+	
+	let mediaItem: any MediaItem
+	
+    var body: some View {
+		if let subtitle = getSubtitle(for: mediaItem) {
+			Text(subtitle)
+				.font(.footnote)
+				.foregroundStyle(.secondary)
+		}
+    }
+	
+	func getSubtitle(for mediaItem: any MediaItem) -> String? {
+		switch mediaItem {
+			case let movie as Movie:
+				movie.releaseDate.formatted(date: .abbreviated, time: .omitted)
+			case let tvShow as TvShow:
+				String(localized: "\(String(tvShow.episodes.count)) Episodes")
+			case let episode as Episode:
+				String(localized: "Season \(String(episode.season)), Episode \(String(episode.episode)) from \(episode.tvShow.title)")
+			default: nil
+		}
+	}
+}
+
+#Preview {
+	SearchResultSubtitle(mediaItem: DebugData.items.first!)
+}

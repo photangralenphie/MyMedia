@@ -16,6 +16,7 @@ struct SearchView: View {
 	@State private var searchText: String = ""
 	
 	@State private var isTitlesOpen: Bool = true
+	@State private var isDescriptionOpen: Bool = true
 	
 	@State private var searchVm: SearchVm = SearchVm(mediaItems: [])
 	
@@ -33,8 +34,17 @@ struct SearchView: View {
 								scopeTitle("Title")
 							}
 							
+							DisclosureGroup(isExpanded: $isDescriptionOpen) {
+								SearchForDescriptionView(preview: true)
+							} label: {
+								scopeTitle("Description")
+							}
+							
 						case .title:
 							SearchForTitleView()
+							
+						case .description:
+							SearchForDescriptionView()
 					}
 				}
 				.listStyle(.sidebar)

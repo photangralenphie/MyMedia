@@ -24,6 +24,9 @@ public struct LayoutConstants {
 	public static let gridSpacing: CGFloat = 20
 	public static let gridLayout = [GridItem(.adaptive(minimum: LayoutConstants.gridMinArtworkWidth, maximum: LayoutConstants.gridMaxArtworkWidth), spacing: LayoutConstants.gridSpacing, alignment: .top)]
 	
+	// Search
+	public static let numPreviewSearchResults: Int = 5
+	
 	private init() {}
 }
 

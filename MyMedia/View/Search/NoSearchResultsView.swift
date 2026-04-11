@@ -15,6 +15,7 @@ struct NoSearchResultsView: View {
     var body: some View {
 		if preview {
 			Label("No Result", systemImage: "exclamationmark.magnifyingglass")
+				.foregroundStyle(.secondary)
 		} else {
 			ContentUnavailableView.search(text: "No items with title \(searchVm.searchText) found")
 		}
