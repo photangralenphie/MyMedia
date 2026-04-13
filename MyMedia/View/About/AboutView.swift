@@ -13,6 +13,8 @@ struct AboutView: View {
 	private let currentYear = "2026"
 	private let version: String
 	
+	private let aboutLeftWidth = CGFloat(100)
+	
 	@State private var licence: Licence?
 	@State private var showCmarkGfmLicense: Bool = false
 	@State private var cmarkGfmLicense: String
@@ -33,20 +35,39 @@ struct AboutView: View {
 	
 	var body: some View {
 		HStack {
-			Image(.about)
-				.resizable()
-				.scaledToFit()
-				.frame(width: 100, height: 100)
-				.padding(.trailing)
-				.onTapGesture(count: 5, perform: enableDeveloperMode)
+			VStack {
+				Image(.about)
+					.resizable()
+					.scaledToFit()
+					.frame(width: aboutLeftWidth, height: aboutLeftWidth)
+					.onTapGesture(count: 5, perform: enableDeveloperMode)
+				
+				LazyVGrid(columns: Array(repeating: GridItem(.fixed(45)), count: 2), spacing: 10) {
+					Button("Licence", systemImage: "c.circle") {
+						licence = .mit(name: "MyMedia", author: "Jonas Helmer", year: currentYear)
+					}
+					.buttonStyle(.plain)
+					WikiLink()
+					GitHubLink()
+				}
+				.frame(width: aboutLeftWidth)
+				.labelStyle(.linkButton)
+			}
+			.padding(.trailing)
 			
 			VStack(alignment: .leading) {
 				Text("MyMedia")
 					.font(.title)
+					.bold()
 				
-				Text("Version \(version)")
-					.font(.subheadline)
-					.foregroundStyle(.secondary)
+				Group {
+					Text("Version \(version)")
+					Text("© \(currentYear) [Jonas Helmer](https://github.com/photangralenphie)")
+				}
+				.font(.subheadline)
+				.foregroundStyle(.secondary)
+				
+				Divider()
 					.padding(.bottom)
 				
 				Text("Credits:")
@@ -84,16 +105,6 @@ struct AboutView: View {
 					.frame(maxWidth: .infinity, alignment: .leading)
 				}
 				.scrollIndicators(.visible)
-				
-				HStack {
-					Text("© \(currentYear) Jonas Helmer")
-						.foregroundStyle(.secondary)
-					Button("MIT Licence") {
-						licence = .mit(name: "MyMedia", author: "Jonas Helmer", year: currentYear)
-					}
-					.padding(.leading)
-				}
-				.padding(.top)
 			}
 			.sheet(item: $licence) { sheetLicence in
 				VStack{
@@ -108,13 +119,13 @@ struct AboutView: View {
 				VStack {
 					ScrollView {
 						Text(cmarkGfmLicense)
-							.padding()
 					}
-					.frame(minHeight: 400)
+					.scenePadding()
 					
 					Button("Close") { showCmarkGfmLicense.toggle() }
 						.padding(.bottom)
 				}
+				.frame(minHeight: 400)
 			}
 		}
 		.overlay(alignment: .bottom) {
