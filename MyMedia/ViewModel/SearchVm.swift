@@ -31,6 +31,15 @@ class SearchVm {
 		mediaItems.filter { matchesQuery($0.title) }
 	}
 	
+	var mediaItemsFilteredByDescription: [any MediaItem] {
+		mediaItems.filter {
+			if let description = MetadataUtil.getDescription(mediaItem: $0) {
+				return matchesQuery(description)
+			}
+			return false
+		}
+	}
+	
 	init(mediaItems: [any MediaItem]) {
 		self.mediaItems = mediaItems
 	}
