@@ -17,6 +17,9 @@ struct AboutView: View {
 	@State private var showCmarkGfmLicense: Bool = false
 	@State private var cmarkGfmLicense: String
 	
+	@AppStorage(PreferenceKeys.developerMode) private var developerMode: Bool = false
+	@State private var showDeveloperModeToast: Bool = false
+	
 	init(){
 		self.version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
 		
@@ -35,6 +38,7 @@ struct AboutView: View {
 				.scaledToFit()
 				.frame(width: 100, height: 100)
 				.padding(.trailing)
+				.onTapGesture(count: 5, perform: enableDeveloperMode)
 			
 			VStack(alignment: .leading) {
 				Text("MyMedia")
@@ -113,7 +117,34 @@ struct AboutView: View {
 				}
 			}
 		}
+		.overlay(alignment: .bottom) {
+			if showDeveloperModeToast {
+				let label = Label("Developer Mode \(developerMode ? "enabled" : "disabled")", systemImage: LayoutConstants.developerModeSymbol)
+					.padding()
+
+				if #available(macOS 26, *) {
+					label
+						.glassEffect()
+				} else {
+					label
+						.background(Material.thick)
+						.clipShape(.rect(cornerRadius: 10, style: .continuous))
+				}
+			}
+		}
     }
+
+	private func enableDeveloperMode() {
+		developerMode.toggle()
+		withAnimation {
+			showDeveloperModeToast = true
+			DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+				withAnimation {
+					showDeveloperModeToast = false
+				}
+			}
+		}
+	}
 }
 
 #Preview {

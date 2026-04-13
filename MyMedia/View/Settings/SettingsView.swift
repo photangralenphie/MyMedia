@@ -8,8 +8,18 @@
 import SwiftUI
 import AVKit
 
-struct SettingsView: View {
+enum SettingsTab: String {
+	case general
+	case player
+	case metadata
+	case developer
+}
 
+struct SettingsView: View {
+	
+	@State private var selectedTab = SettingsTab.general
+	@AppStorage(PreferenceKeys.developerMode) private var showDeveloperTab: Bool = false
+	
 	// General Tab
 	@AppStorage(PreferenceKeys.autoQuit) private var autoQuit: Bool = false
 	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
@@ -28,8 +38,8 @@ struct SettingsView: View {
 	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1000
 	
 	var body: some View {
-		TabView {
-			Tab("General", systemImage: "gearshape") {
+		TabView(selection: $selectedTab.animation()) {
+			Tab("General", systemImage: "gearshape", value: SettingsTab.general) {
 				Form {
 					Section("App Behaviour") {
 						Toggle("Auto Quit", isOn: $autoQuit)
@@ -49,10 +59,9 @@ struct SettingsView: View {
 					}
 				}
 				.frame(height: 300)
-				.formStyle(.grouped)
 			}
 			
-			Tab("Player", systemImage: "play.rectangle.on.rectangle.fill") {
+			Tab("Player", systemImage: "play.rectangle.on.rectangle.fill", value: SettingsTab.player) {
 				Form {
 					Toggle("AutoPlay next Episode", isOn: $autoPlay)
 					Toggle("Use in-app Player", isOn: $useInAppPlayer)
@@ -65,10 +74,9 @@ struct SettingsView: View {
 					}
 				}
 				.frame(height: 160)
-				.formStyle(.grouped)
 			}
 			
-			Tab("Metadata", systemImage: "list.bullet.rectangle") {
+			Tab("Metadata", systemImage: "list.bullet.rectangle", value: SettingsTab.metadata) {
 				Form {
 					Toggle("Show Languages as Flags", isOn: $showLanguageFlags)
 					Toggle("Prefer short Description", isOn: $preferShortDescription)
@@ -97,10 +105,16 @@ struct SettingsView: View {
 					}
 				}
 				.frame(height: 310)
-				.formStyle(.grouped)
+			}
+			
+			if showDeveloperTab {
+				Tab("Developer", systemImage: LayoutConstants.developerModeSymbol, value: SettingsTab.developer) {
+					DeveloperTab(settingsTab: $selectedTab, developerMode: $showDeveloperTab)
+				}
 			}
 		}
 		.frame(width: LayoutConstants.settingsWidth)
+		.formStyle(.grouped)
 	}
 }
 
