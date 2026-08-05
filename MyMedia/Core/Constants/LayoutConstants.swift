@@ -17,6 +17,7 @@ public struct LayoutConstants {
 	
 	// Settings
 	public static let settingsWidth: CGFloat = 350
+	public static let developerModeSymbol: String = "wrench.and.screwdriver"
 	
 	// Grid
 	public static let gridMinArtworkWidth: CGFloat = LayoutConstants.defaultArtworkWidth - 50

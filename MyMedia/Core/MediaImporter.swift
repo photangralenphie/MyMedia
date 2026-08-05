@@ -27,11 +27,11 @@ actor MediaImporter {
 			throw ImportError.noMetadataFound(fileName: path.lastPathComponent)
 		}
 		
-		if(kind == 9){
+		if(kind == MetadataIdentifier.movie){
 			try await readMovieMetadata(metadata: metadata, asset: asset)
 		}
 	
-		if(kind == 10) {
+		if(kind == MetadataIdentifier.tvShow) {
 			try await readTvMetadata(metaData: metadata, asset: asset, source: path)
 		}
 	}
@@ -47,7 +47,7 @@ actor MediaImporter {
 			modelContext.insert(show!)
 		}
 		
-		guard let show = show else {
+		guard let show else {
 			throw ImportError.unknown(message: "Something went wrong creating a TV show from file \(source.absoluteString)")
 		}
 		
@@ -193,7 +193,6 @@ actor MediaImporter {
 		}
 		
 		try modelContext.save()
-		try CreditsBuilder.rebuildCreditStore(context: modelContext)
 	}
 	
 	public func updateMovie(movie: Movie) async throws {
@@ -224,7 +223,7 @@ actor MediaImporter {
 		}
 	}
 	
-	public func updateTvShow(tvShow: TvShow) async throws {
+	private func updateTvShow(tvShow: TvShow) async throws {
 		if tvShow.episodes.count == 0 {
 			throw ImportError.unknown(message: "TV show has no episodes.")
 		}
@@ -247,7 +246,7 @@ actor MediaImporter {
 		}
 	}
 	
-	public func updateEpisode(episode: Episode) async throws {
+	private func updateEpisode(episode: Episode) async throws {
 		if let url = episode.url, url.startAccessingSecurityScopedResource() {
 			defer { url.stopAccessingSecurityScopedResource() }
 			

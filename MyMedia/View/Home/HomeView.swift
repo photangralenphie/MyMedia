@@ -53,9 +53,7 @@ struct HomeView: View {
 		}
 		.tabViewCustomization($tabViewCustomization)
 		.tabViewStyle(.sidebarAdaptable)
-		.tabViewSidebarBottomBar() {
-			ImportingView()
-		}
+		.tabViewSidebarBottomBar { ImportingView() }
 		.alert(commandResource.errorTitle, isPresented: .constant(commandResource.errorMessage != nil)) {
 			Button("OK"){ commandResource.clearError() }
 			Button("Get Help") { openURL(URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Help-%E2%80%90-Error-Codes")!) }

@@ -8,6 +8,16 @@
 import SwiftUI
 import AwesomeSwiftyComponents
 
+enum SearchScope: LocalizedStringKey, CaseIterable, Identifiable {
+	case all = "All"
+	case title = "Title"
+	case description = "Description"
+	case credits = "Credits"
+	
+	var id: Self { self }
+}
+
+
 struct SearchView: View {
 	
 	let mediaItems: [any MediaItem]

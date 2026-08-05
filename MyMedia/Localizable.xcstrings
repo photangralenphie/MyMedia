@@ -7,10 +7,10 @@
     "\n" : {
       "shouldTranslate" : false
     },
-    "·" : {
-      "shouldTranslate" : false
+    " QuickTime was not found." : {
+
     },
-    "(%@)" : {
+    "·" : {
       "shouldTranslate" : false
     },
     "# Episodes" : {
@@ -48,16 +48,31 @@
       },
       "shouldTranslate" : false
     },
-    "%@ (%@)" : {
+    "%@ %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%1$@ (%2$@)"
+            "value" : "%1$@ %2$@"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
+    },
+    "%@ Episodes" : {
+
+    },
+    "%lld Item" : {
+
+    },
+    "%lld Season - %lld Episode" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld Season - %2$lld Episode"
+          }
+        }
+      }
     },
     "%lld x %lld" : {
       "localizations" : {
@@ -118,6 +133,7 @@
       }
     },
     "^[%lld Season](inflect: true) - ^[%lld Episode](inflect: true) " : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -133,8 +149,11 @@
         }
       }
     },
-    "© %@ Jonas Helmer" : {
-      "shouldTranslate" : false
+    "© %@ [Jonas Helmer](https://github.com/photangralenphie)" : {
+
+    },
+    "+ %lld" : {
+
     },
     "About" : {
       "localizations" : {
@@ -329,6 +348,9 @@
         }
       }
     },
+    "Close Player" : {
+
+    },
     "cmark-gfm" : {
       "shouldTranslate" : false
     },
@@ -392,18 +414,27 @@
         }
       }
     },
+    "Credited in **%lld** titles" : {
+
+    },
     "Credits" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Credts"
+            "value" : "Credits"
           }
         }
       }
     },
     "Credits:" : {
       "shouldTranslate" : false
+    },
+    "Danger Area!" : {
+
+    },
+    "Danger!" : {
+
     },
     "Date Added" : {
       "localizations" : {
@@ -424,6 +455,9 @@
           }
         }
       }
+    },
+    "Delete all Content" : {
+
     },
     "Delete Collection" : {
       "localizations" : {
@@ -475,6 +509,12 @@
         }
       }
     },
+    "Developer" : {
+
+    },
+    "Developer Mode %@" : {
+
+    },
     "Director" : {
       "localizations" : {
         "de" : {
@@ -484,6 +524,9 @@
           }
         }
       }
+    },
+    "Do you really want to delete all content?" : {
+
     },
     "Done" : {
       "localizations" : {
@@ -536,6 +579,7 @@
       }
     },
     "Episodes are not supported in Grid view" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -595,9 +639,6 @@
         }
       }
     },
-    "error: %@" : {
-      "shouldTranslate" : false
-    },
     "Executive Producers" : {
       "localizations" : {
         "de" : {
@@ -607,6 +648,9 @@
           }
         }
       }
+    },
+    "Failed to build credits." : {
+
     },
     "Failed to gain access to the file %@." : {
       "localizations" : {
@@ -707,6 +751,12 @@
           }
         }
       }
+    },
+    "Get started by searching for something." : {
+
+    },
+    "GitHub" : {
+
     },
     "Grid" : {
       "localizations" : {
@@ -912,6 +962,9 @@
         }
       }
     },
+    "Licence" : {
+
+    },
     "List" : {
       "localizations" : {
         "de" : {
@@ -951,6 +1004,9 @@
           }
         }
       }
+    },
+    "Media is protected and cannot be played directly. Opening with QuickTime." : {
+
     },
     "Metadata" : {
       "localizations" : {
@@ -1005,7 +1061,11 @@
     "MyMedia" : {
       "shouldTranslate" : false
     },
+    "MyMedia Help" : {
+
+    },
     "MyMedia is licensed under the MIT Licence" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1038,12 +1098,6 @@
         }
       }
     },
-    "No matching Description" : {
-
-    },
-    "No matching Titles" : {
-
-    },
     "No metadata found in file:\n\n%@\n\nPlease add metadata before importing." : {
       "localizations" : {
         "de" : {
@@ -1053,6 +1107,9 @@
           }
         }
       }
+    },
+    "No Result" : {
+
     },
     "None:" : {
       "localizations" : {
@@ -1094,6 +1151,9 @@
           }
         }
       }
+    },
+    "Person not found" : {
+
     },
     "Pin" : {
       "localizations" : {
@@ -1195,6 +1255,9 @@
         }
       }
     },
+    "Playing with QuickTime failed." : {
+
+    },
     "Poster" : {
       "localizations" : {
         "de" : {
@@ -1224,6 +1287,9 @@
           }
         }
       }
+    },
+    "Protected Media" : {
+
     },
     "Release Date" : {
       "localizations" : {
@@ -1341,12 +1407,45 @@
     "Search Scope" : {
 
     },
+    "Searching" : {
+
+    },
     "Season %@" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Staffel %@"
+          }
+        }
+      }
+    },
+    "Season %@, Episode %@ from %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Season %1$@, Episode %2$@ from %3$@"
+          }
+        }
+      }
+    },
+    "Season %lld Episode %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Season %1$lld Episode %2$lld"
+          }
+        }
+      }
+    },
+    "Season %lld, Episode %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Season %1$lld, Episode %2$lld"
           }
         }
       }
@@ -1391,6 +1490,12 @@
         }
       }
     },
+    "Show All" : {
+
+    },
+    "Show Full" : {
+
+    },
     "Show in Finder" : {
       "localizations" : {
         "de" : {
@@ -1420,6 +1525,9 @@
           }
         }
       }
+    },
+    "Something went wrong" : {
+
     },
     "Sort by" : {
       "localizations" : {
@@ -1457,8 +1565,17 @@
     "swift-markdown-ui" : {
       "shouldTranslate" : false
     },
+    "swift-syntax" : {
+
+    },
     "swiftui-introspect" : {
       "shouldTranslate" : false
+    },
+    "This will delete all imported Movies, TV Shows and created Collections! The files on your device will not be deleted." : {
+
+    },
+    "This will hide this tab." : {
+
     },
     "Title" : {
       "localizations" : {
@@ -1490,6 +1607,9 @@
           }
         }
       }
+    },
+    "Turn off Developer Mode" : {
+
     },
     "TV Shows" : {
       "localizations" : {
@@ -1611,6 +1731,9 @@
         }
       }
     },
+    "Wiki" : {
+
+    },
     "x" : {
       "shouldTranslate" : false
     },
@@ -1623,6 +1746,9 @@
           }
         }
       }
+    },
+    "Yes" : {
+
     }
   },
   "version" : "1.0"
