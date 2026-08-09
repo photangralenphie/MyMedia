@@ -17,20 +17,16 @@ private struct TableRowData: Identifiable {
 	
 	var id: UUID { mediaItem.id }
 	
-	var details: LocalizedStringKey {
+	var details: String {
 		switch mediaItem {
 			case let movie as Movie:
-				return LocalizedStringKey(MetadataUtil.formatRuntime(minutes: movie.durationMinutes))
+				return MetadataUtil.formatRuntime(minutes: movie.durationMinutes)
 			case let tvShow as TvShow:
 				let seasons = Set(tvShow.episodes.map { $0.season }).count
 				let episodes = tvShow.episodes.count
-				return
-					"""
-					^[\(seasons) Season](inflect: true)
-					^[\(episodes) Episode](inflect: true) 
-					"""
+				return String(localized: "\(seasons) Season") + "\n" + String(localized: "\(episodes) Episode")
 			case let episode as Episode:
-				return LocalizedStringKey(MetadataUtil.formatRuntime(minutes: episode.durationMinutes))
+				return MetadataUtil.formatRuntime(minutes: episode.durationMinutes)
 			default:
 				return ""
 		}

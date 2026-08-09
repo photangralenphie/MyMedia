@@ -96,7 +96,7 @@ final class VideoPlayerVm {
 			nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: image.size) { @Sendable _ in image }
 		}
 		if let episode = currentWatchable as? Episode {
-			nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = String(localized: "Season \(episode.season) Episode \(episode.episode)")
+			nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = String(localized: "Season \(episode.season), Episode \(episode.episode)")
 		}
 		nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
 	}

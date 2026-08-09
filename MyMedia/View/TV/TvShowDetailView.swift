@@ -41,7 +41,7 @@ struct TvShowDetailView: View {
 						Group {
 							Text(String(tvShow.year))
 							
-							Text("^[\(episodes.count) Season](inflect: true) ")
+							Text("\(episodes.count) Season")
 								.textCase(.uppercase)
 								.bold()
 							

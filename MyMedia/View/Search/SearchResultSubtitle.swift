@@ -24,9 +24,9 @@ struct SearchResultSubtitle: View {
 			case let movie as Movie:
 				movie.releaseDate.formatted(date: .abbreviated, time: .omitted)
 			case let tvShow as TvShow:
-				String(localized: "\(String(tvShow.episodes.count)) Episodes")
+				String(localized: "\(tvShow.episodes.count) Episode")
 			case let episode as Episode:
-				String(localized: "Season \(String(episode.season)), Episode \(String(episode.episode)) from \(episode.tvShow.title)")
+				String(localized: "Season \(episode.season), Episode \(episode.episode) from \(episode.tvShow.title)")
 			default: nil
 		}
 	}

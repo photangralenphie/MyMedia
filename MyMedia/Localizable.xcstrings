@@ -8,7 +8,14 @@
       "shouldTranslate" : false
     },
     " QuickTime was not found." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "QuickTime wurde nicht gefunden."
+          }
+        }
+      }
     },
     "·" : {
       "shouldTranslate" : false
@@ -56,20 +63,225 @@
             "value" : "%1$@ %2$@"
           }
         }
+      },
+      "shouldTranslate" : false
+    },
+    "%lld Episode" : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Episode"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Episoden"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Episode"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Episodes"
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "%@ Episodes" : {
-
-    },
     "%lld Item" : {
-
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Elemente"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld Season" : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Staffel"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Staffeln"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Season"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Seasons"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld Season - %lld Episode" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@ - %#@arg2@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Staffel"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Staffeln"
+                    }
+                  }
+                }
+              }
+            },
+            "arg2" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Episode"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Episoden"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld Season - %2$lld Episode"
+            "state" : "translated",
+            "value" : "%#@arg1@ - %#@arg2@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Season"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Seasons"
+                    }
+                  }
+                }
+              }
+            },
+            "arg2" : {
+              "argNum" : 2,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Episode"
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "%arg Episodes"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -96,64 +308,18 @@
       },
       "shouldTranslate" : false
     },
-    "^[%lld Item](inflect: true)" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "^[%lld Element](inflect: true)"
-          }
-        }
-      }
-    },
-    "^[%lld Season](inflect: true)\n^[%lld Episode](inflect: true) " : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "^[%1$lld Staffel](inflect: true)\n^[%2$lld Episode](inflect: true) "
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "^[%1$lld Season](inflect: true)\n^[%2$lld Episode](inflect: true) "
-          }
-        }
-      }
-    },
-    "^[%lld Season](inflect: true) " : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "^[%lld Staffel](inflect: true) "
-          }
-        }
-      }
-    },
-    "^[%lld Season](inflect: true) - ^[%lld Episode](inflect: true) " : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "^[%1$lld Staffel](inflect: true) - ^[%2$lld Episode](inflect: true) "
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "^[%1$lld Season](inflect: true) - ^[%2$lld Episode](inflect: true) "
-          }
-        }
-      }
-    },
     "© %@ [Jonas Helmer](https://github.com/photangralenphie)" : {
-
+      "shouldTranslate" : false
     },
     "+ %lld" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ %lld "
+          }
+        }
+      }
     },
     "About" : {
       "localizations" : {
@@ -349,7 +515,14 @@
       }
     },
     "Close Player" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Player schließen"
+          }
+        }
+      }
     },
     "cmark-gfm" : {
       "shouldTranslate" : false
@@ -415,7 +588,44 @@
       }
     },
     "Credited in **%lld** titles" : {
-
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mitgewirkt an **%lld** Titel"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mitgewirkt an **%lld** Titeln"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Credited in **%lld** title"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Credited in **%lld** titles"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Credits" : {
       "localizations" : {
@@ -431,10 +641,24 @@
       "shouldTranslate" : false
     },
     "Danger Area!" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefahrenzone"
+          }
+        }
+      }
     },
     "Danger!" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefahr!"
+          }
+        }
+      }
     },
     "Date Added" : {
       "localizations" : {
@@ -457,7 +681,14 @@
       }
     },
     "Delete all Content" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Inhalte löschen"
+          }
+        }
+      }
     },
     "Delete Collection" : {
       "localizations" : {
@@ -510,10 +741,24 @@
       }
     },
     "Developer" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entwickler"
+          }
+        }
+      }
     },
     "Developer Mode %@" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entwicklermodus %@"
+          }
+        }
+      }
     },
     "Director" : {
       "localizations" : {
@@ -526,7 +771,14 @@
       }
     },
     "Do you really want to delete all content?" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du wirklich alle Inhalte löschen?"
+          }
+        }
+      }
     },
     "Done" : {
       "localizations" : {
@@ -578,17 +830,6 @@
         }
       }
     },
-    "Episodes are not supported in Grid view" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Episoden werden in der Raster Ansicht nicht unterstützt"
-          }
-        }
-      }
-    },
     "Error accessing media file" : {
       "localizations" : {
         "de" : {
@@ -629,6 +870,16 @@
         }
       }
     },
+    "Error while deleting all content" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es ist ein Fehler beim Löschen aller Inhalte aufgetreten."
+          }
+        }
+      }
+    },
     "Error while Importing" : {
       "localizations" : {
         "de" : {
@@ -650,7 +901,14 @@
       }
     },
     "Failed to build credits." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mitwirkende konnten nicht erstellt werden."
+          }
+        }
+      }
     },
     "Failed to gain access to the file %@." : {
       "localizations" : {
@@ -753,10 +1011,17 @@
       }
     },
     "Get started by searching for something." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starte, indem du nach etwas suchst."
+          }
+        }
+      }
     },
     "GitHub" : {
-
+      "shouldTranslate" : false
     },
     "Grid" : {
       "localizations" : {
@@ -963,7 +1228,14 @@
       }
     },
     "Licence" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lizenz"
+          }
+        }
+      }
     },
     "List" : {
       "localizations" : {
@@ -1006,7 +1278,14 @@
       }
     },
     "Media is protected and cannot be played directly. Opening with QuickTime." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Mediendatei ist geschützt und kann nicht direkt abgespielt werden. Sie wird mit QuickTime geöffnet."
+          }
+        }
+      }
     },
     "Metadata" : {
       "localizations" : {
@@ -1062,15 +1341,11 @@
       "shouldTranslate" : false
     },
     "MyMedia Help" : {
-
-    },
-    "MyMedia is licensed under the MIT Licence" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MyMedia ist lizensiert unter der MIT Lizenz."
+            "value" : "MyMedia Hilfe"
           }
         }
       }
@@ -1109,7 +1384,14 @@
       }
     },
     "No Result" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Ergebnisse"
+          }
+        }
+      }
     },
     "None:" : {
       "localizations" : {
@@ -1153,7 +1435,14 @@
       }
     },
     "Person not found" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Person konnte nicht gefunden werden."
+          }
+        }
+      }
     },
     "Pin" : {
       "localizations" : {
@@ -1256,7 +1545,14 @@
       }
     },
     "Playing with QuickTime failed." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abspielen mit QuickTime fehlgeschlagen"
+          }
+        }
+      }
     },
     "Poster" : {
       "localizations" : {
@@ -1289,7 +1585,14 @@
       }
     },
     "Protected Media" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschützte Mediendatei"
+          }
+        }
+      }
     },
     "Release Date" : {
       "localizations" : {
@@ -1342,7 +1645,14 @@
       }
     },
     "Results for: %@" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ergebnisse für: %@"
+          }
+        }
+      }
     },
     "Resume" : {
       "localizations" : {
@@ -1405,10 +1715,24 @@
       }
     },
     "Search Scope" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suchbereich"
+          }
+        }
+      }
     },
     "Searching" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suche"
+          }
+        }
+      }
     },
     "Season %@" : {
       "localizations" : {
@@ -1420,32 +1744,34 @@
         }
       }
     },
-    "Season %@, Episode %@ from %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Season %1$@, Episode %2$@ from %3$@"
-          }
-        }
-      }
-    },
-    "Season %lld Episode %lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Season %1$lld Episode %2$lld"
-          }
-        }
-      }
-    },
     "Season %lld, Episode %lld" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Staffel %1$lld, Episode %2$lld"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Season %1$lld, Episode %2$lld"
+          }
+        }
+      }
+    },
+    "Season %lld, Episode %lld from %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Staffel %1$lld, Episode %2$lld aus %3$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Season %1$lld, Episode %2$lld from %3$@"
           }
         }
       }
@@ -1491,10 +1817,24 @@
       }
     },
     "Show All" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle anzeigen"
+          }
+        }
+      }
     },
     "Show Full" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles anzeigen"
+          }
+        }
+      }
     },
     "Show in Finder" : {
       "localizations" : {
@@ -1527,7 +1867,14 @@
       }
     },
     "Something went wrong" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etwas ist schief gelaufen"
+          }
+        }
+      }
     },
     "Sort by" : {
       "localizations" : {
@@ -1566,16 +1913,30 @@
       "shouldTranslate" : false
     },
     "swift-syntax" : {
-
+      "shouldTranslate" : false
     },
     "swiftui-introspect" : {
       "shouldTranslate" : false
     },
     "This will delete all imported Movies, TV Shows and created Collections! The files on your device will not be deleted." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dadurch werden alle importierten Filme, Serien und erstellten Sammlungen gelöscht! Die Dateien auf deinem Gerät werden nicht gelöscht."
+          }
+        }
+      }
     },
     "This will hide this tab." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dadurch wird dieser Tab ausgeblendet."
+          }
+        }
+      }
     },
     "Title" : {
       "localizations" : {
@@ -1609,7 +1970,14 @@
       }
     },
     "Turn off Developer Mode" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entwicklermodus ausschalten"
+          }
+        }
+      }
     },
     "TV Shows" : {
       "localizations" : {
@@ -1732,7 +2100,14 @@
       }
     },
     "Wiki" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiki"
+          }
+        }
+      }
     },
     "x" : {
       "shouldTranslate" : false
@@ -1748,7 +2123,14 @@
       }
     },
     "Yes" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

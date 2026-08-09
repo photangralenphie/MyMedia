@@ -15,16 +15,17 @@ struct CollectionHeaderView: View {
 	@Environment(\.dismiss) private var dismiss
 	
 	@State private var showEditSheet: Bool = false
+
     var body: some View {
 		HStack(alignment: .bottom) {
-			ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "^[\(collection.mediaItems.count) Item](inflect: true)", scale: 1.3)
+			ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "\(collection.mediaItems.count) Item", scale: 1.3)
 			
 			VStack(alignment: .leading) {
 				Text(LocalizedStringKey(collection.title))
 					.font(.largeTitle)
 					.bold()
 				
-				Text("^[\(collection.mediaItems.count) Item](inflect: true)")
+				Text("\(collection.mediaItems.count) Item")
 					.textCase(.uppercase)
 					.bold()
 					.foregroundStyle(.secondary)

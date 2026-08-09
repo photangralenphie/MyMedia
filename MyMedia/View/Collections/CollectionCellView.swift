@@ -26,11 +26,11 @@ struct CollectionCellView: View {
 			.environment(\.mediaContext, .collection(collection))
 		} label: {
 			VStack(alignment: .leading) {
-				ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "^[\(collection.mediaItems.count) Item](inflect: true)")
+				ArtworkView(imageData: collection.artwork, title: collection.title, subtitle: "\(collection.mediaItems.count) Item")
 				
 				Text(collection.title)
 				
-				Text("^[\(collection.mediaItems.count) Item](inflect: true)")
+				Text("\(collection.mediaItems.count) Item")
 					.textCase(.uppercase)
 					.font(.caption)
 					.foregroundStyle(.secondary)
