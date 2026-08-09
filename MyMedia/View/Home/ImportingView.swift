@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ImportingView: View {
 	
@@ -81,14 +82,14 @@ struct ImportingView: View {
 			
 			for file in files {
 				if !file.startAccessingSecurityScopedResource() {
-					Task { @MainActor in
+					_ = Task { @MainActor in
 						commandResource.showError(message: "Failed to gain access to the file \(file.absoluteString).", title: "Error while Importing", errorCode: 8)
 					}
 					return;
 				}
 			}
 			
-			Task { @MainActor in
+			_ = Task { @MainActor in
 				importFileRange(urls: files)
 			}
 		}
@@ -100,7 +101,7 @@ struct ImportingView: View {
 			
 			for folderURL in folderURLs {
 				if !folderURL.startAccessingSecurityScopedResource() {
-					Task { @MainActor in
+					_ = Task { @MainActor in
 						commandResource.showError(message: "Failed to gain access to the selected folder.", title: "Error while Importing", errorCode: 9)
 					}
 					return
@@ -116,7 +117,7 @@ struct ImportingView: View {
 								collectedURLs.append(fileURL)
 							}
 						} catch {
-							Task { @MainActor in
+							_ = Task { @MainActor in
 								commandResource.showError(message: "Error reading file at \(fileURL.absoluteString)", title: "Error while Importing", errorCode: 10)
 							}
 							folderURL.stopAccessingSecurityScopedResource()
@@ -126,7 +127,7 @@ struct ImportingView: View {
 				}
 			}
 			
-			Task { @MainActor in
+			_ = Task { @MainActor in
 				importFileRange(urls: collectedURLs)
 			}
 		}
@@ -142,7 +143,7 @@ struct ImportingView: View {
 
 		panel.begin { response in
 			if response == .OK {
-				Task { @MainActor in
+				_ = Task { @MainActor in
 					completion(panel.urls)
 				}
 			}
@@ -160,7 +161,7 @@ struct ImportingView: View {
 		
 		panel.begin { response in
 			if response == .OK {
-				Task { @MainActor in
+				_ = Task { @MainActor in
 					completion(panel.urls)
 				}
 			}
@@ -170,7 +171,7 @@ struct ImportingView: View {
 	private func importFileRange(urls: [URL]) {
 		withAnimation { importRange = 0...urls.count }
 		
-		Task {
+		_ = Task {
 			let assembler = MediaImporter(modelContainer: moc.container)
 			for (index, url) in urls.enumerated() {
 				do {
