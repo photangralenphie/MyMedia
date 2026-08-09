@@ -8,13 +8,22 @@
 import SwiftUI
 import AwesomeSwiftyComponents
 
-enum SearchScope: LocalizedStringKey, CaseIterable, Identifiable {
-	case all = "All"
-	case title = "Title"
-	case description = "Description"
-	case credits = "Credits"
+enum SearchScope: CaseIterable, Identifiable {
+	case all
+	case title
+	case description
+	case credits
 	
 	var id: Self { self }
+	
+	var title: LocalizedStringKey {
+		switch self {
+			case .all: "All"
+			case .title: "Title"
+			case .description: "Description"
+			case .credits: "Credits"
+		}
+	}
 }
 
 
@@ -27,6 +36,7 @@ struct SearchView: View {
 	
 	@State private var isTitlesOpen: Bool = true
 	@State private var isDescriptionOpen: Bool = true
+	@State private var isCreditsOpen: Bool = true
 	
 	@State private var searchVm: SearchVm = SearchVm(mediaItems: [])
 	
@@ -41,13 +51,19 @@ struct SearchView: View {
 							DisclosureGroup(isExpanded: $isTitlesOpen) {
 								SearchForTitleView(preview: true)
 							} label: {
-								scopeTitle("Title")
+								scopeTitle(SearchScope.title.title)
 							}
 							
 							DisclosureGroup(isExpanded: $isDescriptionOpen) {
 								SearchForDescriptionView(preview: true)
 							} label: {
-								scopeTitle("Description")
+								scopeTitle(SearchScope.description.title)
+							}
+							
+							DisclosureGroup(isExpanded: $isCreditsOpen) {
+								SearchForCreditsView(preview: true)
+							} label: {
+								scopeTitle(SearchScope.credits.title)
 							}
 							
 						case .title:
@@ -55,6 +71,9 @@ struct SearchView: View {
 							
 						case .description:
 							SearchForDescriptionView()
+							
+						case .credits:
+							SearchForCreditsView()
 					}
 				}
 				.listStyle(.sidebar)
@@ -79,7 +98,7 @@ struct SearchView: View {
 			ToolbarItem(placement: .secondaryAction) {
 				Picker("Search Scope", selection: Bindable(searchVm).searchScope.animation()) {
 					ForEach(SearchScope.allCases) { scope in
-						Text(scope.rawValue)
+						Text(scope.title)
 							.tag(scope)
 					}
 				}
