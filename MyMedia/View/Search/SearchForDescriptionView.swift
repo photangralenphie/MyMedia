@@ -25,7 +25,7 @@ struct SearchForDescriptionView: View {
 					.padding(.bottom, 6)
 			}
 			
-			SearchShowAllButton(searchScope: .description, preview: preview, filteredMediaItems: mediaItemsFilteredByDescription)
+			SearchShowAllButton(searchScope: .description, preview: preview, filteredResults: mediaItemsFilteredByDescription)
 		} else {
 			NoSearchResultsView(preview: preview)
 		}

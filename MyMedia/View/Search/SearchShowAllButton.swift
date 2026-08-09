@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct SearchShowAllButton: View {
+struct SearchShowAllButton<FilteredResult>: View {
 	
 	let searchScope: SearchScope
 	let preview: Bool
-	let filteredMediaItems: [any MediaItem]
+	let filteredResults: [FilteredResult]
 	
 	@Environment(SearchVm.self) private var searchVm
 	
     var body: some View {
-		if preview && filteredMediaItems.count >= LayoutConstants.numPreviewSearchResults {
+		if preview && filteredResults.count >= LayoutConstants.numPreviewSearchResults {
 			HStack {
 				Spacer()
 				Button("Show All") { withAnimation { searchVm.searchScope = searchScope } }
@@ -29,5 +29,5 @@ struct SearchShowAllButton: View {
 }
 
 #Preview {
-	SearchShowAllButton(searchScope: .title, preview: true, filteredMediaItems: DebugData.items)
+	SearchShowAllButton(searchScope: .title, preview: true, filteredResults: DebugData.items)
 }

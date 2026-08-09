@@ -37,7 +37,7 @@ struct SearchForTitleView: View {
 				}
 			}
 			
-			SearchShowAllButton(searchScope: .title, preview: preview, filteredMediaItems: mediaItemsFilteredByTitle)
+			SearchShowAllButton(searchScope: .title, preview: preview, filteredResults: mediaItemsFilteredByTitle)
 		} else {
 			NoSearchResultsView(preview: preview)
 		}

@@ -20,9 +20,11 @@ struct SearchForCreditsView: View {
 	@Query(sort: \Person.name) private var people: [Person]
 
     var body: some View {
-        let filteredPeople = people.filter { searchVm.matchesQuery($0.name) }
-        if filteredPeople.count > 0 {
-            ForEach(filteredPeople) { person in
+		let filteredPeople = people.filter { searchVm.matchesQuery($0.name) }
+		let displayedPeople = preview ? Array(filteredPeople.prefix(LayoutConstants.numPreviewSearchResults)) : filteredPeople
+		
+		if displayedPeople.count > 0 {
+			ForEach(displayedPeople) { person in
                 VStack(alignment: .leading) {
 					Text(SearchVm.highlightResult(person.name, matching: searchVm.searchText))
                         .bold()
@@ -46,7 +48,9 @@ struct SearchForCreditsView: View {
 
                     Divider()
                 }
-            }
+			}
+
+			SearchShowAllButton(searchScope: .credits, preview: preview, filteredResults: displayedPeople)
         } else {
 			NoSearchResultsView(preview: preview)
         }
