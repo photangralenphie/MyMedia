@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MetadataUtil {
 	private init() { }
@@ -422,5 +423,48 @@ struct MetadataUtil {
 			case "Western": "lasso"
 			default: "person.crop.square.on.square.angled"
 		}
+	}
+	
+	static func delete(_ mediaItem: any MediaItem, context: ModelContext) {
+		let removedCredits: [Credits]
+		
+		switch mediaItem {
+			case let movie as Movie:
+				removedCredits = [movie.credits].compactMap { $0 }
+				context.delete(movie)
+			case let episode as Episode:
+				removedCredits = [episode.credits].compactMap { $0 }
+				context.delete(episode)
+			case let tvShow as TvShow:
+				removedCredits = tvShow.episodes.compactMap(\.credits)
+				context.delete(tvShow)
+			default:
+				return
+		}
+		
+		var affectedPeople: [Person] = []
+		for person in removedCredits.flatMap(\.people) where !affectedPeople.contains(where: { $0 === person }) {
+			affectedPeople.append(person)
+		}
+		
+		CreditsBuilder.deletePeopleWithoutRemainingCredits(affectedPeople, removing: removedCredits, context: context)
+	}
+	
+	public static func deleteAllContent(context: ModelContext) throws {
+		let collections = try context.fetch(FetchDescriptor<MediaCollection>())
+		let credits = try context.fetch(FetchDescriptor<Credits>())
+		let people = try context.fetch(FetchDescriptor<Person>())
+		let episodes = try context.fetch(FetchDescriptor<Episode>())
+		let movies = try context.fetch(FetchDescriptor<Movie>())
+		let tvShows = try context.fetch(FetchDescriptor<TvShow>())
+		
+		collections.forEach(context.delete)
+		credits.forEach(context.delete)
+		people.forEach(context.delete)
+		episodes.forEach(context.delete)
+		movies.forEach(context.delete)
+		tvShows.forEach(context.delete)
+		
+		try context.save()
 	}
 }

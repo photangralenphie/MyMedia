@@ -7,85 +7,64 @@
 
 import SwiftUI
 import OrderedCollections
+import AwesomeSwiftyComponents
 
 struct CreditsView: View {
 	
-	let credits: OrderedDictionary<CreditKey, String>
-	
-	init (hasCredits: any HasCredits) {
-		var credits: OrderedDictionary<CreditKey, String> = [:]
-		let cast = hasCredits.cast.joined(separator: "\n")
-		if !cast.isEmpty {
-			credits[.cast] = cast
-		}
-		
-		let directors = hasCredits.directors.joined(separator: "\n")
-		if !directors.isEmpty {
-			credits[.director] = directors
-		}
-		
-		let coDirectors = hasCredits.coDirectors.joined(separator: "\n")
-		if !coDirectors.isEmpty {
-			credits[.coDirector] = coDirectors
-		}
-		
-		let screenwriters = hasCredits.screenwriters.joined(separator: "\n")
-		if !screenwriters.isEmpty {
-			credits[.screenwriters] = screenwriters
-		}
-		
-		let producers = hasCredits.producers.joined(separator: "\n")
-		if !producers.isEmpty {
-			credits[.producers] = producers
-		}
-		
-		let executiveProducers = hasCredits.executiveProducers.joined(separator: "\n")
-		if !executiveProducers.isEmpty {
-			credits[.executiveProducers] = executiveProducers
-		}
-		
-		if let composer = hasCredits.composer {
-			credits[.composer] = composer
-		}
-		
-		self.credits = credits
-	}
+	let hasCredits: any HasCredits
+	@State private var selectedPerson: Person?
 	@State private var proxy: GeometryProxy? = nil
+
+	private var credits: OrderedDictionary<CreditKey, [Person]> {
+		var result: OrderedDictionary<CreditKey, [Person]> = [:]
+		guard let itemCredits = hasCredits.credits else { return result }
+
+		if !itemCredits.cast.isEmpty {
+			result[.cast] = itemCredits.cast
+		}
+		if !itemCredits.directors.isEmpty {
+			result[.director] = itemCredits.directors
+		}
+		if !itemCredits.coDirectors.isEmpty {
+			result[.coDirector] = itemCredits.coDirectors
+		}
+		if !itemCredits.screenwriters.isEmpty {
+			result[.screenwriters] = itemCredits.screenwriters
+		}
+		if !itemCredits.producers.isEmpty {
+			result[.producers] = itemCredits.producers
+		}
+		if !itemCredits.executiveProducers.isEmpty {
+			result[.executiveProducers] = itemCredits.executiveProducers
+		}
+		if let composer = itemCredits.composer {
+			result[.composer] = [composer]
+		}
+		return result
+	}
 	
     var body: some View {
-		if let proxy = self.proxy {
+		if let proxy = self.proxy, !credits.isEmpty {
 			
-			let availableCols = Int(proxy.size.width / 150)
+			let availableCols = max(Int(proxy.size.width / 150), 1)
 			let numCols = min(availableCols, credits.keys.count)
-			let spacing = (proxy.size.width - CGFloat(numCols) * 150.0) / CGFloat(numCols - 1)
+			let spacing = numCols > 1
+				? (proxy.size.width - CGFloat(numCols) * 150) / CGFloat(numCols - 1)
+				: 0
 			let hasCast = credits[.cast] != nil
-			
-			HStack(alignment: .top, spacing: spacing) {
-				if hasCast {
-					creditCell(forIndex: 0)
-				}
-				
-				VStack (alignment: .leading) {
-					let startIndexRow1 = hasCast ? 1 : 0
-					let endIndexRow1 = startIndexRow1 + (hasCast ? numCols - 1 : numCols) - 1
-					let startIndexRow2 = endIndexRow1 + 1
-					let endIndexRow2 = credits.keys.count - 1
-					
+
+			Group {
+				if hasCast, numCols > 1 {
 					HStack(alignment: .top, spacing: spacing) {
-						ForEach(startIndexRow1...endIndexRow1, id: \.self) { index in
-							creditCell(forIndex: index)
-						}
+						creditCell(forIndex: 0)
+						creditGrid(indices: 1..<credits.keys.count,	columnCount: numCols - 1, spacing: spacing)
 					}
-					.padding(.bottom)
-					
-					if(startIndexRow2 < endIndexRow2) {
-						HStack(alignment: .top, spacing: spacing) {
-							ForEach(startIndexRow2...endIndexRow2, id: \.self) { index in
-								creditCell(forIndex: 1)
-							}
-						}
-					}
+				} else {
+					creditGrid(indices: 0..<credits.keys.count,	columnCount: numCols, spacing: spacing)
 				}
+			}
+			.navigationDestination(item: $selectedPerson) { person in
+				PersonView(person: person)
 			}
 		}
 		
@@ -103,15 +82,35 @@ struct CreditsView: View {
 		}
     }
 	
-	@ViewBuilder func creditCell(forIndex: Int) -> some View {
+	func creditCell(forIndex: Int) -> some View {
 		let creditKey = Array(credits.keys)[forIndex]
-		VStack(alignment: .leading) {
+		
+		return VStack(alignment: .leading) {
 			Text(creditKey.rawValue)
 				.textCase(.uppercase)
 				.modifier(CreditHeadingStyle())
-			Text(credits[creditKey] ?? "")
-				.font(.body.leading(.loose))
+
+			if let people = credits[creditKey] {
+				ForEach(people) { person in
+					Text(person.name)
+						.font(.body.leading(.loose))
+						.onTapGesture { selectedPerson = person }
+				}
+			}
 		}
 		.frame(width: 150, alignment: .leading)
+	}
+
+	private func creditGrid(indices: Range<Int>, columnCount: Int, spacing: CGFloat) -> some View {
+		let columns =  Array(
+			repeating: GridItem(.fixed(150), spacing: spacing, alignment: .top),
+			count: columnCount
+		)
+		
+		return LazyVGrid(columns: columns, alignment: .leading,	spacing: 16) {
+			ForEach(indices, id: \.self) { index in
+				creditCell(forIndex: index)
+			}
+		}
 	}
 }

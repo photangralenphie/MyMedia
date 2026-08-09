@@ -9,15 +9,17 @@ import SwiftData
 import Foundation
 
 @Model
-class Movie: IsWatchable, HasGenre, HasCredits {
-	@Attribute(.unique) var id: UUID = UUID()
+class Movie: IsWatchable, HasGenre, MediaItem, HasCredits {
+	@Attribute(.unique)
+	var id: UUID = UUID()
 	var dateAdded = Date.now
 	var isWatched: Bool = false
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
 	var progressMinutes: Int = 0
 	
-	@Transient var year: Int {
+	@Transient
+	var year: Int {
 		Calendar.current.component(.year, from: releaseDate)
 	}
 	
@@ -28,13 +30,8 @@ class Movie: IsWatchable, HasGenre, HasCredits {
 	var releaseDate: Date
 	var shortDescription: String?
 	var longDescription: String?
-	var cast: [String]
-	var producers: [String]
-	var executiveProducers: [String]
-	var directors: [String]
-	var coDirectors: [String]
-	var screenwriters: [String]
-	var composer: String?
+	@Relationship(deleteRule: .cascade, inverse: \Credits.movie)
+	var credits: Credits?
 	var studio: String?
 	var hdVideoQuality: HDVideoQuality?
 	var rating: String?
@@ -48,13 +45,7 @@ class Movie: IsWatchable, HasGenre, HasCredits {
 		releaseDate: Date,
 		shortDescription: String?,
 		longDescription: String?,
-		cast: [String],
-		producers: [String],
-		executiveProducers: [String],
-		directors: [String],
-		coDirectors: [String],
-		screenwriters: [String],
-		composer: String?,
+		credits: Credits,
 		studio: String?,
 		hdVideoQuality: HDVideoQuality?,
 		rating: String?,
@@ -67,13 +58,7 @@ class Movie: IsWatchable, HasGenre, HasCredits {
 		self.releaseDate = releaseDate
 		self.shortDescription = shortDescription
 		self.longDescription = longDescription
-		self.cast = cast
-		self.producers = producers
-		self.executiveProducers = executiveProducers
-		self.directors = directors
-		self.coDirectors = coDirectors
-		self.screenwriters = screenwriters
-		self.composer = composer
+		self.credits = credits
 		self.studio = studio
 		self.hdVideoQuality = hdVideoQuality
 		self.rating = rating

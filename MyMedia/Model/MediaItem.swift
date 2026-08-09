@@ -43,16 +43,6 @@ protocol HasGenre: MediaItem {
 	var genre: [String] { get }
 }
 
-protocol HasCredits: MediaItem {
-	var cast: [String] { get }
-	var directors: [String] { get }
-	var coDirectors: [String] { get }
-	var screenwriters: [String] { get }
-	var producers: [String] { get }
-	var executiveProducers: [String] { get }
-	var composer: String? { get }
-}
-
 protocol IsWatchable: MediaItem {
 	var progressMinutes: Int { get set }
 	var durationMinutes: Int { get }

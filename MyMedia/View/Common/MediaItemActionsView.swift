@@ -91,16 +91,7 @@ struct MediaItemActionsView: View {
     }
 	
 	func removeFromLibrary() {
-		switch mediaItem {
-			case let movie as Movie:
-				modelContext.delete(movie)
-			case let tvShow as TvShow:
-				modelContext.delete(tvShow)
-			case let episode as Episode:
-				modelContext.delete(episode)
-			default: break
-		}
-		
+		MetadataUtil.delete(mediaItem, context: modelContext)
 		onDelete()
 	}
 	
@@ -114,11 +105,14 @@ struct MediaItemActionsView: View {
 	}
 	
 	func reImportToLibrary() {
-		let currentMediaItem = mediaItem
+		guard let persistentModel = mediaItem as? any PersistentModel else { return }
+		let identifier = persistentModel.persistentModelID
+		let modelContainer = modelContext.container
+
 		Task {
-			let mediaImporter = MediaImporter(modelContainer: modelContext.container)
+			let mediaImporter = MediaImporter(modelContainer: modelContainer)
 			do {
-				try await mediaImporter.updateMediaItem(mediaItem: currentMediaItem)
+				try await mediaImporter.updateMediaItem(identifier: identifier)
 			} catch let importError as ImportError {
 				MediaImporter.showImportError(importError)
 			}

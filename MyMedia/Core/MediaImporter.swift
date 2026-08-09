@@ -64,49 +64,44 @@ actor MediaImporter {
 	}
 	
 	private func createMovieFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Movie {
-		let artwork = await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .moviePoster)
-		let title = try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierTitle)
-		let genre = try await self.getGenres(metadata: metadata)
-		let durationMinutes = try await asset.getRuntimeMinutes()
-		let releaseDate = try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate)
-		let shortDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.description)
-		let longDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.longDescription)
-		let producers = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "producers") ?? []
-		let executiveProducers = (await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.executiveProducers) ?? "").split(separator: ", ").map { String($0) }
-		let cast = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "cast") ?? []
-		let directors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "directors") ?? []
-		let coDirectors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "codirectors") ?? []
-		let screenwriters = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "screenwriters") ?? []
-		let composer = await self.tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataComposer)
-		let studio = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "studio")?.first
-		let rating = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.rating)
-		let languages = try await asset.getAudioLanguages()
-		let resolution = try await self.getResolution(metadata: metadata)
-		let url = asset.url
+		let values = try await getMovieData(metadata: metadata, asset: asset)
+		let credits = try CreditsBuilder.makeCredits(from: values.creditNames, context: modelContext)
 		
 		var movie = Movie(
-			artwork: artwork,
-			title: title,
-			genre: genre,
-			durationMinutes: durationMinutes,
-			releaseDate: releaseDate,
-			shortDescription: shortDescription,
-			longDescription: longDescription,
-			cast: cast,
-			producers: producers,
-			executiveProducers: executiveProducers,
-			directors: directors,
-			coDirectors: coDirectors,
-			screenwriters: screenwriters,
-			composer: composer,
-			studio: studio,
-			hdVideoQuality: resolution,
-			rating: rating,
-			languages: languages,
+			artwork: values.artwork,
+			title: values.title,
+			genre: values.genre,
+			durationMinutes: values.durationMinutes,
+			releaseDate: values.releaseDate,
+			shortDescription: values.shortDescription,
+			longDescription: values.longDescription,
+			credits: credits,
+			studio: values.studio,
+			hdVideoQuality: values.hdVideoQuality,
+			rating: values.rating,
+			languages: values.languages,
 		)
 		
-		movie.url = url
+		movie.url = values.url
 		return movie
+	}
+
+	private func getMovieData(metadata: [AVMetadataItem],	asset: AVURLAsset) async throws -> MovieDTO {
+		MovieDTO(
+			artwork: await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .moviePoster),
+			title: try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierTitle),
+			genre: try await self.getGenres(metadata: metadata),
+			durationMinutes: try await asset.getRuntimeMinutes(),
+			releaseDate: try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate),
+			shortDescription: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.description),
+			longDescription: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.longDescription),
+			creditNames: await self.getCreditNames(metadata: metadata),
+			studio: await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "studio")?.first,
+			hdVideoQuality: try await self.getResolution(metadata: metadata),
+			rating: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.rating),
+			languages: try await asset.getAudioLanguages(),
+			url: asset.url
+		)
 	}
 	
 	private func createTvShowFromEpisode(metadata: [AVMetadataItem]) async throws -> TvShow {
@@ -127,52 +122,47 @@ actor MediaImporter {
 	}
 
 	private func createEpisodeFromFile(metadata: [AVMetadataItem], asset: AVURLAsset, tvShow: TvShow) async throws -> Episode {
-		let artwork = await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .episodeImage)
-		let seasonNumber = try await self.getIntMetaDataValue(metadata: metadata, for: MetadataIdentifier.seasonNumber)
-		let episodeNumber = try await self.getIntMetaDataValue(metadata: metadata, for: MetadataIdentifier.episodeNumber)
-		let title = try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierTitle)
-		let durationMinutes = try await asset.getRuntimeMinutes()
-		let releaseDate = try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate)
-		let shortDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.description)
-		let longDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.longDescription)
-		let producers = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "producers") ?? []
-		let executiveProducers = (await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.executiveProducers) ?? "").split(separator: ", ").map { String($0) }
-		let cast = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "cast") ?? []
-		let directors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "directors") ?? []
-		let coDirectors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "codirectors") ?? []
-		let screenwriters = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "screenwriters") ?? []
-		let composer = await self.tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataComposer)
-		let studio = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "studio")?.first
-		let network = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.network)
-		let rating = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.rating)
-		let languages = try await asset.getAudioLanguages()
-		let url = asset.url
+		let values = try await getEpisodeData(metadata: metadata, asset: asset)
+		let credits = try CreditsBuilder.makeCredits(from: values.creditNames, context: modelContext)
 		
 		var episode = Episode(
-			artwork: artwork,
-			season: seasonNumber,
-			episode: episodeNumber,
-			title: title,
-			durationMinutes: durationMinutes,
-			releaseDate: releaseDate,
-			episodeShortDescription: shortDescription,
-			episodeLongDescription: longDescription,
-			cast: cast,
-			producers: producers,
-			executiveProducers: executiveProducers,
-			directors: directors,
-			coDirectors: coDirectors,
-			screenwriters: screenwriters,
-			composer: composer,
-			studio: studio,
-			network: network,
-			rating: rating,
-			languages: languages,
+			artwork: values.artwork,
+			season: values.season,
+			episode: values.episode,
+			title: values.title,
+			durationMinutes: values.durationMinutes,
+			releaseDate: values.releaseDate,
+			episodeShortDescription: values.shortDescription,
+			episodeLongDescription: values.longDescription,
+			credits: credits,
+			studio: values.studio,
+			network: values.network,
+			rating: values.rating,
+			languages: values.languages,
 			tvShow: tvShow
 		)
 		
-		episode.url = url
+		episode.url = values.url
 		return episode
+	}
+
+	private func getEpisodeData(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> EpisodeDTO {
+		EpisodeDTO(
+			artwork: await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .episodeImage),
+			season: try await self.getIntMetaDataValue(metadata: metadata, for: MetadataIdentifier.seasonNumber),
+			episode: try await self.getIntMetaDataValue(metadata: metadata, for: MetadataIdentifier.episodeNumber),
+			title: try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierTitle),
+			durationMinutes: try await asset.getRuntimeMinutes(),
+			releaseDate: try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate),
+			shortDescription: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.description),
+			longDescription: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.longDescription),
+			creditNames: await self.getCreditNames(metadata: metadata),
+			studio: await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "studio")?.first,
+			network: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.network),
+			rating: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.rating),
+			languages: try await asset.getAudioLanguages(),
+			url: asset.url
+		)
 	}
 	
 	private func fetchCurrentTvShows() async throws -> [TvShow] {
@@ -180,7 +170,11 @@ actor MediaImporter {
 		return try modelContext.fetch(descriptor)
 	}
 	
-	public func updateMediaItem(mediaItem: any MediaItem) async throws {
+	public func updateMediaItem(identifier: PersistentIdentifier) async throws {
+		guard let mediaItem = modelContext.model(for: identifier) as? any MediaItem else {
+			throw ImportError.unknown(message: "Media item could not be found.")
+		}
+
 		switch mediaItem {
 			case let movie as Movie:
 				try await updateMovie(movie: movie)
@@ -195,12 +189,13 @@ actor MediaImporter {
 		try modelContext.save()
 	}
 	
-	public func updateMovie(movie: Movie) async throws {
+	private func updateMovie(movie: Movie) async throws {
 		if let url = movie.url, url.startAccessingSecurityScopedResource() {
 			defer { url.stopAccessingSecurityScopedResource() }
 			
 			let (asset, metadata) = try await getAssetAndMetadata(path: url)
-			let update = try await createMovieFromFile(metadata: metadata, asset: asset)
+			let update = try await getMovieData(metadata: metadata, asset: asset)
+			let credits = try CreditsBuilder.makeCredits(from: update.creditNames, context: modelContext)
 			
 			movie.artwork = update.artwork
 			movie.title = update.title
@@ -209,13 +204,7 @@ actor MediaImporter {
 			movie.releaseDate = update.releaseDate
 			movie.shortDescription = update.shortDescription
 			movie.longDescription = update.longDescription
-			movie.cast = update.cast
-			movie.producers = update.producers
-			movie.executiveProducers = update.executiveProducers
-			movie.directors = update.directors
-			movie.coDirectors = update.coDirectors
-			movie.screenwriters = update.screenwriters
-			movie.composer = update.composer
+			CreditsBuilder.replaceCredits(for: movie, with: credits, context: modelContext)
 			movie.studio = update.studio
 			movie.hdVideoQuality = update.hdVideoQuality
 			movie.rating = update.rating
@@ -251,7 +240,8 @@ actor MediaImporter {
 			defer { url.stopAccessingSecurityScopedResource() }
 			
 			let (asset, metadata) = try await getAssetAndMetadata(path: url)
-			let update = try await createEpisodeFromFile(metadata: metadata, asset: asset, tvShow: episode.tvShow)
+			let update = try await getEpisodeData(metadata: metadata, asset: asset)
+			let credits = try CreditsBuilder.makeCredits(from: update.creditNames, context: modelContext)
 			
 			episode.artwork = update.artwork
 			episode.season = update.season
@@ -259,15 +249,9 @@ actor MediaImporter {
 			episode.title = update.title
 			episode.durationMinutes = update.durationMinutes
 			episode.releaseDate = update.releaseDate
-			episode.episodeShortDescription = update.episodeShortDescription
-			episode.episodeLongDescription = update.episodeLongDescription
-			episode.cast = update.cast
-			episode.producers = update.producers
-			episode.executiveProducers = update.executiveProducers
-			episode.directors = update.directors
-			episode.coDirectors = update.coDirectors
-			episode.screenwriters = update.screenwriters
-			episode.composer = update.composer
+			episode.episodeShortDescription = update.shortDescription
+			episode.episodeLongDescription = update.longDescription
+			CreditsBuilder.replaceCredits(for: episode, with: credits, context: modelContext)
 			episode.studio = update.studio
 			episode.network = update.network
 			episode.rating = update.rating
@@ -373,6 +357,26 @@ actor MediaImporter {
 		} catch {
 			return nil
 		}
+	}
+
+	private func getCreditNames(metadata: [AVMetadataItem]) async -> CreditsDTO {
+		let cast = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "cast") ?? []
+		let directors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "directors") ?? []
+		let coDirectors = await self.tryGetStringArrayMetaDataValue(metadata: metadata,	for: MetadataIdentifier.creditDict,	creditGroup: "codirectors") ?? []
+		let screenwriters = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "screenwriters") ?? []
+		let producers = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "producers") ?? []
+		let executiveProducers = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.executiveProducers)?.split(separator: ", ").map { String($0) } ?? []
+		let composer = await self.tryGetStringMetaDataValue(metadata: metadata,	for: .iTunesMetadataComposer)
+
+		return CreditsDTO(
+			cast: cast,
+			directors: directors,
+			coDirectors: coDirectors,
+			screenwriters: screenwriters,
+			producers: producers,
+			executiveProducers: executiveProducers,
+			composer: composer
+		)
 	}
 	
 	private func getDateMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> Date {

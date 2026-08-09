@@ -13,6 +13,7 @@ struct MyMediaSchemaV2: VersionedSchema {
 	static var models: [any PersistentModel.Type] {
 		[
 			TvShow.self,
+			Credits.self,
 			Episode.self,
 			Movie.self,
 			MediaCollection.self,
