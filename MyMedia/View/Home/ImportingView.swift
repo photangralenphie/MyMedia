@@ -185,7 +185,7 @@ struct ImportingView: View {
 					}
 				}
 			}
-			
+
 			withAnimation { currentImportFile = nil }
 			try? await Task.sleep(nanoseconds: 10_000_000_000)
 			withAnimation { importRange = nil }

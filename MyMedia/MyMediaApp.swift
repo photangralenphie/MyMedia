@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct MyMediaApp: App {
-    var sharedModelContainer: ModelContainer = {
+    private var sharedModelContainer: ModelContainer = {
 		let schema = Schema(versionedSchema: MyMediaSchemaV2.self)
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 		
@@ -52,6 +52,7 @@ struct MyMediaApp: App {
 		
 		Settings {
 			SettingsView()
+				.modelContainer(sharedModelContainer)
 		}
     }
 }

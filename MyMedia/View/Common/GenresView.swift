@@ -49,7 +49,8 @@ struct GenresView: View {
 					sorting: $sortOrder,
 					viewPreference: $viewPreference,
 					useSections: $useSections,
-					navTitle: LocalizedStringKey(selectedGenre))
+					navTitle: LocalizedStringKey(selectedGenre)
+				)
 				.padding(.top, 7)
 			} else {
 				ContentUnavailableView("Select a genre", systemImage: "square.on.square")

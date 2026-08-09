@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import AwesomeSwiftyComponents
 
 struct DeveloperSettingsTab: View {
 	
@@ -15,6 +16,7 @@ struct DeveloperSettingsTab: View {
 	@Binding var developerMode: Bool
 	
 	@State private var showDeletionAlert: Bool = false
+	@State private var deleteError: Error?
 	@Environment(\.modelContext) private var context
 	
 	var body: some View{
@@ -37,6 +39,9 @@ struct DeveloperSettingsTab: View {
 				}
 				.dialogIcon(Image(systemName: dangerSymbol))
 				.tint(.red)
+				.alert("Error while deleting all content",isPresented: $deleteError.isNotNil()) {
+					CloseButton { deleteError = nil }
+				}
 			} header: {
 				Label("Danger Area!", systemImage: dangerSymbol)
 					.foregroundStyle(.red)
@@ -51,15 +56,14 @@ struct DeveloperSettingsTab: View {
 			}
 		}
 		.frame(height: 210)
-    }
+	}
 	
 	func deleteAllContent() {
-		try? context.delete(model: Movie.self)
-		try? context.delete(model: Episode.self)
-		try? context.delete(model: TvShow.self)
-		try? context.delete(model: MediaCollection.self)
-		try? context.delete(model: Person.self)
-		try? context.save()
+		do {
+			try MetadataUtil.deleteAllContent(context: context)
+		} catch {
+			deleteError = error
+		}
 	}
 }
 
@@ -67,3 +71,4 @@ struct DeveloperSettingsTab: View {
 	DeveloperSettingsTab(settingsTab: .constant(.developer), developerMode: .constant(true))
 		.formStyle(.grouped)
 }
+
