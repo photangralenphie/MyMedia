@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct LayoutSectionHeader: View {
-	
+
 	var section: String
-	
-    var body: some View {	
+
+    var body: some View {
 		let sectionHeader = Text(LocalizedStringKey(section))
 			.font(.title3)
-			   .bold()
-			   .padding(.horizontal)
-			   .padding(.vertical, 3)
-			   .frame(maxWidth: .infinity, alignment: .leading)
-		
+			.bold()
+			.padding(.horizontal)
+			.padding(.vertical, 3)
+			.frame(maxWidth: .infinity, alignment: .leading)
+
 		if #available(macOS 26.0, *) {
 			sectionHeader
 				.glassEffect()

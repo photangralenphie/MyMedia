@@ -5,15 +5,15 @@
 //  Created by Jonas Helmer on 17.06.25.
 //
 
-import SwiftUI
 import OrderedCollections
+import SwiftUI
 
 struct GridView: View {
-	
+
 	let useSections: Bool
 	let groupedMediaItems: OrderedDictionary<String, [any MediaItem]>
 	let filteredMediaItems: [any MediaItem]
-	
+
     var body: some View {
 		LazyVGrid(columns: LayoutConstants.gridLayout, pinnedViews: [.sectionHeaders]) {
 			if useSections {
@@ -22,7 +22,6 @@ struct GridView: View {
 						ForEach(groupedMediaItems[section] ?? [], id: \.id) { mediaItem in
 							LayoutCellView(mediaItem: mediaItem, layout: .grid)
 						}
-						
 					} header: {
 						LayoutSectionHeader(section: section)
 					}

@@ -5,24 +5,24 @@
 //  Created by Jonas Helmer on 31.03.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct HomeView: View {
-	
+
 	@Environment(\.modelContext) private var moc
 	@Query(sort: \TvShow.title) private var tvShows: [TvShow]
 	@Query(sort: \Movie.title) private var movies: [Movie]
 	@Query(sort: \Episode.title) private var episodes: [Episode]
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
-	
+
 	@AppStorage("selectedTab") private var selectedTab: String = Tabs.unwatched.id
 	@AppStorage("sidebarCustomizations") private var tabViewCustomization: TabViewCustomization
 	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = true
-	
+
 	@Environment(CommandResource.self) private var commandResource
 	@Environment(\.openURL) private var openURL
-	
+
     var body: some View {
 		TabView(selection: $selectedTab) {
 			TabSection("Library") {
@@ -33,13 +33,13 @@ struct HomeView: View {
 				SearchTab(tvShows: tvShows, movies: movies, episodes: episodes)
 			}
 			.customizationID(Tabs.generalSection)
-			
+
 			TabSection("Movies") {
 				MoviesTab(movies: movies)
 				MoviesGenresTab(movies: movies)
 			}
 			.customizationID(Tabs.moviesSection)
-			
+
 			TabSection("TV Shows") {
 				TvShowsTab(tvShows: tvShows)
 				TvShowsGenresTab(tvShows: tvShows)
@@ -48,14 +48,14 @@ struct HomeView: View {
 				}
 			}
 			.customizationID(Tabs.tvShowsSection)
-			
+
 			PinnedTabs(tvShows: tvShows, episodes: episodes, movies: movies, collections: collections)
 		}
 		.tabViewCustomization($tabViewCustomization)
 		.tabViewStyle(.sidebarAdaptable)
 		.tabViewSidebarBottomBar { ImportingView() }
 		.alert(commandResource.errorTitle, isPresented: .constant(commandResource.errorMessage != nil)) {
-			Button("OK"){ commandResource.clearError() }
+			Button("OK") { commandResource.clearError() }
 			Button("Get Help") { openURL(URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Help-%E2%80%90-Error-Codes")!) }
 		} message: {
 			commandResource.errorMessage ?? Text("Unknown Error")

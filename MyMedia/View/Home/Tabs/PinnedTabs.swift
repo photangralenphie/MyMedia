@@ -5,25 +5,25 @@
 //  Created by Jonas Helmer on 12.10.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct PinnedTabs: TabContent {
-	
+
 	let tvShows: [TvShow]
 	let episodes: [Episode]
 	let movies: [Movie]
 	let collections: [MediaCollection]
-	
+
 	@Environment(\.modelContext) private var modelContext
-	
+
 	var pinnedItems: [any IsPinnable] {
-		tvShows.filter({ $0.isPinned }) +
-		episodes.filter({ $0.isPinned }) +
-		movies.filter({ $0.isPinned }) +
-		collections.filter({ $0.isPinned })
+		tvShows.filter(\.isPinned) +
+		episodes.filter(\.isPinned) +
+		movies.filter(\.isPinned) +
+		collections.filter(\.isPinned)
 	}
-	
+
     var body: some TabContent<TabValue> {
 		if !pinnedItems.isEmpty {
 			TabSection("Pinned") {
@@ -61,7 +61,7 @@ struct PinnedTabs: TabContent {
 			.customizationID(Tabs.pinnedSection)
 		}
     }
-	
+
 	func dropMediaItemOnCollection(target: MediaCollection, ids: [any Transferable]) {
 		let allMediaItems: [any MediaItem] = tvShows + movies
 		for id in ids {
@@ -71,9 +71,9 @@ struct PinnedTabs: TabContent {
 			}
 		}
 	}
-		
+
 	func unpinItem(_ pinnedItem: any IsPinnable) {
-		if var item = pinnedItems.filter({ $0.id == pinnedItem.id}).first {
+		if var item = pinnedItems.filter({ $0.id == pinnedItem.id }).first {
 			withAnimation {
 				item.isPinned = false
 				try? modelContext.save()

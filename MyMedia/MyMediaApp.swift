@@ -5,15 +5,15 @@
 //  Created by Jonas Helmer on 27.03.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct MyMediaApp: App {
     private var sharedModelContainer: ModelContainer = {
 		let schema = Schema(versionedSchema: MyMediaSchemaV2.self)
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-		
+
         do {
 			return try ModelContainer(
 				for: schema,
@@ -24,11 +24,11 @@ struct MyMediaApp: App {
 			fatalError("Could not create ModelContainer: \(error.localizedDescription)")
         }
     }()
-	
+
 	private var commandResource = CommandResource.shared
-	
+
 	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-	
+
 	init() {
 		BookmarkStore.migrateLegacyBookmarksFromUserDefaultsIfNeeded()
 	}
@@ -42,14 +42,14 @@ struct MyMediaApp: App {
 					try? sharedModelContainer.mainContext.save()
 				}
         }
-		.defaultSize(width: 1200, height: 700)
+		.defaultSize(width: 1_200, height: 700)
 		.modelContainer(sharedModelContainer)
 		.commands { MenuBarCommands(commandResource: commandResource) }
-		
+
 		VideoPlayerWindow(context: sharedModelContainer.mainContext)
-		
+
 		AboutWindow()
-		
+
 		Settings {
 			SettingsView()
 				.modelContainer(sharedModelContainer)

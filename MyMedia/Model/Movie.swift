@@ -5,8 +5,8 @@
 //  Created by Jonas Helmer on 12.04.25.
 //
 
-import SwiftData
 import Foundation
+import SwiftData
 
 @Model
 class Movie: IsWatchable, HasGenre, MediaItem, HasCredits {
@@ -17,12 +17,12 @@ class Movie: IsWatchable, HasGenre, MediaItem, HasCredits {
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
 	var progressMinutes: Int = 0
-	
+
 	@Transient
 	var year: Int {
 		Calendar.current.component(.year, from: releaseDate)
 	}
-	
+
 	var artwork: Data?
 	var title: String
 	var genre: [String]
@@ -36,7 +36,7 @@ class Movie: IsWatchable, HasGenre, MediaItem, HasCredits {
 	var hdVideoQuality: HDVideoQuality?
 	var rating: String?
 	var languages: [String]
-	
+
 	init(
 		artwork: Data?,
 		title: String,

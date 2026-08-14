@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct SearchShowAllButton<FilteredResult>: View {
-	
+
 	let searchScope: SearchScope
 	let preview: Bool
 	let filteredResults: [FilteredResult]
-	
+
 	@Environment(SearchVm.self) private var searchVm
-	
+
     var body: some View {
 		if preview && filteredResults.count >= LayoutConstants.numPreviewSearchResults {
 			HStack {

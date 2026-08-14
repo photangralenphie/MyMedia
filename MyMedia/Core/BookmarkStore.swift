@@ -13,7 +13,7 @@ struct BookmarkStore {
 	// Queue avoids possible race conditions when reading and writing bookmarks.
 	private static let queue = DispatchQueue(label: "MyMedia.BookmarkStore")
 	private static let migrationFlag = "didMigrateBookmarksToFile"
-	
+
 	private static var bookmarksFileURL: URL = {
 		let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
 		return appSupport.appending(path: "Bookmarks.plist")
@@ -38,14 +38,14 @@ struct BookmarkStore {
 			} else {
 				bookmarks.removeValue(forKey: key)
 			}
-			
+
 			saveToDisk(bookmarks)
 		}
 	}
 
 	static func migrateLegacyBookmarksFromUserDefaultsIfNeeded() {
 		guard !UserDefaults.standard.bool(forKey: migrationFlag) else { return }
-		
+
 		queue.sync {
 			for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
 				guard UUID(uuidString: key) != nil else { continue }
@@ -65,7 +65,7 @@ struct BookmarkStore {
 		guard let rawData = try? Data(contentsOf: bookmarksFileURL) else { return [:] }
 		guard let plist = try? PropertyListSerialization.propertyList(from: rawData, format: nil) else { return [:] }
 		guard let dictionary = plist as? [String: Data] else { return [:] }
-		
+
 		return dictionary
 	}
 

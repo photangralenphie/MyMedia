@@ -4,10 +4,10 @@
 //
 //  Created by Jonas Helmer on 18.05.25.
 //
-import SwiftUI
 import AVKit
+import SwiftUI
 
-extension EnvironmentValues{
+extension EnvironmentValues {
 	@Entry var mediaContext: MediaContext = .single
 }
 
@@ -20,9 +20,9 @@ extension AVPlayerViewControlsStyle {
 			default: ""
 		}
 	}
-	
+
 	static var userSelectableStyles: [AVPlayerViewControlsStyle] {
-		return [.floating, .inline, .minimal]
+		[.floating, .inline, .minimal]
 	}
 }
 

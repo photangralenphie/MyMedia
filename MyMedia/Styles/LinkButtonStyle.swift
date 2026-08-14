@@ -24,5 +24,5 @@ struct LinkButtonStyle: LabelStyle {
 }
 
 extension LabelStyle where Self == LinkButtonStyle {
-	static var linkButton: LinkButtonStyle { get { LinkButtonStyle() } }
+	static var linkButton: LinkButtonStyle { LinkButtonStyle() }
 }

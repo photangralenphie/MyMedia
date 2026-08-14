@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct BadgeView: View {
-	
+
 	let text: String
 	let style: BadgeStyle
-	
+
     var body: some View {
-		
+
 		switch style {
 			case .outlined:
 				Text(text)

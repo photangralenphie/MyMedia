@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct CollectionsTab: TabContent {
-	
+
 	private let tab = Tabs.collections
-	
+
     var body: some TabContent<TabValue> {
 		GenericTab(tab: tab) {
 			CollectionsView()

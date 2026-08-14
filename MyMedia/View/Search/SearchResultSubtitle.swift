@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SearchResultSubtitle: View {
-	
+
 	let mediaItem: any MediaItem
-	
+
     var body: some View {
 		if let subtitle = getSubtitle(for: mediaItem) {
 			Text(subtitle)
@@ -18,7 +18,7 @@ struct SearchResultSubtitle: View {
 				.foregroundStyle(.secondary)
 		}
     }
-	
+
 	func getSubtitle(for mediaItem: any MediaItem) -> String? {
 		switch mediaItem {
 			case let movie as Movie:

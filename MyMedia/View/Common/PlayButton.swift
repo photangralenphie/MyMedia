@@ -5,20 +5,20 @@
 //  Created by Jonas Helmer on 12.04.25.
 //
 
-import SwiftUI
 import AwesomeSwiftyComponents
+import SwiftUI
 
 struct PlayButton: View {
-	
+
 	let mediaItem: any MediaItem
-	
+
 	var playType: PlayType {
 		if mediaItem.isWatched {
 			return PlayType.playAgain
 		}
-		
+
 		switch mediaItem {
-			case let tvShow as TvShow :
+			case let tvShow as TvShow:
 				if tvShow.episodes.allSatisfy({ !$0.isWatched }) {
 					return PlayType.play
 				}
@@ -42,11 +42,11 @@ struct PlayButton: View {
 				return PlayType.play
 		}
 	}
-	
+
 	@AppStorage(PreferenceKeys.useInAppPlayer) private var useInAppPlayer: Bool = true
 	@Environment(\.openWindow) private var openWindow
 	@State private var isHovered: Bool = false
-	
+
     var body: some View {
 
 		if #available(macOS 26.0, *) {
@@ -57,9 +57,8 @@ struct PlayButton: View {
 			Button(playType.text, systemImage: "play.fill", action: playAction)
 				.buttonStyle(iOSBorderedProminentForMacOS())
 		}
-
     }
-	
+
 	func playAction() {
 		if useInAppPlayer {
 			mediaItem.play(playType: playType, openWindow: openWindow)
@@ -67,7 +66,7 @@ struct PlayButton: View {
 			mediaItem.playWithDefaultPlayer()
 		}
 	}
-	
+
 	private func onHover(isHovering: Bool) {
 		withAnimation {
 			isHovered = isHovering

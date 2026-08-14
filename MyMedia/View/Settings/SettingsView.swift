@@ -15,7 +15,7 @@ enum SettingsTab: String {
 }
 
 struct SettingsView: View {
-	
+
 	@State private var selectedTab = SettingsTab.general
 	@AppStorage(PreferenceKeys.developerMode) private var showDeveloperTab: Bool = false
 
@@ -24,15 +24,15 @@ struct SettingsView: View {
 			Tab("General", systemImage: "gearshape", value: SettingsTab.general) {
 				GeneralSettingsTab()
 			}
-			
+
 			Tab("Player", systemImage: "play.rectangle.on.rectangle.fill", value: SettingsTab.player) {
 				PlayerSettingsTab()
 			}
-			
+
 			Tab("Metadata", systemImage: "list.bullet.rectangle", value: SettingsTab.metadata) {
 				MetadataSettingsTab()
 			}
-			
+
 			if showDeveloperTab {
 				Tab("Developer", systemImage: LayoutConstants.developerModeSymbol, value: SettingsTab.developer) {
 					DeveloperSettingsTab(settingsTab: $selectedTab, developerMode: $showDeveloperTab)

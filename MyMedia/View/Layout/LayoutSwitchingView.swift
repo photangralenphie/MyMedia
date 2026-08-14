@@ -5,57 +5,57 @@
 //  Created by Jonas Helmer on 31.03.25.
 //
 
-import SwiftUI
-import SwiftData
 import OrderedCollections
+import SwiftData
+import SwiftUI
 
 struct LayoutSwitchingView<Header: View>: View {
-	
+
 	// init
 	private let navTitle: LocalizedStringKey
 	private let mediaItems: [any MediaItem]
 	@ViewBuilder private var header: Header
-	
+
 	@Binding private var sortOrder: SortOption
 	@Binding private var viewPreference: ViewOption
 	@Binding private var useSections: Bool
-	
+
 	@State private var searchText: String = ""
 
 	@Environment(\.modelContext) private var moc
-	
+
 	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, viewPreference: Binding<ViewOption>, useSections: Binding<Bool>, navTitle: LocalizedStringKey) where Header == EmptyView {
-		self.init(mediaItems: mediaItems, sorting: sorting, viewPreference: viewPreference, useSections: useSections, navTitle: navTitle, header: { EmptyView() })
+		self.init(mediaItems: mediaItems, sorting: sorting, viewPreference: viewPreference, useSections: useSections, navTitle: navTitle) { EmptyView() }
 	}
-	
-	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, viewPreference: Binding<ViewOption>, useSections: Binding<Bool>, navTitle: LocalizedStringKey, @ViewBuilder header: @escaping () -> Header) {
+
+	init(mediaItems: [any MediaItem], sorting: Binding<SortOption>, viewPreference: Binding<ViewOption>, useSections: Binding<Bool>, navTitle: LocalizedStringKey, @ViewBuilder header: () -> Header) {
 		switch sorting.wrappedValue {
 			case .title:
-				self.mediaItems = mediaItems.sorted(by: { $0.title < $1.title })
+				self.mediaItems = mediaItems.sorted { $0.title < $1.title }
 			case .releaseDate:
-				self.mediaItems = mediaItems.sorted(by: { $0.year > $1.year})
+				self.mediaItems = mediaItems.sorted { $0.year > $1.year }
 			case .dateAdded:
-				self.mediaItems = mediaItems.sorted(by: { $0.dateAdded > $1.dateAdded})
+				self.mediaItems = mediaItems.sorted { $0.dateAdded > $1.dateAdded }
 		}
-		
+
 		_sortOrder = sorting
 		_viewPreference = viewPreference
 		_useSections = useSections
-		
+
 		self.navTitle = navTitle
 		self.header = header()
 	}
 
 	var filteredMediaItems: [any MediaItem] {
 		if searchText.isEmpty { return mediaItems }
-		
+
 		return mediaItems.filter {
 			$0.title
 				.lowercased()
 				.contains(searchText.lowercased())
 		}
 	}
-	
+
 	var groupedMediaItems: OrderedDictionary<String, [any MediaItem]> {
 		OrderedDictionary(grouping: filteredMediaItems) {
 			switch sortOrder {
@@ -68,7 +68,7 @@ struct LayoutSwitchingView<Header: View>: View {
 			}
 		}
 	}
-	
+
     var body: some View {
 		NavigationStack {
 			Group {
@@ -100,12 +100,12 @@ struct LayoutSwitchingView<Header: View>: View {
 						}
 						.frame(width: sortOrder.pickerWidth)
 					}
-					
+
 					if #available(macOS 26.0, *) {
 						ToolbarSpacer(.fixed)
 					}
 				}
-				
+
 				ToolbarItem {
 					Picker("View", selection: $viewPreference.animation()) {
 						ForEach(ViewOption.allCases) { option in
@@ -114,11 +114,11 @@ struct LayoutSwitchingView<Header: View>: View {
 					}
 					.pickerStyle(.segmented)
 				}
-				
+
 				if #available(macOS 26.0, *) {
 					ToolbarSpacer(.fixed)
 				}
-				
+
 				if viewPreference != .detailList {
 					ToolbarItem {
 						Toggle("Toggle sections", systemImage: "rectangle.grid.1x2", isOn: $useSections.animation())

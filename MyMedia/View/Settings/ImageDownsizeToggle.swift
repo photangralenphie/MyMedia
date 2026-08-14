@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ImageDownsizeToggle: View {
-	
+
 	@Binding public var isOn: Bool
-	
+
     var body: some View {
 		HStack {
 			Toggle("Downsize Artwork", isOn: $isOn)

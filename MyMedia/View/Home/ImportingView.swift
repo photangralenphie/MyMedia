@@ -5,20 +5,20 @@
 //  Created by Jonas Helmer on 05.05.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ImportingView: View {
-	
+
 	@State private var importRange: ClosedRange<Int>?
 	@State private var currentImportFile: String?
 	@State private var showImportOverlay: Bool = false
-	
+
 	@Environment(CommandResource.self) var commandResource
 	@Environment(\.modelContext) private var moc
-	
+
     var body: some View {
-		
+
 		VStack(alignment: .leading) {
 			if let importRange {
 				HStack {
@@ -31,10 +31,10 @@ struct ImportingView: View {
 								Image(systemName: "checkmark")
 							}
 						}
-					
+
 					VStack(alignment: .leading) {
 						Text(importRange.lowerBound.magnitude == importRange.upperBound.magnitude ? "Finished Importing" : "Importing")
-						
+
 						if let currentImportFile {
 							Text(currentImportFile)
 								.font(.footnote)
@@ -42,10 +42,10 @@ struct ImportingView: View {
 						}
 					}
 				}
-				
+
 				Divider()
 			}
-			
+
 			Menu("Import Media", systemImage: "plus") {
 				Button("Select Files", systemImage: "document.badge.plus.fill", action: importNewFilesFromSelection)
 					.font(.title)
@@ -67,11 +67,10 @@ struct ImportingView: View {
 		}
 		.onChange(of: commandResource.showFileImporter) {
 			if commandResource.showFileImporter {
-				
 			}
 		}
     }
-	
+
 	private func importNewFilesFromSelection() {
 		selectFiles { files in
 			defer {
@@ -79,26 +78,26 @@ struct ImportingView: View {
 					file.stopAccessingSecurityScopedResource()
 				}
 			}
-			
+
 			for file in files {
 				if !file.startAccessingSecurityScopedResource() {
 					_ = Task { @MainActor in
 						commandResource.showError(message: "Failed to gain access to the file \(file.absoluteString).", title: "Error while Importing", errorCode: 8)
 					}
-					return;
+					return
 				}
 			}
-			
+
 			_ = Task { @MainActor in
 				importFileRange(urls: files)
 			}
 		}
 	}
-	
+
 	private func importNewFilesFromFolder() {
 		selectFolder { folderURLs in
 			var collectedURLs: [URL] = []
-			
+
 			for folderURL in folderURLs {
 				if !folderURL.startAccessingSecurityScopedResource() {
 					_ = Task { @MainActor in
@@ -126,13 +125,13 @@ struct ImportingView: View {
 					}
 				}
 			}
-			
+
 			_ = Task { @MainActor in
 				importFileRange(urls: collectedURLs)
 			}
 		}
 	}
-	
+
 	func selectFolder(completion: @escaping @Sendable ([URL]) -> Void) {
 		let panel = NSOpenPanel()
 		panel.title = "Select a directory to import."
@@ -149,7 +148,7 @@ struct ImportingView: View {
 			}
 		}
 	}
-	
+
 	func selectFiles(completion: @escaping @Sendable ([URL]) -> Void) {
 		let panel = NSOpenPanel()
 		panel.title = "Select media files to import."
@@ -158,7 +157,7 @@ struct ImportingView: View {
 		panel.allowsMultipleSelection = true
 		panel.canChooseDirectories = false
 		panel.canChooseFiles = true
-		
+
 		panel.begin { response in
 			if response == .OK {
 				_ = Task { @MainActor in
@@ -167,10 +166,10 @@ struct ImportingView: View {
 			}
 		}
 	}
-	
+
 	private func importFileRange(urls: [URL]) {
 		withAnimation { importRange = 0...urls.count }
-		
+
 		_ = Task {
 			let assembler = MediaImporter(modelContainer: moc.container)
 			for (index, url) in urls.enumerated() {

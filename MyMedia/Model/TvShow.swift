@@ -5,8 +5,8 @@
 //  Created by Jonas Helmer on 12.04.25.
 //
 
-import SwiftData
 import Foundation
+import SwiftData
 
 fileprivate let miniSeriesGenres: Set<String> = [
 	// English
@@ -19,7 +19,7 @@ fileprivate let miniSeriesGenres: Set<String> = [
 class TvShow: HasGenre {
 	@Attribute(.unique)
 	var id = UUID()
-	
+
 	var dateAdded = Date.now
 	var title: String
 	var year: Int
@@ -28,26 +28,26 @@ class TvShow: HasGenre {
 	var artwork: Data?
 	var isFavorite: Bool = false
 	var isPinned: Bool = false
-	
+
 	@Relationship(deleteRule: .cascade, inverse: \Episode.tvShow)
 	var episodes: [Episode]
-	
+
 	@Transient
 	var isWatched: Bool {
 		get { episodes.allSatisfy(\.isWatched) }
 		set { episodes.forEach { $0.isWatched = newValue } }
 	}
-	
+
 	@Transient
 	var networks: [String] {
-		return Array(Set(episodes.compactMap(\.network)))
+		Array(Set(episodes.compactMap(\.network)))
 	}
-	
+
 	@Transient
 	var isMiniSeries: Bool {
-		return !Set(genre).isDisjoint(with: miniSeriesGenres)
+		!Set(genre).isDisjoint(with: miniSeriesGenres)
 	}
-	
+
 	init(title: String, year: Int, genre: [String], showDescription: String?, episodes: [Episode] = [], artwork: Data?) {
 		self.title = title
 		self.year = year
@@ -56,7 +56,7 @@ class TvShow: HasGenre {
 		self.episodes = episodes
 		self.artwork = artwork
 	}
-	
+
 	func findEpisodesToPlay() -> [Episode] {
 		let sortedEpisodes = self.episodes.sorted {
 			if $0.season == $1.season {
@@ -64,12 +64,11 @@ class TvShow: HasGenre {
 			}
 			return $0.season < $1.season
 		}
-		
+
 		let unwatched = sortedEpisodes.filter { !$0.isWatched }
-		if(unwatched.count > 0) {
+		if !unwatched.isEmpty {
 			return unwatched
-		} else {
-			return sortedEpisodes
 		}
+			return sortedEpisodes
 	}
 }

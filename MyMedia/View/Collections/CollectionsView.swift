@@ -5,34 +5,34 @@
 //  Created by Jonas Helmer on 11.05.25.
 //
 
-import SwiftUI
 import OrderedCollections
 import SwiftData
+import SwiftUI
 
 struct CollectionsView: View {
-	
+
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 	@State private var searchText: String = ""
 	@Environment(CommandResource.self) private var commandResource
 
 	var filteredCollections: [MediaCollection] {
 		if searchText.isEmpty { return collections }
-		
+
 		return collections.filter {
 			$0.title
 				.lowercased()
 				.contains(searchText.lowercased())
 		}
 	}
-	
+
 	var groupedCollections: OrderedDictionary<String, [MediaCollection]> {
 		OrderedDictionary(grouping: filteredCollections) {
 			String($0.title.prefix(1)).uppercased()
 		}
 	}
-	
+
 	var body: some View {
-		
+
 		NavigationStack {
 			ScrollView {
 				LazyVGrid(columns: LayoutConstants.gridLayout, pinnedViews: [.sectionHeaders]) {
@@ -41,7 +41,6 @@ struct CollectionsView: View {
 							ForEach(groupedCollections[section] ?? [], id: \.id) { collection in
 								LayoutCellView(collection: collection, layout: .grid)
 							}
-
 						} header: {
 							LayoutSectionHeader(section: section)
 						}
@@ -59,7 +58,7 @@ struct CollectionsView: View {
 			}
 		}
 	}
-	
+
 	func createCollection() {
 		commandResource.collectionEditVm = CollectionEditVm()
 	}

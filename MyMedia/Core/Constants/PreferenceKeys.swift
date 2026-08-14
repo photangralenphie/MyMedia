@@ -19,6 +19,6 @@ public struct PreferenceKeys {
 	public static let useInAppPlayer: String = "useInAppPlayer"
 	public static let useMiniSeries: String = "useMiniSeries"
 	public static let developerMode: String = "developerMode"
-	
+
 	private init() {}
 }

@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct GridCellView: View {
-	
+
 	let artwork: Data?
 	let artworkSubtitle: String
-	
+
 	let title: String
 	let subtitle: String?
-	
+
 	@State private var height: Double = 0
-	
+
     var body: some View {
 		VStack(alignment: .leading) {
 			GeometryReader { geometry in
@@ -26,9 +26,9 @@ struct GridCellView: View {
 					}
 			}
 			.frame(height: height)
-			
+
 			Text("\(title) \(artworkSubtitle)")
-			
+
 			if let subtitle {
 				Text(subtitle)
 					.textCase(.uppercase)

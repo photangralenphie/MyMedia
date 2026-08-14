@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 struct MyMediaMigrationPlan: SchemaMigrationPlan {
-	
+
 	static var schemas: [any VersionedSchema.Type] {
 		[MyMediaSchemaV1.self, MyMediaSchemaV2.self]
 	}

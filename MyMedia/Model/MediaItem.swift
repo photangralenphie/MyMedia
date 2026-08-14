@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 protocol IsPinnable {
 	var id: UUID { get }
@@ -32,9 +32,9 @@ protocol MediaItem: Identifiable, IsPinnable {
 	var title: String { get }
 	var dateAdded: Date { get }
 	var artwork: Data? { get }
-	
+
 	var year: Int { get }
-	
+
 	var isWatched: Bool { get set }
 	var isFavorite: Bool { get set }
 }
@@ -55,41 +55,44 @@ extension MediaItem {
 
 		if calendar.isDateInToday(dateAdded) {
 			return "Today"
-		} else if let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now), dateAdded >= oneWeekAgo {
-			return "Last Week"
-		} else if let oneMonthAgo = calendar.date(byAdding: .month, value: -1, to: now), dateAdded >= oneMonthAgo {
-			return "Last Month"
-		} else if let threeMonthsAgo = calendar.date(byAdding: .month, value: -3, to: now), dateAdded >= threeMonthsAgo {
-			return "Last 3 Months"
-		} else if let oneYearAgo = calendar.date(byAdding: .year, value: -1, to: now), dateAdded >= oneYearAgo {
-			return "Last Year"
-		} else {
-			return "Older"
 		}
+		if let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now), dateAdded >= oneWeekAgo {
+			return "Last Week"
+		}
+		if let oneMonthAgo = calendar.date(byAdding: .month, value: -1, to: now), dateAdded >= oneMonthAgo {
+			return "Last Month"
+		}
+		if let threeMonthsAgo = calendar.date(byAdding: .month, value: -3, to: now), dateAdded >= threeMonthsAgo {
+			return "Last 3 Months"
+		}
+		if let oneYearAgo = calendar.date(byAdding: .year, value: -1, to: now), dateAdded >= oneYearAgo {
+			return "Last Year"
+		}
+			return "Older"
 	}
-	
+
 	mutating func toggleWatched() {
 		withAnimation {
 			self.isWatched.toggle()
 		}
 	}
-	
+
 	mutating func toggleFavorite() {
 		withAnimation {
 			self.isFavorite.toggle()
 		}
 	}
-	
+
 	mutating func togglePinned() {
 		withAnimation {
 			self.isPinned.toggle()
 		}
 	}
-	
+
 	@MainActor
 	func play(playType: PlayType, openWindow: OpenWindowAction) {
 		let ids: [PersistentIdentifier] = switch self {
-			case let tvShow as TvShow :
+			case let tvShow as TvShow:
 				tvShow.findEpisodesToPlay().map(\.persistentModelID)
 			case let movie as Movie:
 				[movie.persistentModelID]
@@ -97,14 +100,14 @@ extension MediaItem {
 				[episode.persistentModelID]
 			default: []
 		}
-		
+
 		let playAction = PlayAction(identifiers: ids, playType: playType)
 		openWindow(value: playAction)
 	}
-	
+
 	func playWithDefaultPlayer() {
 		switch self {
-			case let tvShow as TvShow :
+			case let tvShow as TvShow:
 				if let url = tvShow.findEpisodesToPlay().first?.url {
 					NSWorkspace.shared.open(url)
 				}
@@ -122,7 +125,7 @@ extension IsWatchable {
 		get { getUrl() }
 		set { setUrl(newValue) }
 	}
-	
+
 	private func getUrl() -> URL? {
 		let bookmarkData = BookmarkStore.getBookmark(forKey: self.id.uuidString)
 		var isStale = false
@@ -134,7 +137,7 @@ extension IsWatchable {
 					relativeTo: nil,
 					bookmarkDataIsStale: &isStale
 				)
-				if isStale  {
+				if isStale {
 					if resolvedURL.startAccessingSecurityScopedResource() {
 						defer { resolvedURL.stopAccessingSecurityScopedResource() }
 						let newBookmark = try resolvedURL.bookmarkData(
@@ -149,14 +152,14 @@ extension IsWatchable {
 			} catch {
 				let watchableTitel = self.title
 				Task { @MainActor in
-					CommandResource.shared.showError(message: "Failed to resolve bookmark for \(watchableTitel).", title: "Error accessing media file", errorCode: 1);
+					CommandResource.shared.showError(message: "Failed to resolve bookmark for \(watchableTitel).", title: "Error accessing media file", errorCode: 1)
 				}
 				return nil
 			}
 		}
 		return nil
 	}
-	
+
 	private func setUrl(_ url: URL?) {
 		if let url {
 			let bookmarkData = try? url.bookmarkData(
@@ -167,11 +170,11 @@ extension IsWatchable {
 			BookmarkStore.setBookmark(bookmarkData, forKey: self.id.uuidString)
 		}
 	}
-	
+
 	@MainActor
 	func openInSubler() {
 		guard let url = self.url else { return }
-		
+
 		if url.startAccessingSecurityScopedResource() {
 
 			let appPath = "/Applications/Subler.app"
@@ -185,15 +188,15 @@ extension IsWatchable {
 				try process.run()
 				let data = pipe.fileHandleForReading.readDataToEndOfFile()
 				if let output = String(data: data, encoding: .utf8), !output.isEmpty {
-					CommandResource.shared.showError(message: "Failed to open Subler: \(output)", title: "Subler Error", errorCode: 2);
+					CommandResource.shared.showError(message: "Failed to open Subler: \(output)", title: "Subler Error", errorCode: 2)
 				}
 			} catch {
-				CommandResource.shared.showError(message: "Failed to open Subler: \(error.localizedDescription)", title: "Subler Error", errorCode: 3);
+				CommandResource.shared.showError(message: "Failed to open Subler: \(error.localizedDescription)", title: "Subler Error", errorCode: 3)
 			}
 			url.stopAccessingSecurityScopedResource()
 		}
 	}
-	
+
 	@MainActor
 	func openInFinder() {
 		guard let url = self.url, url.startAccessingSecurityScopedResource() else { return }

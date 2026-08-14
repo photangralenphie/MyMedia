@@ -5,68 +5,68 @@
 //  Created by Jonas Helmer on 30.03.25.
 //
 
-import SwiftUI
-import SwiftData
 @preconcurrency import AVFoundation
+import SwiftData
+import SwiftUI
 
 @ModelActor
 actor MediaImporter {
-	
+
 	private func getAssetAndMetadata(path: URL) async throws -> (asset: AVURLAsset, metadata: [AVMetadataItem]) {
 		let asset = AVURLAsset(url: path)
 		let metadata = try await asset.load(.metadata)
 		return (asset, metadata)
 	}
-	
+
 	public func importFromFile(path: URL) async throws {
 		let (asset, metadata) = try await getAssetAndMetadata(path: path)
-		
+
 		let kind = await self.tryGetIntMetaDataValue(metadata: metadata, for: MetadataIdentifier.mediaKind)
-		
-		if kind == nil  {
+
+		if kind == nil {
 			throw ImportError.noMetadataFound(fileName: path.lastPathComponent)
 		}
-		
-		if(kind == MetadataIdentifier.movie){
+
+		if kind == MetadataIdentifier.movie {
 			try await readMovieMetadata(metadata: metadata, asset: asset)
 		}
-	
-		if(kind == MetadataIdentifier.tvShow) {
+
+		if kind == MetadataIdentifier.tvShow {
 			try await readTvMetadata(metaData: metadata, asset: asset, source: path)
 		}
 	}
-	
+
 	private func readTvMetadata(metaData: [AVMetadataItem], asset: AVURLAsset, source: URL) async throws {
 		let showTitle = try await self.getStringMetaDataValue(metadata: metaData, for: .commonIdentifierArtist)
-		
+
 		let existingTvShows = try await fetchCurrentTvShows()
-		var show = existingTvShows.filter { $0.title == showTitle }.first
-		
+		let show = existingTvShows.first(where: { $0.title == showTitle })
+
 		if show == nil {
-			show = try await createTvShowFromEpisode(metadata: metaData)
-			modelContext.insert(show!)
+			let show = try await createTvShowFromEpisode(metadata: metaData)
+			modelContext.insert(show)
 		}
-		
+
 		guard let show else {
 			throw ImportError.unknown(message: "Something went wrong creating a TV show from file \(source.absoluteString)")
 		}
-		
+
 		let episode = try await createEpisodeFromFile(metadata: metaData, asset: asset, tvShow: show)
 		show.episodes.append(episode)
-		
+
 		try modelContext.save()
 	}
-	
+
 	private func readMovieMetadata(metadata: [AVMetadataItem], asset: AVURLAsset) async throws {
 		let movie = try await createMovieFromFile(metadata: metadata, asset: asset)
 		modelContext.insert(movie)
 		try modelContext.save()
 	}
-	
+
 	private func createMovieFromFile(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> Movie {
 		let values = try await getMovieData(metadata: metadata, asset: asset)
 		let credits = try CreditsBuilder.makeCredits(from: values.creditNames, context: modelContext)
-		
+
 		var movie = Movie(
 			artwork: values.artwork,
 			title: values.title,
@@ -81,12 +81,12 @@ actor MediaImporter {
 			rating: values.rating,
 			languages: values.languages,
 		)
-		
+
 		movie.url = values.url
 		return movie
 	}
 
-	private func getMovieData(metadata: [AVMetadataItem],	asset: AVURLAsset) async throws -> MovieDTO {
+	private func getMovieData(metadata: [AVMetadataItem], asset: AVURLAsset) async throws -> MovieDTO {
 		MovieDTO(
 			artwork: await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .moviePoster),
 			title: try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierTitle),
@@ -97,13 +97,13 @@ actor MediaImporter {
 			longDescription: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.longDescription),
 			creditNames: await self.getCreditNames(metadata: metadata),
 			studio: await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "studio")?.first,
-			hdVideoQuality: try await self.getResolution(metadata: metadata),
+			hdVideoQuality: await self.getResolution(metadata: metadata),
 			rating: await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.rating),
 			languages: try await asset.getAudioLanguages(),
 			url: asset.url
 		)
 	}
-	
+
 	private func createTvShowFromEpisode(metadata: [AVMetadataItem]) async throws -> TvShow {
 		let title = try await self.getStringMetaDataValue(metadata: metadata, for: .commonIdentifierArtist)
 		let date = try await self.getDateMetaDataValue(metadata: metadata, for: .iTunesMetadataReleaseDate)
@@ -111,7 +111,7 @@ actor MediaImporter {
 		let genre = try await self.getGenres(metadata: metadata)
 		let seriesDescription = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.seriesDescription)
 		let artwork = await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .tvPoster)
-		
+
 		return TvShow(
 			title: title,
 			year: year,
@@ -124,7 +124,7 @@ actor MediaImporter {
 	private func createEpisodeFromFile(metadata: [AVMetadataItem], asset: AVURLAsset, tvShow: TvShow) async throws -> Episode {
 		let values = try await getEpisodeData(metadata: metadata, asset: asset)
 		let credits = try CreditsBuilder.makeCredits(from: values.creditNames, context: modelContext)
-		
+
 		var episode = Episode(
 			artwork: values.artwork,
 			season: values.season,
@@ -141,7 +141,7 @@ actor MediaImporter {
 			languages: values.languages,
 			tvShow: tvShow
 		)
-		
+
 		episode.url = values.url
 		return episode
 	}
@@ -164,12 +164,12 @@ actor MediaImporter {
 			url: asset.url
 		)
 	}
-	
+
 	private func fetchCurrentTvShows() async throws -> [TvShow] {
 		let descriptor = FetchDescriptor<TvShow>()
 		return try modelContext.fetch(descriptor)
 	}
-	
+
 	public func updateMediaItem(identifier: PersistentIdentifier) async throws {
 		guard let mediaItem = modelContext.model(for: identifier) as? any MediaItem else {
 			throw ImportError.unknown(message: "Media item could not be found.")
@@ -185,18 +185,18 @@ actor MediaImporter {
 			default:
 				throw ImportError.unknown(message: "Media is not a movie, TV show or episode.")
 		}
-		
+
 		try modelContext.save()
 	}
-	
+
 	private func updateMovie(movie: Movie) async throws {
 		if let url = movie.url, url.startAccessingSecurityScopedResource() {
 			defer { url.stopAccessingSecurityScopedResource() }
-			
+
 			let (asset, metadata) = try await getAssetAndMetadata(path: url)
 			let update = try await getMovieData(metadata: metadata, asset: asset)
 			let credits = try CreditsBuilder.makeCredits(from: update.creditNames, context: modelContext)
-			
+
 			movie.artwork = update.artwork
 			movie.title = update.title
 			movie.genre = update.genre
@@ -211,38 +211,38 @@ actor MediaImporter {
 			movie.languages = update.languages
 		}
 	}
-	
+
 	private func updateTvShow(tvShow: TvShow) async throws {
-		if tvShow.episodes.count == 0 {
+		if tvShow.episodes.isEmpty {
 			throw ImportError.unknown(message: "TV show has no episodes.")
 		}
-		
+
 		if let url = tvShow.episodes[0].url, url.startAccessingSecurityScopedResource() {
 			defer { url.stopAccessingSecurityScopedResource() }
-			
+
 			let (_, metadata) = try await getAssetAndMetadata(path: url)
 			let update = try await createTvShowFromEpisode(metadata: metadata)
-			
+
 			tvShow.title = update.title
 			tvShow.year = update.year
 			tvShow.genre = update.genre
 			tvShow.showDescription = update.showDescription
 			tvShow.artwork = update.artwork
 		}
-		
+
 		for episode in tvShow.episodes {
 			try await updateEpisode(episode: episode)
 		}
 	}
-	
+
 	private func updateEpisode(episode: Episode) async throws {
 		if let url = episode.url, url.startAccessingSecurityScopedResource() {
 			defer { url.stopAccessingSecurityScopedResource() }
-			
+
 			let (asset, metadata) = try await getAssetAndMetadata(path: url)
 			let update = try await getEpisodeData(metadata: metadata, asset: asset)
 			let credits = try CreditsBuilder.makeCredits(from: update.creditNames, context: modelContext)
-			
+
 			episode.artwork = update.artwork
 			episode.season = update.season
 			episode.episode = update.episode
@@ -258,17 +258,17 @@ actor MediaImporter {
 			episode.languages = update.languages
 		}
 	}
-	
+
 	public func getArtworks(url: URL?) async throws -> Data? {
 		if let url, url.startAccessingSecurityScopedResource() {
 			defer { url.stopAccessingSecurityScopedResource() }
-			
+
 			let (_, metadata) = try await getAssetAndMetadata(path: url)
 			return await self.tryGetImageMetaDataValue(metadata: metadata, artworkType: .tvPoster)
 		}
 		return nil
 	}
-	
+
 	private func getStringMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> String {
 		if let stringValue = await tryGetStringMetaDataValue(metadata: metadata, for: identifier) {
 			return stringValue
@@ -283,7 +283,7 @@ actor MediaImporter {
 			return nil
 		}
 	}
-	
+
 	private func getStringMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async throws -> String {
 		if let stringValue = await tryGetStringMetaDataValue(metadata: metadata, for: identifier) {
 			return stringValue
@@ -293,12 +293,12 @@ actor MediaImporter {
 
 	private func tryGetStringMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async -> String? {
 		do {
-			return try await metadata.filter({ $0.identifier?.rawValue == identifier}).first?.load(.stringValue)
+			return try await metadata.filter { $0.identifier?.rawValue == identifier }.first?.load(.stringValue)
 		} catch {
 			return nil
 		}
 	}
-	
+
 	private func getIntMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> Int {
 		if let intValue = await tryGetIntMetaDataValue(metadata: metadata, for: identifier) {
 			return intValue
@@ -313,7 +313,7 @@ actor MediaImporter {
 			return nil
 		}
 	}
-	
+
 	private func getIntMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async throws -> Int {
 		if let intValue = await tryGetIntMetaDataValue(metadata: metadata, for: identifier) {
 			return intValue
@@ -323,7 +323,7 @@ actor MediaImporter {
 
 	private func tryGetIntMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async -> Int? {
 		do {
-			return try await metadata.filter({ $0.identifier?.rawValue == identifier}).first?.load(.numberValue)?.intValue
+			return try await metadata.filter { $0.identifier?.rawValue == identifier }.first?.load(.numberValue)?.intValue
 		} catch {
 			return nil
 		}
@@ -338,16 +338,15 @@ actor MediaImporter {
 
 	private func tryGetStringArrayMetaDataValue(metadata: [AVMetadataItem], for identifier: String, creditGroup: String) async -> [String]? {
 		do {
-			guard let xmlData = try await
-					metadata.filter({ $0.identifier?.rawValue == identifier})
-						.first?
-						.load(.stringValue)?
-						.data(using: .utf8) else { return nil }
+			guard let xmlData = try await metadata.filter({ $0.identifier?.rawValue == identifier })
+				.first?
+				.load(.stringValue)?
+				.data(using: .utf8) else { return nil }
 
 			var format = PropertyListSerialization.PropertyListFormat.xml
 			guard let plist = try? PropertyListSerialization.propertyList(from: xmlData, options: [], format: &format),
 				  let dict = plist as? [String: Any] else { return nil }
-			
+
 			if creditGroup == "studio" {
 				guard let studio = dict[creditGroup] as? String else { return nil }
 				return [studio]
@@ -362,11 +361,11 @@ actor MediaImporter {
 	private func getCreditNames(metadata: [AVMetadataItem]) async -> CreditsDTO {
 		let cast = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "cast") ?? []
 		let directors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "directors") ?? []
-		let coDirectors = await self.tryGetStringArrayMetaDataValue(metadata: metadata,	for: MetadataIdentifier.creditDict,	creditGroup: "codirectors") ?? []
+		let coDirectors = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "codirectors") ?? []
 		let screenwriters = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "screenwriters") ?? []
 		let producers = await self.tryGetStringArrayMetaDataValue(metadata: metadata, for: MetadataIdentifier.creditDict, creditGroup: "producers") ?? []
 		let executiveProducers = await self.tryGetStringMetaDataValue(metadata: metadata, for: MetadataIdentifier.executiveProducers)?.split(separator: ", ").map { String($0) } ?? []
-		let composer = await self.tryGetStringMetaDataValue(metadata: metadata,	for: .iTunesMetadataComposer)
+		let composer = await self.tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataComposer)
 
 		return CreditsDTO(
 			cast: cast,
@@ -378,7 +377,7 @@ actor MediaImporter {
 			composer: composer
 		)
 	}
-	
+
 	private func getDateMetaDataValue(metadata: [AVMetadataItem], for identifier: AVMetadataIdentifier) async throws -> Date {
 		if let date = await tryGetDateMetaDataValue(metadata: metadata, for: identifier) {
 			return date
@@ -393,11 +392,11 @@ actor MediaImporter {
 			return nil
 		}
 	}
-	
+
 	private func tryGetImageMetaDataValue(metadata: [AVMetadataItem], artworkType: ArtworkType) async -> Data? {
 		let artworks = AVMetadataItem.metadataItems(from: metadata, filteredByIdentifier: .commonIdentifierArtwork)
 		if artworks.isEmpty { return nil }
-		
+
 		var imageData: Data?
 		do {
 			if artworks.endIndex > artworkType.index {
@@ -408,42 +407,43 @@ actor MediaImporter {
 		} catch {
 			return nil
 		}
-		
+
 		let doDownsize = UserDefaults.standard.bool(forKey: PreferenceKeys.downSizeArtwork)
 		if let imageData, doDownsize, let image = NSImage(data: imageData) {
 			let maxSize = MetadataUtil.getMaxImageSize()
 			let newSize = MetadataUtil.getDownSizedImageSize(originalSize: image.size, maxSize: maxSize)
 			return MetadataUtil.downSizeImage(imageData: imageData, newSize: newSize)
 		}
-		
+
 		return imageData
 	}
-	
+
 	private func getGenres(metadata: [AVMetadataItem]) async throws -> [String] {
 		let userGenresString = await tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataUserGenre)
-		let userGenres = userGenresString?.split(separator: ",").map{ $0.trimmingCharacters(in: .whitespaces) }
-		if userGenres != nil { return userGenres! }
-	
-		let iTunesRawGenreCode = try await metadata.filter({ $0.identifier?.rawValue == MetadataIdentifier.genre}).first?.load(.dataValue)
+		if let userGenres = userGenresString?.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) } {
+			return userGenres
+		}
+
+		let iTunesRawGenreCode = try await metadata.filter { $0.identifier?.rawValue == MetadataIdentifier.genre }.first?.load(.dataValue)
 		let iTunesGenreCode = iTunesRawGenreCode?.withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
-		
+
 		if let iTunesGenreCode {
 			let correctedITunesGenreCode = iTunesGenreCode - 1
 			let iTunesGenreName = Self.iTunesGenreCodes[correctedITunesGenreCode]
-			
+
 			if let iTunesGenreName {
 				return [iTunesGenreName]
 			}
 		}
-		
+
 		return []
 	}
-	
-	private func getResolution(metadata: [AVMetadataItem]) async throws -> HDVideoQuality {
+
+	private func getResolution(metadata: [AVMetadataItem]) async -> HDVideoQuality {
 		let resolutionIndex = await tryGetIntMetaDataValue(metadata: metadata, for: MetadataIdentifier.resolution) ?? HDVideoQuality.sd.rawValue // When hd is not found it's SD quality
 		return HDVideoQuality(rawValue: resolutionIndex) ?? .sd
 	}
-	
+
 	public static func showImportError(_ error: ImportError) {
 		Task { @MainActor in
 			CommandResource.shared.showError(message: error.errorDescription, title: "Error while Importing", errorCode: error.errorCode)
@@ -455,16 +455,16 @@ extension AVURLAsset {
 	func getAudioLanguages() async throws -> [String] {
 		let tracks = try await self.loadTracks(withMediaType: .audio)
 		var languages: [String] = []
-		
+
 		for track in tracks {
 			if let code = try await track.load(.languageCode) {
 				languages.append(code)
 			}
 		}
-		
+
 		return languages
 	}
-	
+
 	func getRuntimeMinutes() async throws -> Int {
 		let durationInSeconds = await CMTimeGetSeconds(try self.load(.duration))
 		return Int(durationInSeconds / 60)
@@ -473,16 +473,16 @@ extension AVURLAsset {
 
 extension MediaImporter {
 	internal static let iTunesGenreCodes: [UInt16: String] = [
-		 0: "Blues",
-		 1: "Classic Rock",
-		 2: "Country",
-		 3: "Dance",
-		 4: "Disco",
-		 5: "Funk",
-		 6: "Grunge",
-		 7: "Hip-Hop",
-		 8: "Jazz",
-		 9: "Metal",
+		0: "Blues",
+		1: "Classic Rock",
+		2: "Country",
+		3: "Dance",
+		4: "Disco",
+		5: "Funk",
+		6: "Grunge",
+		7: "Hip-Hop",
+		8: "Jazz",
+		9: "Metal",
 		10: "New Age",
 		11: "Oldies",
 		12: "Other",
@@ -573,53 +573,53 @@ extension MediaImporter {
 		97: "Chorus",
 		98: "Easy Listening",
 		99: "Acoustic",
-	   100: "Humour",
-	   101: "Speech",
-	   102: "Chanson",
-	   103: "Opera",
-	   104: "Chamber Music",
-	   105: "Sonata",
-	   106: "Symphony",
-	   107: "Booty Bass",
-	   108: "Primus",
-	   109: "Porn Groove",
-	   110: "Satire",
-	   111: "Slow Jam",
-	   112: "Club",
-	   113: "Tango",
-	   114: "Samba",
-	   115: "Folklore",
-	   116: "Ballad",
-	   117: "Power Ballad",
-	   118: "Rhythmic Soul",
-	   119: "Freestyle",
-	   120: "Duet",
-	   121: "Punk Rock",
-	   122: "Drum Solo",
-	   123: "A Cappella",
-	   124: "Euro-House",
-	   125: "Dance Hall",
-	   126: "Goa",
-	   127: "Drum & Bass",
-	   128: "Club-House",
-	   129: "Hardcore",
-	   130: "Terror",
-	   131: "Indie",
-	   132: "BritPop",
-	   133: "Negerpunk",
-	   134: "Polsk Punk",
-	   135: "Beat",
-	   136: "Christian Gangsta Rap",
-	   137: "Heavy Metal",
-	   138: "Black Metal",
-	   139: "Crossover",
-	   140: "Contemporary Christian",
-	   141: "Christian Rock",
-	   142: "Merengue",
-	   143: "Salsa",
-	   144: "Thrash Metal",
-	   145: "Anime",
-	   146: "JPop",
-	   147: "Synthpop"
+		100: "Humour",
+		101: "Speech",
+		102: "Chanson",
+		103: "Opera",
+		104: "Chamber Music",
+		105: "Sonata",
+		106: "Symphony",
+		107: "Booty Bass",
+		108: "Primus",
+		109: "Porn Groove",
+		110: "Satire",
+		111: "Slow Jam",
+		112: "Club",
+		113: "Tango",
+		114: "Samba",
+		115: "Folklore",
+		116: "Ballad",
+		117: "Power Ballad",
+		118: "Rhythmic Soul",
+		119: "Freestyle",
+		120: "Duet",
+		121: "Punk Rock",
+		122: "Drum Solo",
+		123: "A Cappella",
+		124: "Euro-House",
+		125: "Dance Hall",
+		126: "Goa",
+		127: "Drum & Bass",
+		128: "Club-House",
+		129: "Hardcore",
+		130: "Terror",
+		131: "Indie",
+		132: "BritPop",
+		133: "Negerpunk",
+		134: "Polsk Punk",
+		135: "Beat",
+		136: "Christian Gangsta Rap",
+		137: "Heavy Metal",
+		138: "Black Metal",
+		139: "Crossover",
+		140: "Contemporary Christian",
+		141: "Christian Rock",
+		142: "Merengue",
+		143: "Salsa",
+		144: "Thrash Metal",
+		145: "Anime",
+		146: "JPop",
+		147: "Synthpop"
 	]
 }

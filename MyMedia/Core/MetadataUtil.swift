@@ -5,27 +5,27 @@
 //  Created by Jonas Helmer on 12.04.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct MetadataUtil {
 	private init() { }
-	
+
 	public static func formatRuntime(minutes: Int) -> String {
 		let hours = minutes / 60
 		let mins = minutes % 60
-		
+
 		if hours > 0 && mins > 0 {
 			return "\(hours) hr, \(mins) min"
-		} else if hours > 0 {
-			return "\(hours) hr"
-		} else {
-			return "\(mins) min"
 		}
+		if hours > 0 {
+			return "\(hours) hr"
+		}
+			return "\(mins) min"
 	}
-	
+
 	public static func getRating(ratingString: String?) -> String? {
-		if let ratingString = ratingString {
+		if let ratingString {
 			if let firstPipe = ratingString.firstIndex(of: "|"), let end = ratingString[firstPipe...].dropFirst().firstIndex(of: "|") {
 				let start = ratingString.index(after: firstPipe)
 				return String(ratingString[start..<end])
@@ -33,10 +33,10 @@ struct MetadataUtil {
 		}
 		return nil
 	}
-	
+
 	public static func getDescription(mediaItem: any MediaItem) -> String? {
 		let preferShortDescription = UserDefaults.standard.bool(forKey: PreferenceKeys.preferShortDescription)
-		
+
 		switch mediaItem {
 			case let tvShow as TvShow:
 				return tvShow.showDescription
@@ -54,13 +54,13 @@ struct MetadataUtil {
 				return nil
 		}
 	}
-	
+
 	public static func getMaxImageSize() -> CGSize {
 		let width = UserDefaults.standard.integer(forKey: PreferenceKeys.downSizeArtworkWidth)
 		let height = UserDefaults.standard.integer(forKey: PreferenceKeys.downSizeArtworkHeight)
 		return CGSize(width: width, height: height)
 	}
-	
+
 	public static func getDownSizedImageSize(originalSize: CGSize, maxSize: CGSize) -> CGSize {
 		let widthRatio = maxSize.width / originalSize.width
 		let heightRatio = maxSize.height / originalSize.height
@@ -71,13 +71,13 @@ struct MetadataUtil {
 			height: originalSize.height * scaleFactor
 		)
 	}
-	
+
 	public static func downSizeImage(imageData: Data, newSize: CGSize) -> Data {
 		guard let image = NSImage(data: imageData) else { return imageData }
 		if image.size.width <= newSize.width && image.size.height <= newSize.height {
 			return imageData
 		}
-		
+
 		let resizedImage = NSImage(size: newSize)
 		resizedImage.lockFocus()
 		image.draw(
@@ -87,25 +87,24 @@ struct MetadataUtil {
 			fraction: 1.0
 		)
 		resizedImage.unlockFocus()
-		
+
 		if let tiffData = resizedImage.tiffRepresentation,
 		   let bitmap = NSBitmapImageRep(data: tiffData),
 		   let downSizedData = bitmap.representation(using: .jpeg, properties: [.compressionFactor: 0.8]) {
 			return downSizedData
-		} else {
-			return imageData
 		}
+			return imageData
 	}
-	
+
 	public static func flagEmojis(for languageCodes: [String]) -> String {
 		languageCodes
 			.map { languageToFlag[$0] ?? "🏴󠁥󠁳󠁣󠁴󠁿" }
 			.joined(separator: " ")
 	}
-	
+
 	private static let languageToFlag: [String: String] = [
 		// I do not guarantee that this list is even remotely correct or complete.
-		
+
 		// A
 		"aar": "🇪🇹", // Afar – Ethiopia
 		"abk": "🇬🇪", // Abkhazian – Georgia (Abkhazia)
@@ -118,7 +117,7 @@ struct MetadataUtil {
 		"ava": "🇷🇺", // Avaric – Russia (Dagestan)
 		"aym": "🇧🇴", // Aymara – Bolivia
 		"aze": "🇦🇿", // Azerbaijani – Azerbaijan
-		
+
 		// B
 		"bak": "🇷🇺", // Bashkir – Russia
 		"bam": "🇲🇱", // Bambara – Mali
@@ -130,7 +129,7 @@ struct MetadataUtil {
 		"bre": "🇫🇷", // Breton – France (Brittany)
 		"bul": "🇧🇬", // Bulgarian – Bulgaria
 		"bur": "🇲🇲",  // Burmese (Myanmar) – Myanmar (note: old code, modern is "mya")
-		
+
 		// C
 		"cat": "🇪🇸", // Catalan – Spain (Catalonia)
 		"ces": "🇨🇿", // Czech – Czech Republic
@@ -141,21 +140,21 @@ struct MetadataUtil {
 		"cos": "🇫🇷", // Corsican – France (Corsica)
 		"cre": "🇨🇦", // Cree – Canada
 		"cym": "🏴󠁧󠁢󠁷󠁬󠁳󠁿", // Welsh – Wales (officially part of UK; regional flag)
-		
+
 		// D
 		"dan": "🇩🇰", // Danish – Denmark
 		"deu": "🇩🇪", // German - Germany
 		"div": "🇲🇻", // Divehi (Dhivehi) – Maldives
 		"doi": "🇮🇳", // Dogri – India (Jammu & Kashmir region)
 		"dut": "🇳🇱", // Dutch – Netherlands (old code; modern is "nld")
-		
+
 		// E
 		"ell": "🇬🇷", // Modern Greek – Greece
 		"eng": "🇬🇧", // English – United Kingdom (widely spoken globally)
 		"est": "🇪🇪", // Estonian – Estonia
 		"ewe": "🇹🇬", // Ewe – Togo
 		"eus": "🇪🇸", // Basque – Spain (Basque Country)
-		
+
 		// F
 		"fao": "🇫🇴", // Faroese – Faroe Islands
 		"fas": "🇮🇷", // Persian – Iran
@@ -165,7 +164,7 @@ struct MetadataUtil {
 		"fre": "🇫🇷", // French – France (old code; modern is "fra")
 		"fry": "🇳🇱", // Western Frisian – Netherlands
 		"ful": "🇸🇳", // Fulah – Senegal (widely spoken in West Africa)
-		
+
 		// G
 		"gla": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", // Scottish Gaelic – Scotland (part of UK)
 		"gle": "🇮🇪", // Irish – Ireland
@@ -177,7 +176,7 @@ struct MetadataUtil {
 		"gor": "🇮🇩", // Gorontalo – Indonesia
 		"grn": "🇵🇾", // Guarani – Paraguay
 		"guj": "🇮🇳", // Gujarati – India
-		
+
 		// H
 		"hat": "🇭🇹", // Haitian – Haiti
 		"hau": "🇳🇬", // Hausa – Nigeria
@@ -188,7 +187,7 @@ struct MetadataUtil {
 		"hrv": "🇭🇷", // Croatian – Croatia
 		"hun": "🇭🇺", // Hungarian – Hungary
 		"hye": "🇦🇲", // Armenian – Armenia (modern code; old "arm")
-		
+
 		// I
 		"ibo": "🇳🇬", // Igbo – Nigeria
 		"ice": "🇮🇸", // Icelandic – Iceland
@@ -198,12 +197,12 @@ struct MetadataUtil {
 		"ind": "🇮🇩", // Indonesian – Indonesia
 		"isl": "🇮🇸", // Icelandic – Iceland (alternative code)
 		"ita": "🇮🇹",  // Italian – Italy
-		
+
 		// J
 		"jav": "🇮🇩", // Javanese – Indonesia
 		"jpn": "🇯🇵", // Japanese – Japan
 		"jv": "🇮🇩",  // Javanese – Indonesia (alternative code)
-		
+
 		// K
 		"kab": "🇩🇿", // Kabyle – Algeria
 		"kal": "🇩🇰", // Greenlandic – Greenland (Denmark)
@@ -223,7 +222,7 @@ struct MetadataUtil {
 		"kro": "🇨🇮", // Kroumen – Ivory Coast
 		"kur": "🇮🇷", // Kurdish – Iran
 		"kyr": "🇰🇬", // Kyrgyz – Kyrgyzstan
-		
+
 		// L
 		"lao": "🇱🇦", // Lao – Laos
 		"lav": "🇱🇻", // Latvian – Latvia
@@ -234,7 +233,7 @@ struct MetadataUtil {
 		"ltz": "🇱🇺", // Luxembourgish – Luxembourg
 		"lub": "🇨🇩", // Luba-Katanga – Democratic Republic of the Congo
 		"lug": "🇺🇬", // Luganda – Uganda
-		
+
 		// M
 		"mah": "🇲🇻", // Marshallese – Marshall Islands
 		"mal": "🇮🇳", // Malayalam – India
@@ -257,7 +256,7 @@ struct MetadataUtil {
 		"msa": "🇲🇾", // Malay – Malaysia (also spoken in Indonesia and Singapore)
 		"myv": "🇷🇺", // Erzya – Russia (Mordovia region)
 		"mya": "🇲🇲",  // Burmese – Myanmar,
-		
+
 		// N
 		"nah": "🇲🇽", // Nahuatl – Mexico
 		"nap": "🇮🇹", // Neapolitan – Italy
@@ -274,13 +273,13 @@ struct MetadataUtil {
 		"nor": "🇳🇴", // Norwegian – Norway
 		"nso": "🇿🇦", // Northern Sotho – South Africa
 		"nya": "🇿🇲", // Nyanja – Zambia
-		
+
 		// O
 		"oci": "🇫🇷", // Occitan – France
 		"ori": "🇮🇳", // Oriya – India (now called Odia)
 		"orm": "🇪🇹", // Oromo – Ethiopia
 		"oss": "🇷🇺", // Ossetian – Russia
-		
+
 		// P
 		"pan": "🇮🇳", // Punjabi – India
 		"pap": "🇧🇶", // Papiamento – Bonaire, Sint Eustatius, and Saba (Netherlands)
@@ -289,7 +288,7 @@ struct MetadataUtil {
 		"pol": "🇵🇱", // Polish – Poland
 		"por": "🇵🇹", // Portuguese – Portugal (also spoken in Brazil, Brazil, and former colonies)
 		"pus": "🇦🇫", // Pashto – Afghanistan
-		
+
 		// R
 		"raj": "🇮🇳", // Rajasthani – India
 		"rap": "🇹🇴", // Rapa Nui – Easter Island (Chile)
@@ -300,7 +299,7 @@ struct MetadataUtil {
 		"run": "🇷🇼", // Rundi – Burundi
 		"rus": "🇷🇺", // Russian – Russia
 		"ryu": "🇯🇵", // Ryukyuan languages – Japan
-		
+
 		// S
 		"sah": "🇷🇺", // Sakha (Yakut) – Russia
 		"sco": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", // Scots – Scotland (part of the UK)
@@ -335,7 +334,7 @@ struct MetadataUtil {
 		"swe": "🇸🇪", // Swedish – Sweden
 		"syc": "🇸🇾", // Classical Syriac – historical
 		"syr": "🇸🇾", // Syriac – Syria
-		
+
 		// T
 		"taj": "🇰🇿", // Tajik – Tajikistan
 		"tam": "🇮🇳", // Tamil – India
@@ -356,7 +355,7 @@ struct MetadataUtil {
 		"tuk": "🇹🇲", // Turkmen – Turkmenistan
 		"tur": "🇹🇷", // Turkish – Turkey
 		"twi": "🇬🇭", // Twi – Ghana
-		
+
 		// U
 		"uae": "🇺🇦", // Ukrainian – Ukraine
 		"umb": "🇦🇴", // Umbundu – Angola
@@ -364,11 +363,11 @@ struct MetadataUtil {
 		"ukr": "🇺🇦", // Ukrainian – Ukraine
 		"uru": "🇮🇳", // Urdu – India (widely spoken in Pakistan and India)
 		"uzb": "🇺🇿", // Uzbek – Uzbekistan
-		
+
 		// V
 		"vie": "🇻🇳", // Vietnamese – Vietnam
 		"vot": "🇫🇮", // Votic – Finland (Endangered language)
-		
+
 		// W
 		"wal": "🇪🇹", // Walamo – Ethiopia
 		"war": "🇵🇭", // Waray – Philippines
@@ -377,25 +376,25 @@ struct MetadataUtil {
 		"wln": "🇧🇪", // Walloon – Belgium
 		"wol": "🇸🇳", // Wolof – Senegal
 		"wuu": "🇨🇳", // Wu Chinese – China
-		
+
 		// X
 		"xho": "🇿🇦", // Xhosa – South Africa
-		
+
 		// Y
 		"yao": "🇲🇿", // Yao – Mozambique
 		"yap": "🇫🇲", // Yapese – Federated States of Micronesia
 		"yid": "🇮🇱", // Yiddish – Israel
 		"yor": "🇳🇬", // Yoruba – Nigeria
 		"yue": "🇭🇰", // Cantonese – Hong Kong (Chinese)
-		
+
 		// Z
 		"zap": "🇲🇽", // Zapotec – Mexico
 		"zha": "🇨🇳", // Zhuang – China
 		"zho": "🇨🇳", // Chinese – China (Mandarin)
 		"znd": "🇹🇿", // Zande – Tanzania
-		"zul": "🇿🇦", // Zulu – South Africa
+		"zul": "🇿🇦" // Zulu – South Africa
 	]
-	
+
 	public static func genreSymbol(for genre: String) -> String {
 		switch genre {
 			case "Action": "burst"
@@ -424,16 +423,16 @@ struct MetadataUtil {
 			default: "person.crop.square.on.square.angled"
 		}
 	}
-	
+
 	static func delete(_ mediaItem: any MediaItem, context: ModelContext) {
 		let removedCredits: [Credits]
-		
+
 		switch mediaItem {
 			case let movie as Movie:
-				removedCredits = [movie.credits].compactMap { $0 }
+				removedCredits = [movie.credits].compactMap(\.self)
 				context.delete(movie)
 			case let episode as Episode:
-				removedCredits = [episode.credits].compactMap { $0 }
+				removedCredits = [episode.credits].compactMap(\.self)
 				context.delete(episode)
 			case let tvShow as TvShow:
 				removedCredits = tvShow.episodes.compactMap(\.credits)
@@ -441,15 +440,15 @@ struct MetadataUtil {
 			default:
 				return
 		}
-		
+
 		var affectedPeople: [Person] = []
 		for person in removedCredits.flatMap(\.people) where !affectedPeople.contains(where: { $0 === person }) {
 			affectedPeople.append(person)
 		}
-		
+
 		CreditsBuilder.deletePeopleWithoutRemainingCredits(affectedPeople, removing: removedCredits, context: context)
 	}
-	
+
 	public static func deleteAllContent(context: ModelContext) throws {
 		let collections = try context.fetch(FetchDescriptor<MediaCollection>())
 		let credits = try context.fetch(FetchDescriptor<Credits>())
@@ -457,14 +456,14 @@ struct MetadataUtil {
 		let episodes = try context.fetch(FetchDescriptor<Episode>())
 		let movies = try context.fetch(FetchDescriptor<Movie>())
 		let tvShows = try context.fetch(FetchDescriptor<TvShow>())
-		
+
 		collections.forEach(context.delete)
 		credits.forEach(context.delete)
 		people.forEach(context.delete)
 		episodes.forEach(context.delete)
 		movies.forEach(context.delete)
 		tvShows.forEach(context.delete)
-		
+
 		try context.save()
 	}
 }

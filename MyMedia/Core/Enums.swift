@@ -16,7 +16,7 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 	case title = 0
 	case releaseDate = 1
 	case dateAdded = 2
-	
+
 	var title: LocalizedStringKey {
 		switch self {
 			case .title: LocalizedStringKey("Title")
@@ -24,7 +24,7 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 			case .dateAdded: LocalizedStringKey("Date Added")
 		}
 	}
-	
+
 	var systemImageName: String {
 		switch self {
 			case .title: "textformat.characters"
@@ -32,22 +32,22 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 			case .dateAdded: "plus.square.on.square"
 		}
 	}
-	
+
 	var pickerWidth: CGFloat {
 		switch self {
 			case .title: 70
 			default: 55
 		}
 	}
-	
-	var id: Self { return self }
+
+	var id: Self { self }
 }
 
 enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 	case grid = 0
 	case list = 1
 	case detailList = 2
-	
+
 	var title: LocalizedStringKey {
 		switch self {
 			case .grid: LocalizedStringKey("Grid")
@@ -55,7 +55,7 @@ enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 			case .detailList: LocalizedStringKey("Detail List")
 		}
 	}
-	
+
 	var symbolName: String {
 		switch self {
 			case .grid: "square.grid.2x2"
@@ -63,8 +63,8 @@ enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 			case .detailList: "tablecells"
 		}
 	}
-	
-	var id: Self { return self }
+
+	var id: Self { self }
 }
 
 enum MediaContext {
@@ -86,7 +86,7 @@ enum ArtworkType {
 	case moviePoster
 	case tvPoster
 	case episodeImage
-	
+
 	var index: Int {
 		switch self {
 			case .moviePoster: 0
@@ -101,7 +101,7 @@ enum HDVideoQuality: Int, Codable {
 	case hd720p = 1
 	case hd1080p = 2
 	case uhd4k = 3
-	
+
 	var badgeTitle: String {
 		switch self {
 			case .sd: "SD"
@@ -128,7 +128,7 @@ enum ImportError: LocalizedError {
 			case .noMetadataFound(let fileName): "No metadata found in file:\n\n\(fileName)\n\nPlease add metadata before importing."
 		}
 	}
-	
+
 	var errorCode: Int {
 		switch self {
 			case .fileNotAccessible: 4
@@ -138,8 +138,8 @@ enum ImportError: LocalizedError {
 			case .failedToBuildCredits: 8
 		}
 	}
-	
+
 	private func metadataError(metadataType: String) -> LocalizedStringKey {
-		return "No \(metadataType) found in metadata."
+		"No \(metadataType) found in metadata."
 	}
 }

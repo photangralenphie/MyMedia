@@ -8,22 +8,22 @@
 import SwiftUI
 
 struct MetadataSettingsTab: View {
-	
+
 	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
 	@AppStorage(PreferenceKeys.preferShortDescription) private var preferShortDescription: Bool = false
 	@AppStorage(PreferenceKeys.downSizeArtwork) private var downSizeArtwork: Bool = true
-	@AppStorage(PreferenceKeys.downSizeArtworkWidth) private var downSizeArtworkWidth: Int = 1000
-	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1000
-	
+	@AppStorage(PreferenceKeys.downSizeArtworkWidth) private var downSizeArtworkWidth: Int = 1_000
+	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1_000
+
     var body: some View {
 		Form {
 			Toggle("Show Languages as Flags", isOn: $showLanguageFlags)
 			Toggle("Prefer short Description", isOn: $preferShortDescription)
 				.settingDescription("If available show the short description of the media item.")
-			
+
 			Section("Artwork") {
 				ImageDownsizeToggle(isOn: $downSizeArtwork.animation())
-				
+
 				if downSizeArtwork {
 					LabeledContent("Max Size:") {
 						HStack {
@@ -38,7 +38,7 @@ struct MetadataSettingsTab: View {
 					}
 				}
 			}
-			
+
 			Link(destination: URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Tagging")!) {
 				Label("Metadata help", systemImage: "arrow.up.forward.square")
 			}

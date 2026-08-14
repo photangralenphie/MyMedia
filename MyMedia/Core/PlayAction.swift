@@ -5,8 +5,8 @@
 //  Created by Jonas Helmer on 28.09.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 enum PlayType: Codable {
 	case play
@@ -14,7 +14,7 @@ enum PlayType: Codable {
 	case playAgain
 	case playNextEpisode
 	case resumeCurrentEpisode
-	
+
 	var text: LocalizedStringKey {
 		switch self {
 			case .play: "Play"
@@ -30,4 +30,3 @@ struct PlayAction: Hashable, Codable {
 	let identifiers: [PersistentIdentifier]
 	let playType: PlayType
 }
-

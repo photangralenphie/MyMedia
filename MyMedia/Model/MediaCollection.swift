@@ -1,3 +1,4 @@
+import Foundation
 //
 //  Collection.swift
 //  MyMedia
@@ -6,11 +7,9 @@
 //
 import SwiftData
 import SwiftUI
-import Foundation
 
 @Model
-public class MediaCollection: IsPinnable
-{
+public class MediaCollection: IsPinnable {
 	@Attribute(.unique)
 	public var id: UUID = UUID()
 	var title: String
@@ -19,16 +18,16 @@ public class MediaCollection: IsPinnable
 	private var tvShows: [TvShow] = []
 	private var movies: [Movie] = []
 	private var episodes: [Episode] = []
-	
+
 	@Transient
 	var mediaItems: [any MediaItem] {
 		(tvShows + movies + episodes).sorted { $0.title < $1.title }
 	}
-	
+
 	var dateAdded: Date = Date.now
 	var isPinned: Bool = false
 	var sort: SortOption = SortOption.title
-	
+
 	// Enum don't seem to work in lightweight migrations
 	// https://stackoverflow.com/questions/79255075/how-to-add-enum-field-to-my-swiftdata-model
 	private var viewPreferenceRawValue: Int = 0
@@ -42,22 +41,22 @@ public class MediaCollection: IsPinnable
 		}
 	}
 	var useSections = true
-	
+
 	@Transient
 	var isWatched: Bool {
 		tvShows.allSatisfy(\.isWatched)
 	}
-	
+
 	init(title: String, artwork: Data?) {
 		self.title = title
 		self.artwork = artwork
 	}
-	
+
 	func addMediaItem(_ media: any MediaItem) {
 		if mediaItems.contains(where: { $0.id == media.id }) {
 			return
 		}
-		
+
 		switch media {
 			case let show as TvShow:
 				self.tvShows.append(show)
@@ -68,19 +67,19 @@ public class MediaCollection: IsPinnable
 			default: break
 		}
 	}
-	
-	func removeMediaItem(_ media: any MediaItem) {	
+
+	func removeMediaItem(_ media: any MediaItem) {
 		switch media {
 			case let show as TvShow:
-				self.tvShows.removeAll(where: { $0.id == show.id })
+				self.tvShows.removeAll { $0.id == show.id }
 			case let movie as Movie:
-				self.movies.removeAll(where: { $0.id == movie.id })
+				self.movies.removeAll { $0.id == movie.id }
 			case let episode as Episode:
-				self.episodes.removeAll(where: { $0.id == episode.id })
+				self.episodes.removeAll { $0.id == episode.id }
 			default: return
 		}
 	}
-	
+
 	func isItemInCollection(_ media: any MediaItem) -> Bool {
 		switch media {
 			case let show as TvShow:
@@ -92,7 +91,7 @@ public class MediaCollection: IsPinnable
 			default: return false
 		}
 	}
-	
+
 	func togglePinned() {
 		withAnimation {
 			self.isPinned.toggle()

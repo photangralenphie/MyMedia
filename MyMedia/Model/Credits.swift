@@ -34,7 +34,7 @@ final class Credits {
 
 	@Transient
 	var people: [Person] {
-		let allCredits = (cast + directors + coDirectors + screenwriters + producers + executiveProducers + [composer].compactMap { $0 })
+		let allCredits = (cast + directors + coDirectors + screenwriters + producers + executiveProducers + [composer].compactMap(\.self))
 		return Set(allCredits).sorted()
 	}
 

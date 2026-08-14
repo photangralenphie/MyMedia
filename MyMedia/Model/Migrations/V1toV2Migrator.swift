@@ -11,20 +11,20 @@ import SwiftData
 struct V1toV2Migrator {
 	private static var legacyMovieCredits: [UUID: CreditsDTO] = [:]
 	private static var legacyEpisodeCredits: [UUID: CreditsDTO] = [:]
-	
+
 	public static let migrate = MigrationStage.custom(
 		fromVersion: MyMediaSchemaV1.self,
 		toVersion: MyMediaSchemaV2.self,
 		willMigrate: willMigrate,
 		didMigrate: didMigrate
 	)
-	
+
 	@Sendable
 	private static func willMigrate(context: ModelContext) throws {
 		let movies = try context.fetch(FetchDescriptor<MyMediaSchemaV1.Movie>())
 		let shows = try context.fetch(FetchDescriptor<MyMediaSchemaV1.TvShow>())
 		let episodes = try context.fetch(FetchDescriptor<MyMediaSchemaV1.Episode>())
-		
+
 		Self.legacyMovieCredits = Dictionary(
 			uniqueKeysWithValues: movies.map { movie in (
 				movie.id,
@@ -39,7 +39,7 @@ struct V1toV2Migrator {
 				))
 			}
 		)
-		
+
 		Self.legacyEpisodeCredits = Dictionary(
 			uniqueKeysWithValues: episodes.map { episode in (
 				episode.id,
@@ -54,14 +54,14 @@ struct V1toV2Migrator {
 				))
 			}
 		)
-		
+
 		var assignedEpisodeIds: Set<PersistentIdentifier> = []
 		for show in shows {
 			for episode in show.episodes {
 				assignedEpisodeIds.insert(episode.persistentModelID)
 			}
 		}
-		
+
 		let orphanedEpisodes = episodes.filter { !assignedEpisodeIds.contains($0.persistentModelID) }
 		if !orphanedEpisodes.isEmpty {
 			let unknownShow = MyMediaSchemaV1.TvShow(
@@ -74,10 +74,10 @@ struct V1toV2Migrator {
 				unknownShow.episodes.append(episode)
 			}
 		}
-		
+
 		try context.save()
 	}
-	
+
 	@Sendable
 	private static func didMigrate(context: ModelContext) throws {
 		defer {

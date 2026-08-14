@@ -5,21 +5,21 @@
 //  Created by Jonas Helmer on 12.04.26.
 //
 
-import SwiftUI
-import SwiftData
 import AwesomeSwiftyComponents
+import SwiftData
+import SwiftUI
 
 struct DeveloperSettingsTab: View {
-	
+
 	let dangerSymbol = "exclamationmark.triangle.fill"
 	@Binding var settingsTab: SettingsTab
 	@Binding var developerMode: Bool
-	
+
 	@State private var showDeletionAlert: Bool = false
 	@State private var deleteError: Error?
 	@Environment(\.modelContext) private var context
-	
-	var body: some View{
+
+	var body: some View {
 		Form {
 			Section {
 				Button("Delete all Content", systemImage: "trash", role: .destructive) {
@@ -39,7 +39,7 @@ struct DeveloperSettingsTab: View {
 				}
 				.dialogIcon(Image(systemName: dangerSymbol))
 				.tint(.red)
-				.alert("Error while deleting all content",isPresented: $deleteError.isNotNil()) {
+				.alert("Error while deleting all content", isPresented: $deleteError.isNotNil()) {
 					CloseButton { deleteError = nil }
 				}
 			} header: {
@@ -57,7 +57,7 @@ struct DeveloperSettingsTab: View {
 		}
 		.frame(height: 210)
 	}
-	
+
 	func deleteAllContent() {
 		do {
 			try MetadataUtil.deleteAllContent(context: context)
@@ -71,4 +71,3 @@ struct DeveloperSettingsTab: View {
 	DeveloperSettingsTab(settingsTab: .constant(.developer), developerMode: .constant(true))
 		.formStyle(.grouped)
 }
-

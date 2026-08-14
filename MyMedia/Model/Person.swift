@@ -76,7 +76,7 @@ final class Person: Hashable, Comparable {
 			writtenCredits,
 			producedCredits,
 			executiveProducedCredits,
-			composedCredits,
+			composedCredits
 		] {
 			for credits in group where !result.contains(where: { $0 === credits }) {
 				result.append(credits)
@@ -95,12 +95,12 @@ final class Person: Hashable, Comparable {
 
 		return result
 	}
-	
+
 	func hash(into hasher: inout Hasher) {
 		hasher.combine(name)
 	}
-	
+
 	static func < (lhs: borrowing Person, rhs: borrowing Person) -> Bool {
-		lhs.name < lhs.name
+		lhs.name < rhs.name
 	}
 }

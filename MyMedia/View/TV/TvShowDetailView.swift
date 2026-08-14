@@ -5,29 +5,29 @@
 //  Created by Jonas Helmer on 31.03.25.
 //
 
-import SwiftUI
 import AVKit
+import SwiftUI
 
 struct TvShowDetailView: View {
-	
+
 	let tvShow: TvShow
 	private let titleAndData: String
 	private let episodes: [[Episode]]
 
 	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
-	
+
 	init(tvShow: TvShow) {
 		self.tvShow = tvShow
 		self.titleAndData = "\(tvShow.title) (\(String(tvShow.year)))"
-		
-		let groupedEpisodes = Dictionary(grouping: tvShow.episodes, by: { $0.season })
+
+		let groupedEpisodes = Dictionary(grouping: tvShow.episodes) { $0.season }
 		self.episodes = groupedEpisodes.values
-			.map { $0.sorted(by: { $0.episode < $1.episode }) }
-			.sorted(by: { $0.first!.season < $1.first!.season })
+			.map { $0.sorted { $0.episode < $1.episode }}
+			.sorted { $0.first!.season < $1.first!.season }
 	}
-	
+
     var body: some View {
-		
+
 		List {
 			VStack(alignment: .leading, spacing: 20) {
 				HStack(alignment: .bottom, spacing: 20) {
@@ -37,31 +37,31 @@ struct TvShowDetailView: View {
 						Text(tvShow.title)
 							.font(.largeTitle)
 							.bold()
-						
+
 						Group {
 							Text(String(tvShow.year))
-							
+
 							Text("\(episodes.count) Season")
 								.textCase(.uppercase)
 								.bold()
-							
+
 							Text(tvShow.networks.joined(separator: ", "))
-							
+
 							if !tvShow.genre.isEmpty {
 								Text(tvShow.genre.joined(separator: ", "))
 							}
 						}
 						.foregroundStyle(.secondary)
 					}
-					
+
 					Spacer()
-					
+
 					if !playButtonInArtwork {
 						PlayButton(mediaItem: tvShow)
 							.keyboardShortcut("p", modifiers: .command)
 					}
 				}
-				
+
 				if let description = MetadataUtil.getDescription(mediaItem: tvShow) {
 					Text(description)
 						.font(.body.leading(.loose))
@@ -69,7 +69,7 @@ struct TvShowDetailView: View {
 				}
 			}
 			.listRowSeparator(.hidden)
-			
+
 			ForEach(episodes, id: \.first?.season) { season in
 				Section {
 					ForEach(season, id: \.id) { episode in
@@ -77,7 +77,7 @@ struct TvShowDetailView: View {
 							EpisodeDetailView(episode: episode)
 						} label: {
 							HStack(alignment: .center) {
-								if let imageData = episode.artwork, let nsImageFromData = NSImage(data: imageData)  {
+								if let imageData = episode.artwork, let nsImageFromData = NSImage(data: imageData) {
 									let episodeImage = Image(nsImage: nsImageFromData)
 										.resizable()
 										.scaledToFit()
@@ -89,7 +89,7 @@ struct TvShowDetailView: View {
 												PlayButtonOverlayView(mediaItem: episode, width: LayoutConstants.defaultArtworkWidth / 2, height: height)
 											}
 										}
-									
+
 									if #available(macOS 26.0, *) {
 										episodeImage
 											.glassEffect(in: .rect(cornerRadius: 10, style: .continuous))
@@ -97,7 +97,7 @@ struct TvShowDetailView: View {
 										episodeImage
 									}
 								}
-								
+
 								VStack(alignment: .leading, spacing: 5) {
 									Text("Episode \(episode.episode)")
 										.textCase(.uppercase)
@@ -112,11 +112,11 @@ struct TvShowDetailView: View {
 										.foregroundStyle(.secondary)
 								}
 								.padding(.leading)
-								
+
 								Spacer()
-								
+
 								Text(MetadataUtil.formatRuntime(minutes: episode.durationMinutes))
-								
+
 								if !playButtonInArtwork {
 									PlayButton(mediaItem: episode)
 								}
@@ -142,7 +142,7 @@ struct TvShowDetailView: View {
 		}
 		.navigationTitle(titleAndData)
     }
-	
+
 	func popNavigation() {
 		let dismiss = Environment(\.dismiss).wrappedValue
 		dismiss()

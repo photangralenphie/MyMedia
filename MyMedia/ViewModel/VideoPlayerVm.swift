@@ -5,11 +5,11 @@
 //  Created by Jonas Helmer on 19.02.26.
 //
 
-import SwiftUI
 import AVKit
-import SwiftData
 import MediaPlayer
 import Observation
+import SwiftData
+import SwiftUI
 
 @MainActor
 @Observable
@@ -135,11 +135,11 @@ final class VideoPlayerVm {
 			guard let url = item.url, url.startAccessingSecurityScopedResource() else { return false }
 			defer { url.stopAccessingSecurityScopedResource() }
 			let asset = AVURLAsset(url: url)
-			
+
 			// There is no other way for now to check if the file has Apple DRM
 			// The suggested load(.hasProtectedContent) does not work and just crashes the app.
 			// So we use the deprecated function for now until another way comes up.
-			
+
 			if asset.hasProtectedContent { return true }
 		}
 
@@ -148,7 +148,7 @@ final class VideoPlayerVm {
 
 	private func playQueueWithQuickTime() {
 		let quickTimeQueue = queue
-			.compactMap { $0.url }
+			.compactMap(\.url)
 			.filter { $0.startAccessingSecurityScopedResource() }
 
 		let config = NSWorkspace.OpenConfiguration()

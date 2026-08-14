@@ -3,6 +3,11 @@ disabled_rules:
  - private_over_fileprivate
  - implicit_optional_initialization
  - line_length
+ - file_length
+ - type_body_length
+ - shorthand_operator
+ - file_name
+ - force_unwrapping
 
 opt_in_rules:
  - accessibility_trait_for_button
@@ -72,3 +77,6 @@ indentation_width:
  
 switch_case_alignment:
  indented_cases: true
+
+cyclomatic_complexity:
+  ignores_case_statements: true

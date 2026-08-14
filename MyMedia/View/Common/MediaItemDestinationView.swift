@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MediaItemDestinationView: View {
-	
+
 	let mediaItem: any MediaItem
-	
+
     var body: some View {
 		switch mediaItem {
 			case let tvShow as TvShow:

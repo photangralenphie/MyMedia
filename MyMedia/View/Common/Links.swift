@@ -23,7 +23,6 @@ struct WikiLink: View {
 	}
 }
 
-
 #Preview {
 	VStack {
 		// in AboutView
@@ -32,7 +31,7 @@ struct WikiLink: View {
 			WikiLink()
 		}
 		.labelStyle(LinkButtonStyle())
-		
+
 		// in Menubar
 		Menu("MenuBar") {
 			GitHubLink()

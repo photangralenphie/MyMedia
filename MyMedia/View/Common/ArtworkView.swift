@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ArtworkView: View {
-	
+
 	let imageData: Data?
 	let title: String
 	let subtitle: String
-	
+
 	let cornerRadius: CGFloat
 	let size: CGSize
-	
+
 	init(imageData: Data?, title: String, subtitle: String, scale: CGFloat = 1.0) {
 		self.imageData = imageData
 		self.title = title
@@ -23,7 +23,7 @@ struct ArtworkView: View {
 		self.cornerRadius = LayoutConstants.cornerRadius * scale
 		self.size = CGSize(width: LayoutConstants.defaultArtworkWidth * scale, height: LayoutConstants.defaultArtworkHeight * scale)
 	}
-	
+
 	init(imageData: Data?, title: String, subtitle: String, size: CGSize) {
 		self.imageData = imageData
 		self.title = title
@@ -31,9 +31,9 @@ struct ArtworkView: View {
 		self.cornerRadius = LayoutConstants.cornerRadius * (size.width / LayoutConstants.defaultArtworkWidth)
 		self.size = size
 	}
-	
+
 	var body: some View {
-		if let imageData = imageData, let nsImageFromData = NSImage(data: imageData)  {
+		if let imageData, let nsImageFromData = NSImage(data: imageData) {
 			let mainImage = Image(nsImage: nsImageFromData)
 				.resizable()
 				.scaledToFit()

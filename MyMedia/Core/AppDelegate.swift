@@ -8,15 +8,15 @@
 import AppKit
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-	func applicationDidFinishLaunching(_ aNotification: Notification) {
+	func applicationDidFinishLaunching(_: Notification) {
 		UserDefaults.standard.register(defaults: [
 			PreferenceKeys.downSizeCollectionArtwork: true,
-			PreferenceKeys.downSizeArtworkHeight: 1000,
-			PreferenceKeys.downSizeArtworkWidth: 1000
+			PreferenceKeys.downSizeArtworkHeight: 1_000,
+			PreferenceKeys.downSizeArtworkWidth: 1_000
 		])
 	}
-	
-	func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-		return UserDefaults.standard.bool(forKey: PreferenceKeys.autoQuit)
+
+	func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
+		UserDefaults.standard.bool(forKey: PreferenceKeys.autoQuit)
 	}
 }

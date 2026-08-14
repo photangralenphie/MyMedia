@@ -5,32 +5,32 @@
 //  Created by Jonas Helmer on 09.08.26.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct SearchForCreditsView: View {
 
 	init(preview: Bool = false) {
 		self.preview = preview
 	}
-	
+
 	public let preview: Bool
-	
+
     @Environment(SearchVm.self) private var searchVm
 	@Query(sort: \Person.name) private var people: [Person]
 
     var body: some View {
 		let filteredPeople = people.filter { searchVm.matchesQuery($0.name) }
 		let displayedPeople = preview ? Array(filteredPeople.prefix(LayoutConstants.numPreviewSearchResults)) : filteredPeople
-		
-		if displayedPeople.count > 0 {
+
+		if !displayedPeople.isEmpty {
 			ForEach(displayedPeople) { person in
                 VStack(alignment: .leading) {
 					Text(SearchVm.highlightResult(person.name, matching: searchVm.searchText))
                         .bold()
                     Text(person.roles.joined(separator: ", "))
                         .font(.caption)
-					
+
 					NavigationLink {
 						PersonView(person: person)
 					} label: {

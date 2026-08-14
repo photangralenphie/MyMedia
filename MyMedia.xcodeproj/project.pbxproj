@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DD42F35C2DD9EC5B000EE9C8 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */; };
+		DD74D46A3028F9C10005A9B6 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = DD74D4693028F9B20005A9B6 /* .swiftlint.yml */; };
 		DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DD8065622DB2960200B6A629 /* OrderedCollections */; };
 		DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */; };
 		DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD95FB962DC7E88900149619 /* AVKit.framework */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD74D4693028F9B20005A9B6 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DD956C812D95D6EA0033A363 /* MyMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD95FB962DC7E88900149619 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -46,6 +48,7 @@
 		DD956C782D95D6EA0033A363 = {
 			isa = PBXGroup;
 			children = (
+				DD74D4693028F9B20005A9B6 /* .swiftlint.yml */,
 				DD956C832D95D6EA0033A363 /* MyMedia */,
 				DD95FB952DC7E88800149619 /* Frameworks */,
 				DD956C822D95D6EA0033A363 /* Products */,
@@ -78,6 +81,7 @@
 				DD956C7D2D95D6EA0033A363 /* Sources */,
 				DD956C7E2D95D6EA0033A363 /* Frameworks */,
 				DD956C7F2D95D6EA0033A363 /* Resources */,
+				DD74D3E33028F8660005A9B6 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -143,10 +147,33 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD74D46A3028F9C10005A9B6 /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DD74D3E33028F8660005A9B6 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DD956C7D2D95D6EA0033A363 /* Sources */ = {
@@ -308,6 +335,7 @@
 				DEVELOPMENT_TEAM = ATQPB625XL;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = MyMedia;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
@@ -345,6 +373,7 @@
 				DEVELOPMENT_TEAM = ATQPB625XL;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = MyMedia;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";

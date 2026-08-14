@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct NoSearchResultsView: View {
-	
+
 	let preview: Bool
 	@Environment(SearchVm.self) private var searchVm
-	
+
     var body: some View {
 		if preview {
 			Label("No Result", systemImage: "exclamationmark.magnifyingglass")

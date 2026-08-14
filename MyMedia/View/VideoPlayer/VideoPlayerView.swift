@@ -5,9 +5,9 @@
 //  Created by Jonas Helmer on 01.04.25.
 //
 
-import SwiftUI
 import AVKit
 import SwiftData
+import SwiftUI
 import SwiftUIIntrospect
 
 struct VideoPlayerView: View {

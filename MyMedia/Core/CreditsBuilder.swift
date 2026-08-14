@@ -24,7 +24,7 @@ struct CreditsBuilder {
 		let people = try context.fetch(FetchDescriptor<Person>())
 		let movies = try context.fetch(FetchDescriptor<Movie>())
 		let episodes = try context.fetch(FetchDescriptor<Episode>())
-		
+
 		for person in people {
 			context.delete(person)
 		}
@@ -33,7 +33,7 @@ struct CreditsBuilder {
 			guard let names = movieCredits[movie.id] else { continue }
 			movie.credits = makeCredits(from: names, context: context, peopleByName: &peopleByName)
 		}
-		
+
 		for episode in episodes {
 			guard let names = episodeCredits[episode.id] else { continue }
 			episode.credits = makeCredits(from: names, context: context, peopleByName: &peopleByName)
@@ -49,11 +49,11 @@ struct CreditsBuilder {
 
 		if let oldCredits {
 			context.delete(oldCredits)
-			deletePeopleWithoutRemainingCredits(possiblyOrphanedPeople, removing: [oldCredits],	context: context)
+			deletePeopleWithoutRemainingCredits(possiblyOrphanedPeople, removing: [oldCredits], context: context)
 		}
 	}
-	
-	public static func deletePeopleWithoutRemainingCredits(_ people: [Person],	removing removedCredits: [Credits],	context: ModelContext) {
+
+	public static func deletePeopleWithoutRemainingCredits(_ people: [Person], removing removedCredits: [Credits], context: ModelContext) {
 		for person in people {
 			let hasRemainingCredit = person.allCredits.contains { credits in
 				!removedCredits.contains { $0 === credits }
@@ -64,7 +64,7 @@ struct CreditsBuilder {
 		}
 	}
 
-	private static func makeCredits(from names: CreditsDTO, context: ModelContext,	peopleByName: inout [String: Person]) -> Credits {
+	private static func makeCredits(from names: CreditsDTO, context: ModelContext, peopleByName: inout [String: Person]) -> Credits {
 		let credits = Credits(
 			cast: people(for: names.cast, context: context, peopleByName: &peopleByName),
 			directors: people(for: names.directors, context: context, peopleByName: &peopleByName),
@@ -78,7 +78,7 @@ struct CreditsBuilder {
 		return credits
 	}
 
-	private static func people(for names: [String],	context: ModelContext, peopleByName: inout [String: Person]) -> [Person] {
+	private static func people(for names: [String], context: ModelContext, peopleByName: inout [String: Person]) -> [Person] {
 		var seen: Set<String> = []
 		return names.compactMap { name in
 			guard let person = person(for: name, context: context, peopleByName: &peopleByName) else {

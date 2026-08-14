@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TvShowsTab: TabContent {
-	
+
 	let tvShows: [TvShow]
 
 	@AppStorage("sortOrderTvShows") private var sortOrderTvShows = SortOption.title
@@ -16,7 +16,7 @@ struct TvShowsTab: TabContent {
 	@AppStorage("useSectionsTvShows") private var useSectionsTvShows = true
 
 	private let tab = Tabs.tvShows
-	
+
     var body: some TabContent<TabValue> {
 		GenericTab(tab: tab) {
 			LayoutSwitchingView(

@@ -5,15 +5,15 @@
 //  Created by Jonas Helmer on 17.06.25.
 //
 
-import SwiftUI
 import OrderedCollections
+import SwiftUI
 
 struct ListView: View {
-	
+
 	let useSections: Bool
 	let groupedMediaItems: OrderedDictionary<String, [any MediaItem]>
 	let filteredMediaItems: [any MediaItem]
-	
+
 	var body: some View {
 		LazyVStack(pinnedViews: [.sectionHeaders]) {
 			if useSections {
@@ -32,7 +32,6 @@ struct ListView: View {
 					LayoutCellView(mediaItem: mediaItem, layout: .list)
 				}
 			}
-			
 		}
 		.padding(.horizontal, LayoutConstants.gridSpacing)
 	}

@@ -19,7 +19,7 @@ enum Tabs: String, Hashable {
 	case tvShows = "tvShows"
 	case tvShowsGenres = "tvShowsGenres"
 	case tvShowsMiniSeries = "tvShowsMiniSeries"
-	
+
 	var title: LocalizedStringKey {
 		switch self {
 			case .unwatched: "Unwatched"
@@ -34,9 +34,9 @@ enum Tabs: String, Hashable {
 			case .tvShowsMiniSeries: "Mini-Series"
 		}
 	}
-	
+
 	var id: String { rawValue }
-	
+
 	var systemImage: String {
 		switch self {
 			case .unwatched: "eye.slash"
@@ -51,7 +51,7 @@ enum Tabs: String, Hashable {
 			case .tvShowsMiniSeries: "rectangle.stack.badge.play"
 		}
 	}
-	
+
 	public static let generalSection: String = "generalSection"
 	public static let moviesSection: String = "moviesSection"
 	public static let tvShowsSection: String = "tvShowsSection"

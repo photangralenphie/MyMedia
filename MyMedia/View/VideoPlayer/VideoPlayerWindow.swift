@@ -5,13 +5,13 @@
 //  Created by Jonas Helmer on 10.04.26.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct VideoPlayerWindow: Scene {
-	
+
 	let context: ModelContext
-	
+
     var body: some Scene {
 		WindowGroup(for: PlayAction.self) { playAction in
 			if let playAction = playAction.wrappedValue {

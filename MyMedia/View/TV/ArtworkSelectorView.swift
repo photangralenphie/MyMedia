@@ -5,35 +5,34 @@
 //  Created by Jonas Helmer on 09.11.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ArtworkSelectorView: View {
-	
+
 	let tvShow: TvShow
 	@State private var imageData: Data?
-	
+
 	@State private var isLoading: Bool = true
 	@State private var alternativeArtworks: [Data] = []
-	
+
 	private let scale: Double
 	private let pickerWidth: Double
-	
+
 	@Environment(\.dismiss) private var dismiss
 	@Environment(\.modelContext) private var modelContext
 
-	
 	init(tvShow: TvShow) {
 		self.tvShow = tvShow
-		
+
 		let scale = 0.65
 		self.pickerWidth = LayoutConstants.defaultArtworkWidth * scale + 20
 		self.scale = scale
 	}
-	
+
 	var body: some View {
 		let loadingIndicator = ProgressView().padding(.vertical, 35)
-		
+
 		NavigationStack {
 			Form {
 				HStack(alignment: .top) {
@@ -50,7 +49,7 @@ struct ArtworkSelectorView: View {
 							loadingIndicator
 						}
 					}
-					
+
 					VStack {
 						Picker("", selection: $imageData) {
 							ForEach(Array(alternativeArtworks.enumerated()).filter { !$0.offset.isMultiple(of: 2) }, id: \.element) { _, artwork in
@@ -64,9 +63,9 @@ struct ArtworkSelectorView: View {
 							loadingIndicator
 						}
 					}
-					
+
 					Divider()
-					
+
 					Picker("None:", selection: $imageData) {
 						ArtworkView(imageData: nil, title: tvShow.title, subtitle: "(\(tvShow.year))", scale: scale)
 							.tag(Data())
@@ -86,7 +85,7 @@ struct ArtworkSelectorView: View {
 						Button("Done", systemImage: "checkmark", action: setArtwork)
 					}
 				}
-				
+
 				if !isLoading {
 					ToolbarItem {
 						Button("Deep Scan", systemImage: "arrow.trianglehead.counterclockwise", action: deepScan)
@@ -99,20 +98,20 @@ struct ArtworkSelectorView: View {
 			}
 		}
 	}
-	
+
 	private func collectAndSetArtworks(deepScan: Bool = false) async {
-		
+
 		let mediaImporter = MediaImporter(modelContainer: modelContext.container)
 		var alternativeArtworks = Set<Data>()
-		
-		var episodes = Dictionary(grouping: tvShow.episodes, by: { $0.season })
+
+		var episodes = Dictionary(grouping: tvShow.episodes) { $0.season }
 			.values
-			.compactMap { $0.first}
-		
+			.compactMap(\.first)
+
 		if deepScan {
 			episodes = tvShow.episodes
 		}
-		
+
 		for episode in episodes {
 			let currentEpisode = episode
 			if let alternativeArtwork = try? await mediaImporter.getArtworks(url: currentEpisode.url) {
@@ -128,19 +127,19 @@ struct ArtworkSelectorView: View {
 				}
 			}
 		}
-		
+
 		isLoading = false
 	}
-	
+
 	private func deepScan() {
 		isLoading = true
 		alternativeArtworks = []
-		
+
 		Task {
 			await collectAndSetArtworks(deepScan: true)
 		}
 	}
-	
+
 	private func setArtwork() {
 		tvShow.artwork = imageData
 		dismiss()

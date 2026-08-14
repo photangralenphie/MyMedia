@@ -18,10 +18,9 @@ struct MetadataIdentifier {
 	public static let network = "itsk/tvnn"
 	public static let genre = "itsk/gnre"
 	public static let resolution = "itsk/hdvd"
-	
-	
+
 	public static let movie = 9
 	public static let tvShow = 10
-	
+
 	private init() { }
 }

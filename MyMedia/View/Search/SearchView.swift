@@ -5,17 +5,17 @@
 //  Created by Jonas Helmer on 05.10.25.
 //
 
-import SwiftUI
 import AwesomeSwiftyComponents
+import SwiftUI
 
 enum SearchScope: CaseIterable, Identifiable {
 	case all
 	case title
 	case description
 	case credits
-	
+
 	var id: Self { self }
-	
+
 	var title: LocalizedStringKey {
 		switch self {
 			case .all: "All"
@@ -26,20 +26,19 @@ enum SearchScope: CaseIterable, Identifiable {
 	}
 }
 
-
 struct SearchView: View {
-	
+
 	let mediaItems: [any MediaItem]
-	
+
 	@State private var isSearchBarFocused: Bool = true
 	@State private var searchText: String = ""
-	
+
 	@State private var isTitlesOpen: Bool = true
 	@State private var isDescriptionOpen: Bool = true
 	@State private var isCreditsOpen: Bool = true
-	
+
 	@State private var searchVm: SearchVm = SearchVm(mediaItems: [])
-	
+
     var body: some View {
 		NavigationStack {
 			if searchVm.searchText.isEmpty {
@@ -53,25 +52,25 @@ struct SearchView: View {
 							} label: {
 								scopeTitle(SearchScope.title.title)
 							}
-							
+
 							DisclosureGroup(isExpanded: $isDescriptionOpen) {
 								SearchForDescriptionView(preview: true)
 							} label: {
 								scopeTitle(SearchScope.description.title)
 							}
-							
+
 							DisclosureGroup(isExpanded: $isCreditsOpen) {
 								SearchForCreditsView(preview: true)
 							} label: {
 								scopeTitle(SearchScope.credits.title)
 							}
-							
+
 						case .title:
 							SearchForTitleView()
-							
+
 						case .description:
 							SearchForDescriptionView()
-							
+
 						case .credits:
 							SearchForCreditsView()
 					}
@@ -85,7 +84,7 @@ struct SearchView: View {
 				Text(text)
 					.lineLimit(nil)
 					.padding()
-					.toolbar { CloseButton { searchVm.expandedText = nil }}
+					.toolbar { CloseButton { searchVm.expandedText = nil } }
 			}
 		}
 		.onAppear {
@@ -106,7 +105,7 @@ struct SearchView: View {
 			}
 		}
     }
-	
+
 	private func scopeTitle(_ text: LocalizedStringKey) -> some View {
 		Text(text)
 			.font(.title2)

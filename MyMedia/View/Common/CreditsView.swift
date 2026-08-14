@@ -5,12 +5,12 @@
 //  Created by Jonas Helmer on 26.04.25.
 //
 
-import SwiftUI
-import OrderedCollections
 import AwesomeSwiftyComponents
+import OrderedCollections
+import SwiftUI
 
 struct CreditsView: View {
-	
+
 	let hasCredits: any HasCredits
 	@State private var selectedPerson: Person?
 	@State private var proxy: GeometryProxy? = nil
@@ -42,10 +42,10 @@ struct CreditsView: View {
 		}
 		return result
 	}
-	
+
     var body: some View {
 		if let proxy = self.proxy, !credits.isEmpty {
-			
+
 			let availableCols = max(Int(proxy.size.width / 150), 1)
 			let numCols = min(availableCols, credits.keys.count)
 			let spacing = numCols > 1
@@ -57,34 +57,34 @@ struct CreditsView: View {
 				if hasCast, numCols > 1 {
 					HStack(alignment: .top, spacing: spacing) {
 						creditCell(forIndex: 0)
-						creditGrid(indices: 1..<credits.keys.count,	columnCount: numCols - 1, spacing: spacing)
+						creditGrid(indices: 1..<credits.keys.count, columnCount: numCols - 1, spacing: spacing)
 					}
 				} else {
-					creditGrid(indices: 0..<credits.keys.count,	columnCount: numCols, spacing: spacing)
+					creditGrid(indices: 0..<credits.keys.count, columnCount: numCols, spacing: spacing)
 				}
 			}
 			.navigationDestination(item: $selectedPerson) { person in
 				PersonView(person: person)
 			}
 		}
-		
+
 		/// Gets the width of the available space without compromising layout positioning
 		HStack { }
 		.frame(maxWidth: .infinity)
 		.background {
 			GeometryReader { backgroundProxy in
 				Rectangle()
-					.onAppear() { proxy = backgroundProxy }
+					.onAppear { proxy = backgroundProxy }
 					.onChange(of: backgroundProxy.size.width) {
 						proxy = backgroundProxy
 					}
 			}
 		}
     }
-	
+
 	func creditCell(forIndex: Int) -> some View {
 		let creditKey = Array(credits.keys)[forIndex]
-		
+
 		return VStack(alignment: .leading) {
 			Text(creditKey.rawValue)
 				.textCase(.uppercase)
@@ -93,6 +93,7 @@ struct CreditsView: View {
 			if let people = credits[creditKey] {
 				ForEach(people) { person in
 					Text(person.name)
+						.accessibilityAddTraits(.isLink)
 						.font(.body.leading(.loose))
 						.onTapGesture { selectedPerson = person }
 				}
@@ -102,12 +103,12 @@ struct CreditsView: View {
 	}
 
 	private func creditGrid(indices: Range<Int>, columnCount: Int, spacing: CGFloat) -> some View {
-		let columns =  Array(
+		let columns = Array(
 			repeating: GridItem(.fixed(150), spacing: spacing, alignment: .top),
 			count: columnCount
 		)
-		
-		return LazyVGrid(columns: columns, alignment: .leading,	spacing: 16) {
+
+		return LazyVGrid(columns: columns, alignment: .leading, spacing: 16) {
 			ForEach(indices, id: \.self) { index in
 				creditCell(forIndex: index)
 			}
