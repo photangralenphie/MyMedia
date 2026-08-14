@@ -1,0 +1,74 @@
+disabled_rules:
+ - identifier_name
+ - private_over_fileprivate
+ - implicit_optional_initialization
+ - line_length
+
+opt_in_rules:
+ - accessibility_trait_for_button
+ - array_init
+ - closure_end_indentation
+ - closure_spacing
+ - collection_alignment
+ - comma_inheritance
+ - contains_over_filter_count
+ - contains_over_filter_is_empty
+ - contains_over_first_not_nil
+ - direct_return
+ - discarded_notification_center_observer
+ - empty_collection_literal
+ - empty_count
+ - empty_string
+ - explicit_init
+ - fatal_error_message
+ - file_name
+ - file_name_no_space
+ - first_where
+ - flatmap_over_map_reduce
+ - force_unwrapping
+ - identical_operands
+ - implicit_return
+ - implicitly_unwrapped_optional
+ - indentation_width
+ - last_where
+ - literal_expression_end_indentation
+ - modifier_order
+ - multiline_arguments
+ - multiline_arguments_brackets
+ - multiline_function_chains
+ - multiline_literal_brackets
+ - multiline_parameters
+ - multiline_parameters_brackets
+ - number_separator
+ - operator_usage_whitespace
+ - period_spacing
+ - prefer_asset_symbols
+ - prefer_key_path
+ - prefer_self_type_over_type_of_self
+ - prefer_zero_over_explicit_init
+ - private_swiftui_state
+ - redundant_nil_coalescing
+ - redundant_self
+ - return_value_from_void_function
+ - shorthand_optional_binding
+ - sorted_imports
+ - superfluous_else
+ - toggle_bool
+ - trailing_closure
+ - unhandled_throwing_task
+ - unneeded_escaping
+ - unneeded_parentheses_in_closure_argument
+ - unneeded_throws_rethrows
+ - unowned_variable_capture
+ - unused_parameter
+ - vertical_whitespace_closing_braces
+ - yoda_condition
+
+redundant_self:
+ keep_in_initializers: true
+
+indentation_width:
+ include_multiline_strings: false
+ 
+switch_case_alignment:
+ indented_cases: true
