@@ -7,10 +7,15 @@
 
 import Foundation
 import SwiftData
+import Synchronization
 
 struct V1toV2Migrator {
-	private static var legacyMovieCredits: [UUID: CreditsDTO] = [:]
-	private static var legacyEpisodeCredits: [UUID: CreditsDTO] = [:]
+	private struct LegacyCredits: Sendable {
+		var movies: [UUID: CreditsDTO] = [:]
+		var episodes: [UUID: CreditsDTO] = [:]
+	}
+
+	private static let legacyCredits = Mutex(LegacyCredits())
 
 	public static let migrate = MigrationStage.custom(
 		fromVersion: MyMediaSchemaV1.self,
@@ -25,7 +30,7 @@ struct V1toV2Migrator {
 		let shows = try context.fetch(FetchDescriptor<MyMediaSchemaV1.TvShow>())
 		let episodes = try context.fetch(FetchDescriptor<MyMediaSchemaV1.Episode>())
 
-		Self.legacyMovieCredits = Dictionary(
+		let movieCredits = Dictionary(
 			uniqueKeysWithValues: movies.map { movie in (
 				movie.id,
 				CreditsDTO(
@@ -40,7 +45,7 @@ struct V1toV2Migrator {
 			}
 		)
 
-		Self.legacyEpisodeCredits = Dictionary(
+		let episodeCredits = Dictionary(
 			uniqueKeysWithValues: episodes.map { episode in (
 				episode.id,
 				CreditsDTO(
@@ -54,6 +59,11 @@ struct V1toV2Migrator {
 				))
 			}
 		)
+
+		Self.legacyCredits.withLock { credits in
+			credits.movies = movieCredits
+			credits.episodes = episodeCredits
+		}
 
 		var assignedEpisodeIds: Set<PersistentIdentifier> = []
 		for show in shows {
@@ -80,13 +90,14 @@ struct V1toV2Migrator {
 
 	@Sendable
 	private static func didMigrate(context: ModelContext) throws {
-		defer {
-			Self.legacyMovieCredits.removeAll()
-			Self.legacyEpisodeCredits.removeAll()
+		let credits = Self.legacyCredits.withLock { credits in
+			let savedCredits = credits
+			credits = LegacyCredits()
+			return savedCredits
 		}
 		try CreditsBuilder.rebuildCredits(
-			movies: Self.legacyMovieCredits,
-			episodes: Self.legacyEpisodeCredits,
+			movies: credits.movies,
+			episodes: credits.episodes,
 			context: context
 		)
 	}
