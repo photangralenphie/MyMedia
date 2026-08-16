@@ -1,8 +1,6 @@
 //
-//  CollectionsView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 11.05.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import OrderedCollections

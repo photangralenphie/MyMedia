@@ -1,8 +1,6 @@
 //
-//  ImageDownsizeToggle.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 01.06.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftUI

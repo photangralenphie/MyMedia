@@ -1,8 +1,6 @@
 //
-//  PersonView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 13.04.26.
+// Copyright © 2026 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftData

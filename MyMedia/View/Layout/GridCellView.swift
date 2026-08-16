@@ -1,8 +1,6 @@
 //
-//  GridCellView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 22.02.26.
+// Copyright © 2026 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftUI

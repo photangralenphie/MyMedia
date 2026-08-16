@@ -1,8 +1,6 @@
 //
-//  MovieDTO.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 09.08.26.
+// Copyright © 2026 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftUI

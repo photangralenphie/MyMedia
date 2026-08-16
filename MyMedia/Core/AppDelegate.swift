@@ -1,8 +1,6 @@
 //
-//  AppDelegate.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 23.05.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import AppKit

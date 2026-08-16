@@ -1,10 +1,9 @@
+//
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
+//
+
 import Foundation
-//
-//  Collection.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 03.05.25.
-//
 import SwiftData
 import SwiftUI
 

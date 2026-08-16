@@ -1,8 +1,6 @@
 //
-//  ListView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 17.06.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import OrderedCollections

@@ -1,8 +1,6 @@
 //
-//  Person.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 04.03.26.
+// Copyright © 2026 MyMedia.
+// Licensed under the MIT License.
 //
 
 import Foundation

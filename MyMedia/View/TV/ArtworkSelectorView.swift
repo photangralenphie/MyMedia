@@ -1,8 +1,6 @@
 //
-//  ArtworkSelectorView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 09.11.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftData

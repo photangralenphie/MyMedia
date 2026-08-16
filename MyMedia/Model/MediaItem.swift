@@ -1,8 +1,6 @@
 //
-//  Item.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 27.03.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import Foundation

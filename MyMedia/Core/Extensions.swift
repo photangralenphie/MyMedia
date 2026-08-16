@@ -1,8 +1,6 @@
 //
-//  Extensions.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 18.05.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 import AVKit
 import SwiftUI

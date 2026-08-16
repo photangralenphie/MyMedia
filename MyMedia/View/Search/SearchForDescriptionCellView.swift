@@ -1,8 +1,6 @@
 //
-//  SearchForDescriptionCellView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 11.04.26.
+// Copyright © 2026 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftUI

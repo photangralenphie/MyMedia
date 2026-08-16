@@ -1,8 +1,6 @@
 //
-//  UnwatchedTab.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 12.10.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftUI

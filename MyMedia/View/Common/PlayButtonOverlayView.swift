@@ -1,8 +1,6 @@
 //
-//  PlayButtonOverlayView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 23.08.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftUI

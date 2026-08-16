@@ -5,6 +5,7 @@ disabled_rules:
  - line_length
  - file_length
  - type_body_length
+ - function_body_length
  - shorthand_operator
  - file_name
  - force_unwrapping
@@ -26,6 +27,7 @@ opt_in_rules:
  - empty_string
  - explicit_init
  - fatal_error_message
+ - file_header
  - file_name
  - file_name_no_space
  - first_where
@@ -80,3 +82,10 @@ switch_case_alignment:
 
 cyclomatic_complexity:
   ignores_case_statements: true
+
+file_header:
+  required_pattern: |-
+    \A//
+    // Copyright © \d{4} MyMedia\.
+    // Licensed under the MIT License\.
+    //

@@ -1,8 +1,6 @@
 //
-//  Credits.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 27.07.26.
+// Copyright © 2026 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftData

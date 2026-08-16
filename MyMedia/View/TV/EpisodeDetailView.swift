@@ -1,8 +1,6 @@
 //
-//  EpisodeDetailView.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 10.07.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftUI

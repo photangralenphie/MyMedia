@@ -1,8 +1,6 @@
 //
-//  MediaImporter.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 30.03.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 @preconcurrency import AVFoundation

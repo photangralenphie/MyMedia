@@ -1,8 +1,6 @@
 //
-//  LayoutConstant.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 12.04.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import CoreFoundation

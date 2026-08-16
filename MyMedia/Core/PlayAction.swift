@@ -1,8 +1,6 @@
 //
-//  PlayAction.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 28.09.25.
+// Copyright © 2025 MyMedia.
+// Licensed under the MIT License.
 //
 
 import SwiftData

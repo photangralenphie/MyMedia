@@ -1,8 +1,6 @@
 //
-//  DeveloperSettingsTab.swift
-//  MyMedia
-//
-//  Created by Jonas Helmer on 12.04.26.
+// Copyright © 2026 MyMedia.
+// Licensed under the MIT License.
 //
 
 import AwesomeSwiftyComponents
