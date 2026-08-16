@@ -13,12 +13,18 @@
 		DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */; };
 		DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD95FB962DC7E88900149619 /* AVKit.framework */; };
 		DDA200552DD8C21A00C1F7F8 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = DDA200542DD8C21A00C1F7F8 /* MarkdownUI */; };
+		DDA626CD3031CAD800744948 /* CONTRIBUTING.md in Resources */ = {isa = PBXBuildFile; fileRef = DDA626CA3031CAD800744948 /* CONTRIBUTING.md */; };
+		DDA626CE3031CAD800744948 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = DDA626CB3031CAD800744948 /* LICENSE */; };
+		DDA626CF3031CAD800744948 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DDA626CC3031CAD800744948 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DD74D4693028F9B20005A9B6 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DD956C812D95D6EA0033A363 /* MyMedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyMedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD95FB962DC7E88900149619 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		DDA626CA3031CAD800744948 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
+		DDA626CB3031CAD800744948 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		DDA626CC3031CAD800744948 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +58,9 @@
 				DD95FB952DC7E88800149619 /* Frameworks */,
 				DD956C822D95D6EA0033A363 /* Products */,
 				DD74D4693028F9B20005A9B6 /* .swiftlint.yml */,
+				DDA626CA3031CAD800744948 /* CONTRIBUTING.md */,
+				DDA626CB3031CAD800744948 /* LICENSE */,
+				DDA626CC3031CAD800744948 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,6 +157,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD74D46A3028F9C10005A9B6 /* .swiftlint.yml in Resources */,
+				DDA626CD3031CAD800744948 /* CONTRIBUTING.md in Resources */,
+				DDA626CE3031CAD800744948 /* LICENSE in Resources */,
+				DDA626CF3031CAD800744948 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

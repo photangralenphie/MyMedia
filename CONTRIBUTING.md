@@ -16,6 +16,16 @@ Bug fixes, general improvements, translations updates are very welcome.
 
 If you are planning on making a significant change, please create an issue beforehand to make sure it will get accepted.
 
+### SwiftLint
+
+This project uses an opinonated [SwiftLint](https://github.com/realm/SwiftLint) to keep the Swift code consistent. Install it with [Homebrew](https://brew.sh/):
+
+```sh
+brew install swiftlint
+```
+
+SwiftLint runs automatically when the project is built in Xcode. Before opening a pull request fix all warnings. If you have a good reason you can also disable the rule. Please explain in the PR.
+
 ## Translations
 Fixing errors in translations are always welcome. 
 

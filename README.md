@@ -55,7 +55,7 @@ These features are currently planned (not in a particular order):
  - [x] ~~update Metadata after changes made to the original file.~~ (V1.1)
  - [x] ~~Episode Detail: A nice detail page for a single episode of a TV show.~~ (V2.0)
  - [x] ~~List and List-Detail Views.~~ (V2.0)
- - [ ] Library Search: Searching the complete library including all metadata.
+ - [x] Library Search: Searching the complete library including descriptions, cast and crew. (coming in V3.0) 
  - [ ] Recent Tab: A view to show recently added Movies, TV Shows and episodes.
  - [ ] Support for more file types.
  - [ ] better support for vertical artwork
