@@ -48,10 +48,10 @@
 		DD956C782D95D6EA0033A363 = {
 			isa = PBXGroup;
 			children = (
-				DD74D4693028F9B20005A9B6 /* .swiftlint.yml */,
 				DD956C832D95D6EA0033A363 /* MyMedia */,
 				DD95FB952DC7E88800149619 /* Frameworks */,
 				DD956C822D95D6EA0033A363 /* Products */,
+				DD74D4693028F9B20005A9B6 /* .swiftlint.yml */,
 			);
 			sourceTree = "<group>";
 		};

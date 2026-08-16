@@ -79,13 +79,11 @@ struct ImportingView: View {
 				}
 			}
 
-			for file in files {
-				if !file.startAccessingSecurityScopedResource() {
-					_ = Task { @MainActor in
-						commandResource.showError(message: "Failed to gain access to the file \(file.absoluteString).", title: "Error while Importing", errorCode: 8)
-					}
-					return
+			for file in files where !file.startAccessingSecurityScopedResource() {
+				_ = Task { @MainActor in
+					commandResource.showError(message: "Failed to gain access to the file \(file.absoluteString).", title: "Error while Importing", errorCode: 8)
 				}
+				return
 			}
 
 			_ = Task { @MainActor in
