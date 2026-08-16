@@ -8,17 +8,17 @@
 import SwiftUI
 
 enum Tabs: String, Hashable {
-	case unwatched = "unwatched"
-	case favorites = "favorites"
-	case genres = "genres"
-	case collections = "collections"
-	case search = "search"
+	case unwatched
+	case favorites
+	case genres
+	case collections
+	case search
 
-	case movies = "movies"
-	case moviesGenres = "moviesGenres"
-	case tvShows = "tvShows"
-	case tvShowsGenres = "tvShowsGenres"
-	case tvShowsMiniSeries = "tvShowsMiniSeries"
+	case movies
+	case moviesGenres
+	case tvShows
+	case tvShowsGenres
+	case tvShowsMiniSeries
 
 	var title: LocalizedStringKey {
 		switch self {

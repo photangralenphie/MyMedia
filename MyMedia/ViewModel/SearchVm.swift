@@ -69,6 +69,6 @@ class SearchVm {
 		}
 		return attributedText
 	}
-	
+
 	private static var compareOptions: String.CompareOptions = [.caseInsensitive, .diacriticInsensitive, .widthInsensitive]
 }

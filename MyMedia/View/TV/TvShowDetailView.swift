@@ -22,7 +22,7 @@ struct TvShowDetailView: View {
 
 		let groupedEpisodes = Dictionary(grouping: tvShow.episodes) { $0.season }
 		self.episodes = groupedEpisodes.values
-			.map { $0.sorted { $0.episode < $1.episode }}
+			.map { $0.sorted { $0.episode < $1.episode } }
 			.sorted { $0.first!.season < $1.first!.season }
 	}
 

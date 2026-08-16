@@ -73,7 +73,7 @@ struct PinnedTabs: TabContent {
 	}
 
 	func unpinItem(_ pinnedItem: any IsPinnable) {
-		if var item = pinnedItems.filter({ $0.id == pinnedItem.id }).first {
+		if var item = pinnedItems.first(where: { $0.id == pinnedItem.id }) {
 			withAnimation {
 				item.isPinned = false
 				try? modelContext.save()

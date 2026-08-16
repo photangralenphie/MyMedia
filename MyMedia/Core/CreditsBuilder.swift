@@ -11,10 +11,7 @@ import SwiftData
 struct CreditsBuilder {
 	public static func makeCredits(from names: CreditsDTO, context: ModelContext) throws -> Credits {
 		let existingPeople = try context.fetch(FetchDescriptor<Person>())
-		var peopleByName = Dictionary(
-			existingPeople.map { (normalizedName($0.name), $0) },
-			uniquingKeysWith: { first, _ in first }
-		)
+		var peopleByName = Dictionary(existingPeople.map { (normalizedName($0.name), $0) }) { first, _ in first }
 		return makeCredits(from: names, context: context, peopleByName: &peopleByName)
 	}
 

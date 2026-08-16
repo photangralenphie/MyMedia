@@ -19,8 +19,8 @@ struct UnwatchedTab: TabContent {
 	private let tab = Tabs.unwatched
 
     var body: some TabContent<TabValue> {
-		let unwatched: [any MediaItem] = tvShows.filter({ !$0.isWatched }) + movies.filter({ !$0.isWatched })
-		
+		let unwatched: [any MediaItem] = tvShows.filter { !$0.isWatched } + movies.filter { !$0.isWatched }
+
 		GenericTab(tab: tab) {
 			LayoutSwitchingView(
 				mediaItems: unwatched,

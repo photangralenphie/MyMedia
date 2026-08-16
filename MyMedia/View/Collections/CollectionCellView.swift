@@ -19,7 +19,8 @@ struct CollectionCellView: View {
 				sorting: Bindable(collection).sort,
 				viewPreference: Bindable(collection).viewPreference,
 				useSections: Bindable(collection).useSections,
-				navTitle: LocalizedStringKey(collection.title)) {
+				navTitle: LocalizedStringKey(collection.title)
+			) {
 				CollectionHeaderView(collection: collection)
 			}
 			.environment(\.mediaContext, .collection(collection))

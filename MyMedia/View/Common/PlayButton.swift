@@ -22,7 +22,7 @@ struct PlayButton: View {
 				if tvShow.episodes.allSatisfy({ !$0.isWatched }) {
 					return PlayType.play
 				}
-				if let firstUnwatchedEpisode = tvShow.episodes.filter({ !$0.isWatched }).first {
+				if let firstUnwatchedEpisode = tvShow.episodes.first(where: { !$0.isWatched }) {
 					if firstUnwatchedEpisode.progressMinutes != 0 {
 						return PlayType.resumeCurrentEpisode
 					}

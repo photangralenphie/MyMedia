@@ -32,23 +32,21 @@ actor MediaImporter {
 		}
 
 		if kind == MetadataIdentifier.tvShow {
-			try await readTvMetadata(metaData: metadata, asset: asset, source: path)
+			try await readTvMetadata(metaData: metadata, asset: asset)
 		}
 	}
 
-	private func readTvMetadata(metaData: [AVMetadataItem], asset: AVURLAsset, source: URL) async throws {
+	private func readTvMetadata(metaData: [AVMetadataItem], asset: AVURLAsset) async throws {
 		let showTitle = try await self.getStringMetaDataValue(metadata: metaData, for: .commonIdentifierArtist)
+		let existingTvShow = try await fetchCurrentTvShows()
+			.first { $0.title == showTitle }
 
-		let existingTvShows = try await fetchCurrentTvShows()
-		let show = existingTvShows.first(where: { $0.title == showTitle })
-
-		if show == nil {
-			let show = try await createTvShowFromEpisode(metadata: metaData)
+		let show: TvShow
+		if let existingTvShow {
+			show = existingTvShow
+		} else {
+			show = try await createTvShowFromEpisode(metadata: metaData)
 			modelContext.insert(show)
-		}
-
-		guard let show else {
-			throw ImportError.unknown(message: "Something went wrong creating a TV show from file \(source.absoluteString)")
 		}
 
 		let episode = try await createEpisodeFromFile(metadata: metaData, asset: asset, tvShow: show)
@@ -293,7 +291,7 @@ actor MediaImporter {
 
 	private func tryGetStringMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async -> String? {
 		do {
-			return try await metadata.filter { $0.identifier?.rawValue == identifier }.first?.load(.stringValue)
+			return try await metadata.first { $0.identifier?.rawValue == identifier }?.load(.stringValue)
 		} catch {
 			return nil
 		}
@@ -323,7 +321,7 @@ actor MediaImporter {
 
 	private func tryGetIntMetaDataValue(metadata: [AVMetadataItem], for identifier: String) async -> Int? {
 		do {
-			return try await metadata.filter { $0.identifier?.rawValue == identifier }.first?.load(.numberValue)?.intValue
+			return try await metadata.first { $0.identifier?.rawValue == identifier }?.load(.numberValue)?.intValue
 		} catch {
 			return nil
 		}
@@ -338,8 +336,7 @@ actor MediaImporter {
 
 	private func tryGetStringArrayMetaDataValue(metadata: [AVMetadataItem], for identifier: String, creditGroup: String) async -> [String]? {
 		do {
-			guard let xmlData = try await metadata.filter({ $0.identifier?.rawValue == identifier })
-				.first?
+			guard let xmlData = try await metadata.first(where: { $0.identifier?.rawValue == identifier })?
 				.load(.stringValue)?
 				.data(using: .utf8) else { return nil }
 
@@ -420,11 +417,11 @@ actor MediaImporter {
 
 	private func getGenres(metadata: [AVMetadataItem]) async throws -> [String] {
 		let userGenresString = await tryGetStringMetaDataValue(metadata: metadata, for: .iTunesMetadataUserGenre)
-		if let userGenres = userGenresString?.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) } {
+		if let userGenres = userGenresString?.split(separator: ",").map({ $0.trimmingCharacters(in: .whitespaces) }) {
 			return userGenres
 		}
 
-		let iTunesRawGenreCode = try await metadata.filter { $0.identifier?.rawValue == MetadataIdentifier.genre }.first?.load(.dataValue)
+		let iTunesRawGenreCode = try await metadata.first { $0.identifier?.rawValue == MetadataIdentifier.genre }?.load(.dataValue)
 		let iTunesGenreCode = iTunesRawGenreCode?.withUnsafeBytes { $0.load(as: UInt16.self).bigEndian }
 
 		if let iTunesGenreCode {

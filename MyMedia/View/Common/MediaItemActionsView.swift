@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct MediaItemActionsView: View {
-	@State public var mediaItem: any MediaItem
+	@State private var mediaItem: any MediaItem
 	public var applyShortcuts: Bool
 	let onDelete: () -> Void
 
@@ -21,6 +21,12 @@ struct MediaItemActionsView: View {
 	@Environment(\.openWindow) private var openWindow
 	@Environment(\.mediaContext) private var mediaContext
 	@Environment(CommandResource.self) private var commandResource
+
+	init(mediaItem: any MediaItem, applyShortcuts: Bool, onDelete: @escaping () -> Void) {
+		_mediaItem = State(initialValue: mediaItem)
+		self.applyShortcuts = applyShortcuts
+		self.onDelete = onDelete
+	}
 
     var body: some View {
 		Button(mediaItem.isWatched ? "Mark Unwatched" : "Mark Watched", systemImage: mediaItem.isWatched ? "eye.slash" : "eye") { mediaItem.toggleWatched() }
