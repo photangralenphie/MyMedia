@@ -50,7 +50,7 @@ struct VideoPlayerView: View {
 				vm.updateNowPlayingInfo()
 			}
 			.onDisappear(perform: vm.onDisappear)
-			.introspect(.videoPlayer, on: .macOS(.v15, .v26)) { avPlayerView in
+			.introspect(.videoPlayer, on: .macOS(.v15, .v26, .v27)) { avPlayerView in
 				avPlayerView.allowsPictureInPicturePlayback = true
 				avPlayerView.controlsStyle = playerStyle
 				avPlayerView.showsSharingServiceButton = true
