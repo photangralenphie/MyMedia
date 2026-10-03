@@ -53,7 +53,7 @@ struct MovieDetailView: View {
 							Text(MetadataUtil.formatRuntime(minutes: movie.durationMinutes))
 
 							HStack {
-								if let hdVideoQuality = movie.hdVideoQuality?.badgeTitle {
+								if let hdVideoQuality = movie.hdVideoQuality?.title {
 									BadgeView(text: hdVideoQuality, style: .filled)
 								}
 

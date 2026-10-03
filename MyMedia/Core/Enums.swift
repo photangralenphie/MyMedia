@@ -15,11 +15,11 @@ enum SortOption: Int, CaseIterable, Identifiable, Codable {
 	case releaseDate = 1
 	case dateAdded = 2
 
-	var title: LocalizedStringKey {
+	var title: String {
 		switch self {
-			case .title: LocalizedStringKey("Title")
-			case .releaseDate: LocalizedStringKey("Release Date")
-			case .dateAdded: LocalizedStringKey("Date Added")
+			case .title: String(localized: "Title")
+			case .releaseDate: String(localized: "Release Date")
+			case .dateAdded: String(localized: "Date Added")
 		}
 	}
 
@@ -46,11 +46,11 @@ enum ViewOption: Int, CaseIterable, Identifiable, Codable {
 	case list = 1
 	case detailList = 2
 
-	var title: LocalizedStringKey {
+	var title: String {
 		switch self {
-			case .grid: LocalizedStringKey("Grid")
-			case .list: LocalizedStringKey("List")
-			case .detailList: LocalizedStringKey("Detail List")
+			case .grid: String(localized: "Grid")
+			case .list: String(localized: "List")
+			case .detailList: String(localized: "Detail List")
 		}
 	}
 
@@ -100,7 +100,7 @@ enum HDVideoQuality: Int, Codable {
 	case hd1080p = 2
 	case uhd4k = 3
 
-	var badgeTitle: String {
+	var title: String {
 		switch self {
 			case .sd: "SD"
 			case .hd720p: "Standard HD"

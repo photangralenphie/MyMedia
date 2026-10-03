@@ -9,6 +9,7 @@ enum SettingsTab: String {
 	case general
 	case player
 	case metadata
+	case api
 	case developer
 }
 
@@ -29,6 +30,10 @@ struct SettingsView: View {
 
 			Tab("Metadata", systemImage: "list.bullet.rectangle", value: SettingsTab.metadata) {
 				MetadataSettingsTab()
+			}
+
+			Tab("API", systemImage: "network", value: SettingsTab.api) {
+				ApiSettingsTab()
 			}
 
 			if showDeveloperTab {
