@@ -167,8 +167,8 @@ extension MediaCollection {
 extension MediaItem {
 	public var previewDTO: MediaPreviewDTO {
 		switch self {
-			case let movie as Movie: preview(kind: .movie, id: id, name: title, year: year, artwork: artwork)
-			case let tvShow as TvShow: preview(kind: .tvShow, id: id, name: title, year: year, artwork: artwork)
+			case _ as Movie: preview(kind: .movie, id: id, name: title, year: year, artwork: artwork)
+			case _ as TvShow: preview(kind: .tvShow, id: id, name: title, year: year, artwork: artwork)
 			case let episode as Episode: preview(kind: .episode, id: id, name: episode.title, year: episode.year, season: episode.season, episode: episode.episode, artwork: episode.artwork)
 			default: preconditionFailure("Unsupported media model")
 		}

@@ -617,7 +617,7 @@
         }
       }
     },
-    "Credited in **%lld** titles" : {
+    "Credited in %lld titles" : {
       "localizations" : {
         "de" : {
           "variations" : {
