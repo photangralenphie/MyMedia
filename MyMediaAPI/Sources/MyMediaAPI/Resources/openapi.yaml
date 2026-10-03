@@ -419,14 +419,14 @@ paths:
   /api/v1/unwatched:
     get:
       tags: [Discovery]
-      summary: List unwatched movies, TV shows, and episodes
+      summary: List unwatched movies and TV shows
       operationId: listUnwatched
       parameters:
         - $ref: '#/components/parameters/Page'
         - $ref: '#/components/parameters/PerPage'
       responses:
         '200':
-          description: Unwatched item previews
+          description: Unwatched movie and TV show previews
           content:
             application/json:
               schema: { $ref: '#/components/schemas/PagedMediaPreviews' }

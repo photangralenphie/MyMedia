@@ -79,8 +79,9 @@ Search comparisons ignore case, diacritics, and character width.
 Use `/api/v1/genres` to list genres and `/api/v1/genres/{genre}` to list items
 in one genre. Both accept `kind=movies`, `kind=tvShows`, or `kind=both`.
 
-The `/api/v1/favorites`, `/api/v1/pinned`, and `/api/v1/unwatched` endpoints
-return paginated mixed-item previews.
+The `/api/v1/favorites` and `/api/v1/pinned` endpoints return paginated
+mixed-item previews. `/api/v1/unwatched` returns unwatched movies and TV shows;
+it does not include individual episodes.
 
 ## Assets
 

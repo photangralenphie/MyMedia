@@ -228,7 +228,6 @@ class SwiftDataMediaApiRepository: MediaApiRepository {
 	func unwatched(page: Int, perPage: Int) throws -> PagedResponse<MediaPreviewDTO> {
 		var results = try modelContext.fetch(FetchDescriptor<Movie>()).filter { !$0.isWatched }.map(\.previewDTO)
 		results += try modelContext.fetch(FetchDescriptor<TvShow>()).filter { !$0.isWatched }.map(\.previewDTO)
-		results += try modelContext.fetch(FetchDescriptor<Episode>()).filter { !$0.isWatched }.map(\.previewDTO)
 
 		return paged(sorted(results), page: page, perPage: perPage)
 	}
