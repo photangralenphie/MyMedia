@@ -28,7 +28,7 @@ struct PersonView: View {
 							.foregroundStyle(.secondary)
 							.padding(.bottom, 7)
 
-						Text("Credited in **\(person.creditedIn.count)** titles")
+						Text("Credited in \(person.creditedIn.count) titles")
 					}
 					Spacer()
 				}

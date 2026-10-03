@@ -10,6 +10,12 @@ disabled_rules:
  - file_name
  - force_unwrapping
 
+excluded:
+ - MyMediaAPI/.build
+ - MyMediaAPI/.swiftpm
+ - MyMediaAPI/Sources/MyMediaAPI/Resources/documentation
+ - MyMediaAPI/Package.swift
+
 opt_in_rules:
  - accessibility_trait_for_button
  - array_init

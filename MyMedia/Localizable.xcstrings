@@ -401,6 +401,26 @@
         }
       }
     },
+    "API" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API"
+          }
+        }
+      }
+    },
+    "API Documentation" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API Dokumentation"
+          }
+        }
+      }
+    },
     "App Behaviour" : {
       "localizations" : {
         "de" : {
@@ -467,6 +487,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "AutoPlay nächste Episode"
+          }
+        }
+      }
+    },
+    "Availability" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verfügbarkeit"
           }
         }
       }
@@ -587,7 +617,7 @@
         }
       }
     },
-    "Credited in **%lld** titles" : {
+    "Credited in %lld titles" : {
       "localizations" : {
         "de" : {
           "variations" : {
@@ -770,6 +800,16 @@
         }
       }
     },
+    "Disabling the API stops the server and hides its configuration." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durch das Deaktivieren der API wird der Server gestoppt und die Konfiguration ausgeblendet."
+          }
+        }
+      }
+    },
     "Do you really want to delete all content?" : {
       "localizations" : {
         "de" : {
@@ -816,6 +856,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sammlung bearbeiten"
+          }
+        }
+      }
+    },
+    "Enable API" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API aktivieren"
           }
         }
       }
@@ -946,6 +996,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fehler beim auflösen des Bookmark for %@."
+          }
+        }
+      }
+    },
+    "Failed: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehlgeschlagen: %@"
           }
         }
       }
@@ -1169,6 +1229,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inline"
+          }
+        }
+      }
+    },
+    "IP-Address" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP-Adresse"
+          }
+        }
+      }
+    },
+    "Items per page: %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemente pro Seite: %lld"
           }
         }
       }
@@ -1424,12 +1504,52 @@
         }
       }
     },
+    "Open API Documentation" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API Dokumentation öffnen"
+          }
+        }
+      }
+    },
+    "Open DocC Documentation" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DocC Dokumentation öffnen"
+          }
+        }
+      }
+    },
     "Open in Subler" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "In Subler öffnen"
+          }
+        }
+      }
+    },
+    "Open the interactive Scalar API reference in your browser." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet die interaktive Scalar-API-Referenz in deinem Browser."
+          }
+        }
+      }
+    },
+    "Open the web export of the API's DocC documentation." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet den Web-Export der DocC-Dokumentation der API."
           }
         }
       }
@@ -1554,6 +1674,26 @@
         }
       }
     },
+    "Port" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        }
+      }
+    },
+    "Port must be between 1024 and 65535." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Port muss zwischen 1024 und 65535 liegen."
+          }
+        }
+      }
+    },
     "Poster" : {
       "localizations" : {
         "de" : {
@@ -1570,6 +1710,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kurze Beschreibung bevorzugen"
+          }
+        }
+      }
+    },
+    "Preview artwork maximum dimension: %lld px" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maximalgröße des Vorschaubilds: %lldpx"
           }
         }
       }
@@ -1644,6 +1794,26 @@
         }
       }
     },
+    "Responses - Defaults" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Response - Voreinstellungen"
+          }
+        }
+      }
+    },
+    "Restart API" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API neustarten"
+          }
+        }
+      }
+    },
     "Results for: %@" : {
       "localizations" : {
         "de" : {
@@ -1670,6 +1840,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktuelle Folge Fortsetzen"
+          }
+        }
+      }
+    },
+    "Running" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Läuft"
           }
         }
       }
@@ -1816,6 +1996,16 @@
         }
       }
     },
+    "Server" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server"
+          }
+        }
+      }
+    },
     "Show All" : {
       "localizations" : {
         "de" : {
@@ -1886,6 +2076,76 @@
         }
       }
     },
+    "Start API" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API starten"
+          }
+        }
+      }
+    },
+    "Start API when MyMedia launches" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API beim Start von MyMedia starten"
+          }
+        }
+      }
+    },
+    "Starting" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird gestartet"
+          }
+        }
+      }
+    },
+    "Status" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
+          }
+        }
+      }
+    },
+    "Stop API" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API stoppen"
+          }
+        }
+      }
+    },
+    "Stopped" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angehalten"
+          }
+        }
+      }
+    },
+    "Stopping" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird angehalten"
+          }
+        }
+      }
+    },
     "Subler Error" : {
       "localizations" : {
         "de" : {
@@ -1906,13 +2166,7 @@
         }
       }
     },
-    "swift-collections" : {
-      "shouldTranslate" : false
-    },
     "swift-markdown-ui" : {
-      "shouldTranslate" : false
-    },
-    "swift-syntax" : {
       "shouldTranslate" : false
     },
     "swiftui-introspect" : {
@@ -2035,6 +2289,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Update Metadaten"
+          }
+        }
+      }
+    },
+    "Use a port from 1024 through 65535. Restart the API after changing it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwende einen Port zwischen 1024 und 65535. Starte die API nach der Änderung neu."
           }
         }
       }

@@ -8,14 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		DD42F35C2DD9EC5B000EE9C8 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */; };
-		DD74D46A3028F9C10005A9B6 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = DD74D4693028F9B20005A9B6 /* .swiftlint.yml */; };
 		DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DD8065622DB2960200B6A629 /* OrderedCollections */; };
 		DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */; };
 		DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD95FB962DC7E88900149619 /* AVKit.framework */; };
 		DDA200552DD8C21A00C1F7F8 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = DDA200542DD8C21A00C1F7F8 /* MarkdownUI */; };
-		DDA626CD3031CAD800744948 /* CONTRIBUTING.md in Resources */ = {isa = PBXBuildFile; fileRef = DDA626CA3031CAD800744948 /* CONTRIBUTING.md */; };
-		DDA626CE3031CAD800744948 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = DDA626CB3031CAD800744948 /* LICENSE */; };
-		DDA626CF3031CAD800744948 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DDA626CC3031CAD800744948 /* README.md */; };
+		DDBB11003100000000000001 /* MyMediaAPI in Frameworks */ = {isa = PBXBuildFile; productRef = DDBB11003100000000000002 /* MyMediaAPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDBB11003100000000000001 /* MyMediaAPI in Frameworks */,
 				DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */,
 				DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */,
 				DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */,
@@ -90,6 +88,7 @@
 				DD956C7D2D95D6EA0033A363 /* Sources */,
 				DD956C7E2D95D6EA0033A363 /* Frameworks */,
 				DD956C7F2D95D6EA0033A363 /* Resources */,
+				DDBB11003100000000000006 /* Generate DocC Documentation */,
 				DD74D3E33028F8660005A9B6 /* SwiftLint */,
 			);
 			buildRules = (
@@ -101,6 +100,7 @@
 			);
 			name = MyMedia;
 			packageProductDependencies = (
+				DDBB11003100000000000002 /* MyMediaAPI */,
 				DD8065622DB2960200B6A629 /* OrderedCollections */,
 				DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */,
 				DDA200542DD8C21A00C1F7F8 /* MarkdownUI */,
@@ -136,6 +136,7 @@
 			mainGroup = DD956C782D95D6EA0033A363;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				DDBB11003100000000000003 /* XCLocalSwiftPackageReference "MyMediaAPI" */,
 				DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */,
 				DDA200532DD8C21A00C1F7F8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
@@ -156,10 +157,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD74D46A3028F9C10005A9B6 /* .swiftlint.yml in Resources */,
-				DDA626CD3031CAD800744948 /* CONTRIBUTING.md in Resources */,
-				DDA626CE3031CAD800744948 /* LICENSE in Resources */,
-				DDA626CF3031CAD800744948 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,7 +180,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --fix\n    swiftlint\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n\n";
+		};
+		DDBB11003100000000000006 /* Generate DocC Documentation */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate DocC Documentation";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/MyMediaAPI/Scripts/generate-documentation.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -334,14 +350,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = MyMedia/MyMedia.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ATQPB625XL;
@@ -357,7 +373,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.photagralenphie.MyMedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -373,14 +389,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = MyMedia/MyMedia.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ATQPB625XL;
@@ -396,7 +412,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.photagralenphie.MyMedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -431,6 +447,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		DDBB11003100000000000003 /* XCLocalSwiftPackageReference "MyMediaAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MyMediaAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		DD42F35A2DD9EC5B000EE9C8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -453,7 +476,7 @@
 			repositoryURL = "https://github.com/photangralenphie/AwesomeSwiftyComponents";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.10;
+				minimumVersion = 2.0.14;
 			};
 		};
 		DDA200532DD8C21A00C1F7F8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
@@ -486,6 +509,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DDA200532DD8C21A00C1F7F8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		DDBB11003100000000000002 /* MyMediaAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DDBB11003100000000000003 /* XCLocalSwiftPackageReference "MyMediaAPI" */;
+			productName = MyMediaAPI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

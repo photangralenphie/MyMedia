@@ -4,6 +4,7 @@
 //
 
 import AwesomeSwiftyComponents
+import MyMediaAPI
 import SwiftData
 import SwiftUI
 
@@ -16,9 +17,23 @@ struct DeveloperSettingsTab: View {
 	@State private var showDeletionAlert: Bool = false
 	@State private var deleteError: Error?
 	@Environment(\.modelContext) private var context
+	@Environment(\.openURL) private var openURL
+	@Environment(ApiServerManager.self) private var apiServer
 
 	var body: some View {
 		Form {
+			Section("API Documentation") {
+				Button("Open API Documentation", systemImage: "network") {
+					openURL(apiServer.localURL.appending(path: "api-docs"))
+				}
+				.settingDescription("Open the interactive Scalar API reference in your browser.")
+
+				Button("Open DocC Documentation", systemImage: "book.pages") {
+					openURL(apiServer.localURL.appending(path: "docs"))
+				}
+				.settingDescription("Open the web export of the API's DocC documentation.")
+			}
+
 			Section {
 				Button("Delete all Content", systemImage: "trash", role: .destructive) {
 					showDeletionAlert.toggle()
@@ -53,7 +68,7 @@ struct DeveloperSettingsTab: View {
 				.settingDescription("This will hide this tab.")
 			}
 		}
-		.frame(height: 210)
+		.frame(height: 360)
 	}
 
 	func deleteAllContent() {

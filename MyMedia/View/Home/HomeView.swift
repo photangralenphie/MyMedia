@@ -61,13 +61,5 @@ struct HomeView: View {
 		.sheet(item: Bindable(commandResource).tvShowArtworkToEdit) { tvShow in
 			ArtworkSelectorView(tvShow: tvShow)
 		}
-		.onKeyPress { keyPress in
-			if keyPress.characters == "f" && keyPress.modifiers == [.command] {
-				selectedTab = Tabs.search.id
-				return .handled
-			}
-
-			return .ignored
-		}
     }
 }

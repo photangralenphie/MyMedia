@@ -1,3 +1,6 @@
 ._*
 /MyMedia.xcodeproj/xcuserdata
 /MyMedia.xcodeproj/project.xcworkspace/xcuserdata/
+/MyMediaAPI/.build/
+/MyMediaAPI/.swiftpm/
+/MyMediaAPI/Sources/MyMediaAPI/Resources/documentation/

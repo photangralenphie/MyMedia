@@ -70,36 +70,8 @@ struct AboutView: View {
 				Text("Credits:")
 
 				ScrollView {
-					VStack(alignment: .leading) {
-						Button("AwesomeSwiftyComponents") {
-							licence = .mit(name: "AwesomeSwiftyComponents", author: "Jonas Helmer", year: "2025")
-						}
-
-						Button("cmark-gfm") {
-							showCmarkGfmLicense.toggle()
-						}
-
-						Button("NetworkImage") {
-							licence = .mit(name: "NetworkImage", author: "Guille Gonzalez", year: "2020")
-						}
-
-						Button("swift-collections") {
-							licence = .apache(name: "swift-collections", author: "Apple", year: currentYear)
-						}
-
-						Button("swift-syntax") {
-							licence = .apache(name: "swift-syntax", author: "Apple", year: "2024")
-						}
-
-						Button("swift-markdown-ui") {
-							licence = .mit(name: "swift-markdown-ui", author: "Guillermo Gonzalez", year: "2020")
-						}
-
-						Button("swiftui-introspect") {
-							licence = .apache(name: "swiftui-introspect", author: "Timber Software", year: "2019")
-						}
-					}
-					.frame(maxWidth: .infinity, alignment: .leading)
+					AboutCreditsButtonsView(licence: $licence, showCmarkGfmLicense: $showCmarkGfmLicense)
+						.frame(maxWidth: .infinity, alignment: .leading)
 				}
 				.scrollIndicators(.visible)
 			}
