@@ -22,8 +22,7 @@ let package = Package(
 			],
 			resources: [
 				.process("Resources/openapi.yaml"),
-				.process("Resources/scalarDocs.html"),
-				.copy("Resources/documentation")
+				.process("Resources/scalarDocs.html")
 			]
 		)
 	]

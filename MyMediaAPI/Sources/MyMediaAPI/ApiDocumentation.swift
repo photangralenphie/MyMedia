@@ -19,9 +19,9 @@ internal struct ApiDocumentation {
 	}()
 
 	internal static var documentationDirectory: URL? {
-		guard let url = Bundle.module.url(forResource: "documentation", withExtension: nil),
-			  FileManager.default.fileExists(atPath: url.path)
-		else { return nil }
+		guard let resourcesDirectory = Bundle.main.resourceURL else { return nil }
+		let url = resourcesDirectory.appendingPathComponent("documentation", isDirectory: true)
+		guard FileManager.default.fileExists(atPath: url.path) else { return nil }
 		return url
 	}
 

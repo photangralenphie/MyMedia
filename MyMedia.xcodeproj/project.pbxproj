@@ -85,10 +85,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DD956C922D95D6EE0033A363 /* Build configuration list for PBXNativeTarget "MyMedia" */;
 			buildPhases = (
-				DDBB11003100000000000006 /* Generate DocC Documentation */,
 				DD956C7D2D95D6EA0033A363 /* Sources */,
 				DD956C7E2D95D6EA0033A363 /* Frameworks */,
 				DD956C7F2D95D6EA0033A363 /* Resources */,
+				DDBB11003100000000000006 /* Generate DocC Documentation */,
 				DD74D3E33028F8660005A9B6 /* SwiftLint */,
 			);
 			buildRules = (
@@ -199,7 +199,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"$SRCROOT/MyMediaAPI/Scripts/generate-documentation.sh\"\n";
+			shellScript = "\"$SRCROOT/MyMediaAPI/Scripts/generate-documentation.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
