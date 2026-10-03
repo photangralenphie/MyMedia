@@ -1,0 +1,939 @@
+openapi: 3.1.0
+info:
+  title: MyMedia API
+  version: 1.6.0
+  description: |
+    REST API for reading and updating the local MyMedia library.
+servers:
+  - url: /
+    description: The same host and user-configured port serving this document
+tags:
+  - name: General
+  - name: Appearance
+  - name: Movies
+  - name: TV Shows
+  - name: Episodes
+  - name: People
+  - name: Collections
+  - name: Discovery
+  - name: Assets
+  - name: Documentation
+paths:
+  /:
+    get:
+      tags: [Documentation]
+      summary: Open the DocC web export
+      description: Redirects to the canonical landing page of the generated MyMediaAPI DocC website.
+      operationId: rootDocumentation
+      responses:
+        '307':
+          $ref: '#/components/responses/DoccRedirect'
+  /api/v1/health:
+    get:
+      tags: [General]
+      summary: Check API availability
+      operationId: health
+      responses:
+        '200':
+          description: API is running
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status: { type: string, const: ok }
+  /api/v1/appearance:
+    get:
+      tags: [Appearance]
+      summary: Get the app's current appearance
+      description: |
+        Returns the effective light or dark color scheme currently used by
+        MyMedia and the user's current macOS accent color as a CSS-compatible
+        sRGB hex value. Clients can request this endpoint again after the user
+        changes their system appearance or accent color.
+      operationId: getAppearance
+      responses:
+        '200':
+          description: Current application appearance
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Appearance' }
+  /api/v1/movies:
+    get:
+      tags: [Movies]
+      summary: List movies
+      description: |
+        Returns movie previews sorted by title. `minYear` and `maxYear` form one
+        inclusive year-range **filter** and only take effect when both are
+        supplied. `minLength`, `maxLength`, `isFavorite`, `isWatched`, and
+        `genre` are independent optional **filters**. Active filters are
+        combined with AND and applied before pagination. `page` and `perPage`
+        only control pagination.
+      operationId: listMovies
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/MinYear'
+        - $ref: '#/components/parameters/MaxYear'
+        - $ref: '#/components/parameters/MinLength'
+        - $ref: '#/components/parameters/MaxLength'
+        - $ref: '#/components/parameters/IsFavorite'
+        - $ref: '#/components/parameters/IsWatched'
+        - $ref: '#/components/parameters/GenreFilter'
+      responses:
+        '200':
+          description: A page of movie previews sorted by title
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/movies/{id}:
+    get:
+      tags: [Movies]
+      summary: Get all movie metadata
+      operationId: getMovie
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Movie metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Movies]
+      summary: Update movie state
+      description: Omitted fields keep their current values. Playback progress cannot exceed the movie duration.
+      operationId: updateMovie
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MediaItemUpdate' }
+      responses:
+        '200':
+          description: Updated movie metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/tv-shows:
+    get:
+      tags: [TV Shows]
+      summary: List TV shows
+      description: |
+        Returns TV-show previews sorted by title. `minYear` and `maxYear` form
+        one inclusive year-range **filter** and only take effect when both are
+        supplied. `minLength`, `maxLength`, `isFavorite`, `isWatched`, and
+        `genre` are independent optional **filters**. Active filters are
+        combined with AND and applied before pagination. Length filters use the
+        sum of all episode durations. `page` and `perPage` only control
+        pagination.
+      operationId: listTvShows
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/MinYear'
+        - $ref: '#/components/parameters/MaxYear'
+        - $ref: '#/components/parameters/MinLength'
+        - $ref: '#/components/parameters/MaxLength'
+        - $ref: '#/components/parameters/IsFavorite'
+        - $ref: '#/components/parameters/IsWatched'
+        - $ref: '#/components/parameters/GenreFilter'
+      responses:
+        '200':
+          description: A page of TV show previews sorted by title
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/tv-shows/{id}:
+    get:
+      tags: [TV Shows]
+      summary: Get all TV show metadata and its episodes
+      operationId: getTvShow
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: TV show metadata with episode previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TvShow' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [TV Shows]
+      summary: Update TV-show state
+      description: Omitted fields keep their current values. Setting isWatched updates every episode in the show.
+      operationId: updateTvShow
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TvShowUpdate' }
+      responses:
+        '200':
+          description: Updated TV-show metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TvShow' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/episodes/{id}:
+    get:
+      tags: [Episodes]
+      summary: Get all episode metadata
+      operationId: getEpisode
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Episode metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Episode' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Episodes]
+      summary: Update episode state
+      description: Omitted fields keep their current values. Playback progress cannot exceed the episode duration.
+      operationId: updateEpisode
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MediaItemUpdate' }
+      responses:
+        '200':
+          description: Updated episode metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Episode' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/people/{name}:
+    get:
+      tags: [People]
+      summary: Get all metadata associated with a credited person
+      description: |
+        Fetches a person by name because people do not have API identifiers.
+        The name is matched case-, diacritic-, and width-insensitively. Use a
+        name returned by a movie or episode `credits` object and URL-encode it
+        as a path component. Results contain all credited movies and episodes,
+        plus the same credit-role groups used by the existing Credits schema.
+      operationId: getPerson
+      parameters:
+        - name: name
+          in: path
+          required: true
+          description: Person name as returned by a movie or episode credits object
+          schema: { type: string, minLength: 1 }
+      responses:
+        '200':
+          description: Person metadata and role-grouped media previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Person' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/collections:
+    get:
+      tags: [Collections]
+      summary: List collections
+      operationId: listCollections
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of collection previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+    post:
+      tags: [Collections]
+      summary: Create a collection
+      description: |
+        Creates a collection whose title contains at least one non-whitespace
+        character. `mediaItemIDs` may contain movie, TV-show, or episode UUIDs;
+        the request fails if any supplied UUID does not exist.
+      operationId: createCollection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateMediaCollection' }
+      responses:
+        '201':
+          description: Created collection metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MediaCollection' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/collections/{id}:
+    get:
+      tags: [Collections]
+      summary: Get collection metadata and contained items
+      operationId: getCollection
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Collection metadata with movie, TV show, and episode previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MediaCollection' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Collections]
+      summary: Update collection membership or pinned state
+      description: The add and remove properties contain media-item UUID arrays. The same UUID cannot appear in both arrays.
+      operationId: updateCollection
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MediaCollectionUpdate' }
+      responses:
+        '200':
+          description: Updated collection metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MediaCollection' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/search:
+    get:
+      tags: [Discovery]
+      summary: Search titles, descriptions, or credit names
+      description: |
+        Search behavior mirrors the app search. Credit matches return the
+        matching movies and episodes rather than video URLs. Movies, TV shows,
+        and episodes are always searched together.
+      operationId: searchMedia
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: Text to search for (case, diacritic, and width insensitive)
+          schema: { type: string }
+        - name: scope
+          in: query
+          description: Limits the fields searched; it never limits the media kinds returned.
+          schema:
+            type: string
+            enum: [all, title, description, credits]
+            default: all
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of matching media previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/genres:
+    get:
+      tags: [Discovery]
+      summary: List genres in the library
+      operationId: listGenres
+      parameters:
+        - $ref: '#/components/parameters/GenreKind'
+      responses:
+        '200':
+          description: Unique genres sorted by name
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/genres/{genre}:
+    get:
+      tags: [Discovery]
+      summary: List items in a genre
+      operationId: getGenre
+      parameters:
+        - name: genre
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: '#/components/parameters/GenreKind'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of movie and/or TV show previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/favorites:
+    get:
+      tags: [Discovery]
+      summary: List favorite movies, TV shows, and episodes
+      operationId: listFavorites
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Favorite item previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/pinned:
+    get:
+      tags: [Discovery]
+      summary: List pinned media and collections
+      operationId: listPinned
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Pinned item previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/unwatched:
+    get:
+      tags: [Discovery]
+      summary: List unwatched movies, TV shows, and episodes
+      operationId: listUnwatched
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Unwatched item previews
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PagedMediaPreviews' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /api/v1/artwork/{id}:
+    get:
+      tags: [Assets]
+      summary: Get original or resized artwork
+      description: >-
+        Returns the original artwork when maxSize is omitted. When maxSize is
+        supplied, returns a JPEG resized so its largest pixel dimension does
+        not exceed the requested value.
+      operationId: getArtwork
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - name: maxSize
+          in: query
+          required: false
+          description: Optional maximum width or height in pixels. Omit it for the original artwork.
+          schema: { type: integer, minimum: 1, maximum: 4096 }
+      responses:
+        '200':
+          description: Original artwork or resized JPEG
+          headers:
+            Cache-Control:
+              schema: { type: string }
+          content:
+            image/*:
+              schema: { type: string, contentEncoding: binary }
+            image/jpeg:
+              schema: { type: string, contentEncoding: binary }
+            application/octet-stream:
+              schema: { type: string, contentEncoding: binary }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500':
+          description: The requested resized artwork could not be decoded
+  /api/v1/videos/{id}:
+    get:
+      tags: [Assets]
+      summary: Stream a movie or episode video
+      description: Supports single HTTP byte ranges for seeking and streaming.
+      operationId: streamVideo
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Range'
+      responses:
+        '200':
+          description: Complete video stream
+          headers:
+            Accept-Ranges: { schema: { type: string, const: bytes } }
+            Content-Disposition: { schema: { type: string } }
+            Content-Length: { schema: { type: integer } }
+          content:
+            video/*:
+              schema: { type: string, contentEncoding: binary }
+            video/mp4:
+              schema: { type: string, contentEncoding: binary }
+            application/octet-stream:
+              schema: { type: string, contentEncoding: binary }
+        '206':
+          description: Requested byte range
+          headers:
+            Accept-Ranges: { schema: { type: string, const: bytes } }
+            Content-Disposition: { schema: { type: string } }
+            Content-Range: { schema: { type: string } }
+            Content-Length: { schema: { type: integer } }
+          content:
+            video/*:
+              schema: { type: string, contentEncoding: binary }
+            video/mp4:
+              schema: { type: string, contentEncoding: binary }
+            application/octet-stream:
+              schema: { type: string, contentEncoding: binary }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '416':
+          $ref: '#/components/responses/RangeNotSatisfiable'
+    head:
+      tags: [Assets]
+      summary: Inspect a video without downloading it
+      operationId: headVideo
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Range'
+      responses:
+        '200':
+          description: Video headers
+          headers:
+            Accept-Ranges: { schema: { type: string, const: bytes } }
+            Content-Disposition: { schema: { type: string } }
+            Content-Length: { schema: { type: integer } }
+        '206':
+          description: Headers for the requested byte range
+          headers:
+            Accept-Ranges: { schema: { type: string, const: bytes } }
+            Content-Disposition: { schema: { type: string } }
+            Content-Range: { schema: { type: string } }
+            Content-Length: { schema: { type: integer } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '416':
+          $ref: '#/components/responses/RangeNotSatisfiable'
+  /openapi.yaml:
+    get:
+      tags: [Documentation]
+      summary: Download this OpenAPI specification
+      operationId: openApiSpecification
+      responses:
+        '200':
+          description: OpenAPI YAML
+          content:
+            application/yaml:
+              schema: { type: string }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/videos/{id}/download:
+    get:
+      tags: [Assets]
+      summary: Download a movie or episode video
+      description: >-
+        Streams the video with Content-Disposition set to attachment so clients
+        download it using its original filename.
+      operationId: downloadVideo
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Range'
+      responses:
+        '200':
+          description: Downloadable video stream
+          headers:
+            Accept-Ranges: { schema: { type: string, const: bytes } }
+            Content-Disposition: { schema: { type: string } }
+            Content-Length: { schema: { type: integer } }
+          content:
+            video/*:
+              schema: { type: string, contentEncoding: binary }
+            video/mp4:
+              schema: { type: string, contentEncoding: binary }
+            application/octet-stream:
+              schema: { type: string, contentEncoding: binary }
+        '206':
+          description: Downloadable requested byte range
+          headers:
+            Accept-Ranges: { schema: { type: string, const: bytes } }
+            Content-Disposition: { schema: { type: string } }
+            Content-Range: { schema: { type: string } }
+            Content-Length: { schema: { type: integer } }
+          content:
+            video/*:
+              schema: { type: string, contentEncoding: binary }
+            video/mp4:
+              schema: { type: string, contentEncoding: binary }
+            application/octet-stream:
+              schema: { type: string, contentEncoding: binary }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '416':
+          $ref: '#/components/responses/RangeNotSatisfiable'
+  /api-docs:
+    get:
+      tags: [Documentation]
+      summary: Open Scalar API Reference
+      operationId: scalarApiReference
+      responses:
+        '200':
+          description: Interactive API documentation
+          content:
+            text/html:
+              schema: { type: string }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /docs:
+    get:
+      tags: [Documentation]
+      summary: Open the DocC web export
+      operationId: doccDocumentation
+      responses:
+        '307':
+          $ref: '#/components/responses/DoccRedirect'
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: UUID stored in the model's `id` property
+      schema: { type: string, format: uuid }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    PerPage:
+      name: perPage
+      in: query
+      description: Overrides the configured page size for this request
+      schema: { type: integer, minimum: 1, maximum: 200 }
+    MinYear:
+      name: minYear
+      in: query
+      description: "Filter: inclusive lower release-year bound. Only applied when `maxYear` is also supplied."
+      schema: { type: integer, minimum: 0 }
+    MaxYear:
+      name: maxYear
+      in: query
+      description: "Filter: inclusive upper release-year bound. Only applied when `minYear` is also supplied."
+      schema: { type: integer, minimum: 0 }
+    MinLength:
+      name: minLength
+      in: query
+      description: "Filter: require a duration greater than or equal to this many minutes. Applied before pagination."
+      schema: { type: integer, minimum: 0 }
+    MaxLength:
+      name: maxLength
+      in: query
+      description: "Filter: require a duration less than or equal to this many minutes. Applied before pagination."
+      schema: { type: integer, minimum: 0 }
+    IsFavorite:
+      name: isFavorite
+      in: query
+      description: "Filter: true or 1 returns only favorites; false or 0 returns only non-favorites. Applied before pagination."
+      schema: { type: boolean }
+    IsWatched:
+      name: isWatched
+      in: query
+      description: "Filter: true or 1 returns only watched items; false or 0 returns only unwatched items. Applied before pagination."
+      schema: { type: boolean }
+    GenreFilter:
+      name: genre
+      in: query
+      description: "Filter: comma-separated genre names. An item must match at least one supplied genre; comparisons are case-insensitive. Applied before pagination."
+      style: form
+      explode: false
+      schema:
+        type: array
+        minItems: 1
+        items: { type: string, minLength: 1 }
+      example: [Action, Comedy]
+    GenreKind:
+      name: kind
+      in: query
+      description: Restricts genre discovery to movies, TV shows, or both kinds.
+      schema:
+        type: string
+        enum: [movies, tvShows, both]
+        default: both
+    Range:
+      name: Range
+      in: header
+      required: false
+      description: A single HTTP byte range. Multiple ranges are not supported.
+      schema: { type: string }
+      example: bytes=0-1048575
+  responses:
+    BadRequest:
+      description: Invalid query parameter or request body
+    NotFound:
+      description: No matching resource exists
+    RangeNotSatisfiable:
+      description: Invalid, multiple, or unsatisfiable byte range
+      headers:
+        Content-Range:
+          schema: { type: string }
+          example: bytes */123456
+    DoccRedirect:
+      description: Redirects to the MyMediaAPI landing page in the generated DocC website
+      headers:
+        Location:
+          description: Canonical DocC landing-page path
+          schema:
+            type: string
+            example: /docs/documentation/mymediaapi/
+  schemas:
+    Appearance:
+      type: object
+      required: [colorScheme, accentColor]
+      properties:
+        colorScheme:
+          type: string
+          enum: [light, dark]
+        accentColor:
+          type: string
+          pattern: '^#[0-9A-F]{6}$'
+          example: '#007AFF'
+          description: User's current macOS accent color as a CSS-compatible sRGB hexadecimal color
+    MediaItemUpdate:
+      type: object
+      description: At least one supported property must have a non-null value. Unknown properties are ignored.
+      anyOf:
+        - required: [isWatched]
+          properties: { isWatched: { type: boolean } }
+        - required: [isFavorite]
+          properties: { isFavorite: { type: boolean } }
+        - required: [isPinned]
+          properties: { isPinned: { type: boolean } }
+        - required: [progressMinutes]
+          properties: { progressMinutes: { type: integer, minimum: 0 } }
+      properties:
+        isWatched: { type: [boolean, 'null'] }
+        isFavorite: { type: [boolean, 'null'] }
+        isPinned: { type: [boolean, 'null'] }
+        progressMinutes:
+          type: [integer, 'null']
+          minimum: 0
+          description: Applies to movies and episodes and cannot exceed durationMinutes. Null is treated as omitted.
+    TvShowUpdate:
+      type: object
+      description: At least one supported property must have a non-null value. Unknown properties are ignored.
+      anyOf:
+        - required: [isWatched]
+          properties: { isWatched: { type: boolean } }
+        - required: [isFavorite]
+          properties: { isFavorite: { type: boolean } }
+        - required: [isPinned]
+          properties: { isPinned: { type: boolean } }
+      properties:
+        isWatched:
+          type: [boolean, 'null']
+          description: Applies the value to every episode in the show.
+        isFavorite: { type: [boolean, 'null'] }
+        isPinned: { type: [boolean, 'null'] }
+        progressMinutes:
+          type: 'null'
+          description: TV shows do not support playback progress; null is treated as omitted.
+    CreateMediaCollection:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: Must contain at least one non-whitespace character.
+        collectionDescription: { type: [string, 'null'] }
+        mediaItemIDs:
+          type: [array, 'null']
+          items: { type: string, format: uuid }
+    MediaCollectionUpdate:
+      type: object
+      description: At least one non-empty media-item change or a non-null isPinned value is required. Unknown properties are ignored.
+      anyOf:
+        - required: [add]
+          properties: { add: { type: array, minItems: 1 } }
+        - required: [remove]
+          properties: { remove: { type: array, minItems: 1 } }
+        - required: [isPinned]
+          properties: { isPinned: { type: boolean } }
+      properties:
+        add:
+          type: [array, 'null']
+          items: { type: string, format: uuid }
+        remove:
+          type: [array, 'null']
+          items: { type: string, format: uuid }
+        isPinned: { type: [boolean, 'null'] }
+    MediaKind:
+      type: string
+      enum: [movie, tvShow, episode, collection]
+    MediaPreview:
+      type: object
+      required: [kind, id, name]
+      properties:
+        kind: { $ref: '#/components/schemas/MediaKind' }
+        id:
+          type: string
+          format: uuid
+          description: UUID stored in the model's `id` property
+        name: { type: string }
+        year: { type: [integer, 'null'] }
+        season: { type: [integer, 'null'] }
+        episode: { type: [integer, 'null'] }
+        numberOfItems: { type: [integer, 'null'] }
+        previewArtworkURL:
+          type: [string, 'null']
+          format: uri-reference
+          description: Relative artwork endpoint with the configured preview maxSize query; never a video URL
+    PagedMediaPreviews:
+      type: object
+      required: [items, page, perPage, totalItems, totalPages]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/MediaPreview' }
+        page: { type: integer, minimum: 1 }
+        perPage: { type: integer, minimum: 1, maximum: 200 }
+        totalItems: { type: integer, minimum: 0 }
+        totalPages: { type: integer, minimum: 0 }
+    Credits:
+      type: object
+      required: [cast, directors, coDirectors, screenwriters, producers, executiveProducers]
+      properties:
+        cast: { type: array, items: { type: string, description: Person name accepted by the people endpoint } }
+        directors: { type: array, items: { type: string, description: Person name accepted by the people endpoint } }
+        coDirectors: { type: array, items: { type: string, description: Person name accepted by the people endpoint } }
+        screenwriters: { type: array, items: { type: string, description: Person name accepted by the people endpoint } }
+        producers: { type: array, items: { type: string, description: Person name accepted by the people endpoint } }
+        executiveProducers: { type: array, items: { type: string, description: Person name accepted by the people endpoint } }
+        composer: { type: [string, 'null'], description: Person name accepted by the people endpoint }
+    PersonCredits:
+      type: object
+      required: [cast, directors, coDirectors, screenwriters, producers, executiveProducers, composer]
+      properties:
+        cast: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        directors: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        coDirectors: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        screenwriters: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        producers: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        executiveProducers: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        composer: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+    Person:
+      type: object
+      required: [name, roles, creditedMovies, creditedEpisodes, credits]
+      properties:
+        name: { type: string }
+        roles: { type: array, items: { type: string } }
+        creditedMovies: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        creditedEpisodes: { type: array, items: { $ref: '#/components/schemas/MediaPreview' } }
+        credits: { $ref: '#/components/schemas/PersonCredits' }
+    Movie:
+      type: object
+      required: [id, dateAdded, isWatched, isFavorite, isPinned, progressMinutes, title, year, genre, durationMinutes, releaseDate, credits, languages]
+      properties:
+        id: { type: string, format: uuid }
+        dateAdded: { type: string, format: date-time }
+        isWatched: { type: boolean }
+        isFavorite: { type: boolean }
+        isPinned: { type: boolean }
+        progressMinutes: { type: integer }
+        artworkURL:
+          type: [string, 'null']
+          format: uri-reference
+          description: Relative artwork endpoint without maxSize, which returns the original artwork
+        title: { type: string }
+        year: { type: integer }
+        genre: { type: array, items: { type: string } }
+        durationMinutes: { type: integer }
+        releaseDate: { type: string, format: date-time }
+        shortDescription: { type: [string, 'null'] }
+        longDescription: { type: [string, 'null'] }
+        credits: { $ref: '#/components/schemas/Credits' }
+        studio: { type: [string, 'null'] }
+        hdVideoQuality: { type: [string, 'null'], enum: [sd, 720p, 1080p, 4k, null] }
+        rating: { type: [string, 'null'] }
+        languages: { type: array, items: { type: string } }
+    TvShow:
+      type: object
+      required: [id, dateAdded, title, year, genre, isFavorite, isPinned, isWatched, networks, isMiniSeries, durationMinutes, episodes]
+      properties:
+        id: { type: string, format: uuid }
+        dateAdded: { type: string, format: date-time }
+        title: { type: string }
+        year: { type: integer }
+        genre: { type: array, items: { type: string } }
+        showDescription: { type: [string, 'null'] }
+        artworkURL:
+          type: [string, 'null']
+          format: uri-reference
+          description: Relative artwork endpoint without maxSize, which returns the original artwork
+        isFavorite: { type: boolean }
+        isPinned: { type: boolean }
+        isWatched: { type: boolean }
+        networks: { type: array, items: { type: string } }
+        isMiniSeries: { type: boolean }
+        durationMinutes: { type: integer }
+        episodes:
+          type: array
+          items: { $ref: '#/components/schemas/MediaPreview' }
+    Episode:
+      type: object
+      required: [id, dateAdded, isWatched, isFavorite, isPinned, progressMinutes, season, episode, title, year, durationMinutes, releaseDate, credits, languages, tvShow]
+      properties:
+        id: { type: string, format: uuid }
+        dateAdded: { type: string, format: date-time }
+        isWatched: { type: boolean }
+        isFavorite: { type: boolean }
+        isPinned: { type: boolean }
+        progressMinutes: { type: integer }
+        artworkURL:
+          type: [string, 'null']
+          format: uri-reference
+          description: Relative artwork endpoint without maxSize, which returns the original artwork
+        season: { type: integer }
+        episode: { type: integer }
+        title: { type: string }
+        year: { type: integer }
+        durationMinutes: { type: integer }
+        releaseDate: { type: string, format: date-time }
+        episodeShortDescription: { type: [string, 'null'] }
+        episodeLongDescription: { type: [string, 'null'] }
+        credits: { $ref: '#/components/schemas/Credits' }
+        studio: { type: [string, 'null'] }
+        network: { type: [string, 'null'] }
+        rating: { type: [string, 'null'] }
+        languages: { type: array, items: { type: string } }
+        tvShow: { $ref: '#/components/schemas/MediaPreview' }
+    MediaCollection:
+      type: object
+      required: [id, title, dateAdded, isPinned, isWatched, numberOfItems, items]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        collectionDescription: { type: [string, 'null'] }
+        artworkURL:
+          type: [string, 'null']
+          format: uri-reference
+          description: Relative artwork endpoint without maxSize, which returns the original artwork
+        dateAdded: { type: string, format: date-time }
+        isPinned: { type: boolean }
+        isWatched: { type: boolean }
+        numberOfItems: { type: integer }
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/MediaPreview' }
