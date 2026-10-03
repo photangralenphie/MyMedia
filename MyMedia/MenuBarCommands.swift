@@ -11,7 +11,7 @@ struct MenuBarCommands: Commands {
 
 	@Environment(\.openWindow) private var openWindow
 	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = true
-	@AppStorage("selectedTab") private var selectedTab: String = Tabs.unwatched.id
+	@AppStorage(InterfaceStateKeys.selectedTab) private var selectedTab: String = Tabs.unwatched.id
 
     var body: some Commands {
 		CommandGroup(replacing: .undoRedo) { EmptyView() }
@@ -41,6 +41,7 @@ struct MenuBarCommands: Commands {
 			Menu("Sidebar Entries", systemImage: "checklist") {
 				Toggle("Mini-Series", systemImage: "rectangle.stack.badge.play", isOn: $useMiniSeries.animation())
 			}
+			
 			Divider()
 		}
 

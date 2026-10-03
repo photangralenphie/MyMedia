@@ -14,8 +14,8 @@ struct HomeView: View {
 	@Query(sort: \Episode.title) private var episodes: [Episode]
 	@Query(sort: \MediaCollection.title) private var collections: [MediaCollection]
 
-	@AppStorage("selectedTab") private var selectedTab: String = Tabs.unwatched.id
-	@AppStorage("sidebarCustomizations") private var tabViewCustomization: TabViewCustomization
+	@AppStorage(InterfaceStateKeys.selectedTab) private var selectedTab: String = Tabs.unwatched.id
+	@AppStorage(InterfaceStateKeys.sidebarCustomizations) private var tabViewCustomization: TabViewCustomization
 	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = true
 
 	@Environment(CommandResource.self) private var commandResource
