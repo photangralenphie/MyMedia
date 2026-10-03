@@ -55,10 +55,22 @@ These features are currently planned (not in a particular order):
  - [x] ~~update Metadata after changes made to the original file.~~ (V1.1)
  - [x] ~~Episode Detail: A nice detail page for a single episode of a TV show.~~ (V2.0)
  - [x] ~~List and List-Detail Views.~~ (V2.0)
- - [x] Library Search: Searching the complete library including descriptions, cast and crew. (coming in V3.0) 
+ - [x] ~~Library Search: Searching the complete library including descriptions, cast and crew.~~ (V3.0)
  - [ ] Recent Tab: A view to show recently added Movies, TV Shows and episodes.
- - [ ] Support for more file types.
  - [ ] better support for vertical artwork
+ - [ ] Support for more file types.
+
+
+## API
+ - MyMedia includes a local HTTP API for apps that want to browse and control the library. The first app using the API is [MyMedia for AndroidTV](https://github.com/photangralenphie/MyMediaAndroidTV).
+ - Introduced in V3 of MyMedia and is completely optional and can be disabled.
+ - The API provides:
+	- Paginated access to movies, TV shows, episodes, people, and collections, with filters for genres, years, duration, watched state, and favorites.
+	- Library search, genre browsing, and dedicated favorites, pinned, and unwatched feeds.
+	- Updates to watched, favorite, and pinned state, playback progress, and collection membership.
+	- Direct video streaming or downloads, including byte range requests for seeking.
+ - Interactive API documentation is reachable through the developer settings.
+ - The API has no authentication, so use it only on a trusted network.
 
 ## Requirements
  - macOS 15 or higher
