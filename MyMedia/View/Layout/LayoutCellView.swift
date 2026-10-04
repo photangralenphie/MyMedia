@@ -48,9 +48,9 @@ struct LayoutCellView: View {
 	var contentView: some View {
 		switch layout {
 			case .grid:
-				GridCellView(artwork: artwork, artworkSubtitle: artworkSubtitle, title: title, subtitle: artworkSubtitle)
+				GridCellView(artwork: artwork, artworkSubtitle: artworkSubtitle, title: title, subtitle: subtitle)
 			case .list:
-				ListCellView(artwork: artwork, artworkSubtitle: artworkSubtitle, title: title, subtitle: artworkSubtitle)
+				ListCellView(artwork: artwork, artworkSubtitle: artworkSubtitle, title: title, subtitle: subtitle)
 			case .detailList:
 				Image(systemName: "chevron.right.circle")
 		}
