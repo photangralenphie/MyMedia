@@ -199,7 +199,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$SRCROOT/MyMediaAPI/Scripts/generate-documentation.sh\"\n";
+			shellScript = "if [ \"$CONFIGURATION\" = Release ]; then\n    /bin/sh \"$SRCROOT/MyMediaAPI/Scripts/generate-documentation.sh\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
