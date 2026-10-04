@@ -86,7 +86,7 @@ struct CreditsView: View {
 		return VStack(alignment: .leading) {
 			Text(creditKey.rawValue)
 				.textCase(.uppercase)
-				.modifier(CreditHeadingStyle())
+				.creditHeadingStyle()
 
 			if let people = credits[creditKey] {
 				ForEach(people) { person in

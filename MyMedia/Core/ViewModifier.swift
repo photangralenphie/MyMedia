@@ -2,25 +2,8 @@
 // Copyright © 2025 MyMedia.
 // Licensed under the MIT License.
 //
+
 import SwiftUI
-
-struct CreditHeadingStyle: ViewModifier {
-	func body(content: Content) -> some View {
-		content
-			.bold()
-			.padding(.bottom, 2)
-			.font(.caption)
-			.foregroundStyle(.secondary)
-	}
-}
-
-fileprivate struct SettingsDescriptionStyle: ViewModifier {
-	func body(content: Content) -> some View {
-		content
-			.font(.footnote)
-			.foregroundStyle(.secondary)
-	}
-}
 
 struct MediaItemDraggableModifier: ViewModifier {
 	private let mediaItem: any MediaItem
@@ -58,11 +41,21 @@ struct MediaItemDraggableModifier: ViewModifier {
 }
 
 extension View {
+	func creditHeadingStyle() -> some View {
+		self
+			.bold()
+			.padding(.bottom, 2)
+			.font(.caption)
+			.foregroundStyle(.secondary)
+	}
+
 	func mediaItemDraggable(mediaItem: any MediaItem) -> some View {
 		self.modifier(MediaItemDraggableModifier(mediaItem: mediaItem))
 	}
 
 	func settingDescriptionTextStyle() -> some View {
-		self.modifier(SettingsDescriptionStyle())
+		self
+			.font(.footnote)
+			.foregroundStyle(.secondary)
 	}
 }
