@@ -18,19 +18,21 @@ struct CollectionActionsView: View {
 	let onDelete: () -> Void
 
     var body: some View {
-
 		Button(collection.isPinned ? "Unpin" : "Pin", systemImage: collection.isPinned ? "pin.slash" : "pin", action: collection.togglePinned)
 			.keyboardShortcut(applyShortcuts ? KeyboardShortcut("p", modifiers: .command) : nil)
+			.labelStyle(.titleAndIcon)
 
 		Divider()
 
 		Button("Delete Collection", systemImage: "trash", action: deleteCollection)
 			.keyboardShortcut(applyShortcuts ? KeyboardShortcut(.delete, modifiers: .command) : nil)
+			.labelStyle(.titleAndIcon)
 
 		Divider()
 
 		Button("Edit", systemImage: "pencil", action: editCollection)
 			.keyboardShortcut(applyShortcuts ? KeyboardShortcut("e", modifiers: .command) : nil)
+			.labelStyle(.titleAndIcon)
 	}
 
 	func deleteCollection() {
