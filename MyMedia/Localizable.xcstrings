@@ -625,13 +625,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Mitgewirkt an **%lld** Titel"
+                  "value" : "Mitgewirkt an %lld Titel"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Mitgewirkt an **%lld** Titeln"
+                  "value" : "Mitgewirkt an %lld Titeln"
                 }
               }
             }
@@ -643,13 +643,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Credited in **%lld** title"
+                  "value" : "Credited in %lld title"
                 }
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Credited in **%lld** titles"
+                  "state" : "translated",
+                  "value" : "Credited in %lld titles"
                 }
               }
             }
