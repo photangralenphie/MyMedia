@@ -10,9 +10,9 @@ struct UnwatchedTab: TabContent {
 	let tvShows: [TvShow]
 	let movies: [Movie]
 
-	@AppStorage("sortOrderUnwatched") private var sortOrderUnwatched = SortOption.title
-	@AppStorage("viewPreferenceUnwatched") private var viewPreferenceUnwatched = ViewOption.grid
-	@AppStorage("useSectionsUnwatched") private var useSectionsUnwatched = true
+	@AppStorage(InterfaceStateKeys.sortOrder(Tabs.unwatched.rawValue)) private var sortOrder = SortOption.title
+	@AppStorage(InterfaceStateKeys.viewPreference(Tabs.unwatched.rawValue)) private var viewPreference = ViewOption.grid
+	@AppStorage(InterfaceStateKeys.useSections(Tabs.unwatched.rawValue)) private var useSections = true
 
 	private let tab = Tabs.unwatched
 
@@ -22,9 +22,9 @@ struct UnwatchedTab: TabContent {
 		GenericTab(tab: tab) {
 			LayoutSwitchingView(
 				mediaItems: unwatched,
-				sorting: $sortOrderUnwatched,
-				viewPreference: $viewPreferenceUnwatched,
-				useSections: $useSectionsUnwatched,
+				sorting: $sortOrder,
+				viewPreference: $viewPreference,
+				useSections: $useSections,
 				navTitle: tab.title
 			)
 		}

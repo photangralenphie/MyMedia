@@ -46,7 +46,6 @@ struct PlayButton: View {
 	@State private var isHovered: Bool = false
 
     var body: some View {
-
 		if #available(macOS 26.0, *) {
 			Button(playType.text, systemImage: "play.fill", action: playAction)
 				.glassEffect(.clear.tint(.accentColor.opacity(isHovered ? 1 : 0.7)).interactive())

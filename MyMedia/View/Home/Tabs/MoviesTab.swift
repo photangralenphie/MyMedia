@@ -9,9 +9,9 @@ struct MoviesTab: TabContent {
 
 	let movies: [Movie]
 
-	@AppStorage("sortOrderMovies") private var sortOrderMovies = SortOption.title
-	@AppStorage("viewPreferenceMovies") private var viewPreferenceMovies = ViewOption.grid
-	@AppStorage("useSectionsMovies") private var useSectionsMovies = true
+	@AppStorage(InterfaceStateKeys.sortOrder(Tabs.movies.rawValue)) private var sortOrder = SortOption.title
+	@AppStorage(InterfaceStateKeys.viewPreference(Tabs.movies.rawValue)) private var viewPreference = ViewOption.grid
+	@AppStorage(InterfaceStateKeys.useSections(Tabs.movies.rawValue)) private var useSections = true
 
 	private let tab = Tabs.movies
 
@@ -19,9 +19,9 @@ struct MoviesTab: TabContent {
 		GenericTab(tab: tab) {
 			LayoutSwitchingView(
 				mediaItems: movies,
-				sorting: $sortOrderMovies,
-				viewPreference: $viewPreferenceMovies,
-				useSections: $useSectionsMovies,
+				sorting: $sortOrder,
+				viewPreference: $viewPreference,
+				useSections: $useSections,
 				navTitle: "Movies"
 			)
 		}

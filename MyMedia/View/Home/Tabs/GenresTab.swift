@@ -10,9 +10,9 @@ struct GenresTab: TabContent {
 	let tvShows: [TvShow]
 	let movies: [Movie]
 
-	@AppStorage("sortOrderGenres") private var sortOrderGenres = SortOption.title
-	@AppStorage("viewPreferenceGenres") private var viewPreferenceGenres = ViewOption.grid
-	@AppStorage("useSectionsGenres") private var useSectionsGenres = true
+	@AppStorage(InterfaceStateKeys.sortOrder(Tabs.genres.rawValue)) private var sortOrder = SortOption.title
+	@AppStorage(InterfaceStateKeys.viewPreference(Tabs.genres.rawValue)) private var viewPreference = ViewOption.grid
+	@AppStorage(InterfaceStateKeys.useSections(Tabs.genres.rawValue)) private var useSections = true
 
 	private let tab = Tabs.genres
 
@@ -20,9 +20,9 @@ struct GenresTab: TabContent {
 		GenericTab(tab: tab) {
 			GenresView(
 				mediaItems: tvShows + movies,
-				sortOrder: $sortOrderGenres,
-				viewPreference: $viewPreferenceGenres,
-				useSections: $useSectionsGenres
+				sortOrder: $sortOrder,
+				viewPreference: $viewPreference,
+				useSections: $useSections
 			)
 		}
     }

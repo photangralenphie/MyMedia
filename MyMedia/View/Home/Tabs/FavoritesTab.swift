@@ -10,9 +10,9 @@ struct FavoritesTab: TabContent {
 	let tvShows: [TvShow]
 	let movies: [Movie]
 
-	@AppStorage("sortOrderFavorites") private var sortOrderFavorites = SortOption.title
-	@AppStorage("viewPreferenceFavorites") private var viewPreferenceFavorites = ViewOption.grid
-	@AppStorage("useSectionsFavorites") private var useSectionsFavorites = true
+	@AppStorage(InterfaceStateKeys.sortOrder(Tabs.favorites.rawValue)) private var sortOrder = SortOption.title
+	@AppStorage(InterfaceStateKeys.viewPreference(Tabs.favorites.rawValue)) private var viewPreference = ViewOption.grid
+	@AppStorage(InterfaceStateKeys.useSections(Tabs.favorites.rawValue)) private var useSections = true
 
 	private let tab = Tabs.favorites
 
@@ -21,9 +21,9 @@ struct FavoritesTab: TabContent {
 		GenericTab(tab: tab) {
 			LayoutSwitchingView(
 				mediaItems: favourites,
-				sorting: $sortOrderFavorites,
-				viewPreference: $viewPreferenceFavorites,
-				useSections: $useSectionsFavorites,
+				sorting: $sortOrder,
+				viewPreference: $viewPreference,
+				useSections: $useSections,
 				navTitle: tab.title
 			)
 		}

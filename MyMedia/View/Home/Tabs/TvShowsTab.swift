@@ -9,9 +9,9 @@ struct TvShowsTab: TabContent {
 
 	let tvShows: [TvShow]
 
-	@AppStorage("sortOrderTvShows") private var sortOrderTvShows = SortOption.title
-	@AppStorage("viewPreferenceTvShows") private var viewPreferenceTvShows = ViewOption.grid
-	@AppStorage("useSectionsTvShows") private var useSectionsTvShows = true
+	@AppStorage(InterfaceStateKeys.sortOrder(Tabs.tvShows.rawValue)) private var sortOrder = SortOption.title
+	@AppStorage(InterfaceStateKeys.viewPreference(Tabs.tvShows.rawValue)) private var viewPreference = ViewOption.grid
+	@AppStorage(InterfaceStateKeys.useSections(Tabs.tvShows.rawValue)) private var useSections = true
 
 	private let tab = Tabs.tvShows
 
@@ -19,9 +19,9 @@ struct TvShowsTab: TabContent {
 		GenericTab(tab: tab) {
 			LayoutSwitchingView(
 				mediaItems: tvShows,
-				sorting: $sortOrderTvShows,
-				viewPreference: $viewPreferenceTvShows,
-				useSections: $useSectionsTvShows,
+				sorting: $sortOrder,
+				viewPreference: $viewPreference,
+				useSections: $useSections,
 				navTitle: "TV Shows"
 			)
 		}
