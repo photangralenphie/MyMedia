@@ -14,20 +14,25 @@ struct GeneralSettingsTab: View {
     var body: some View {
 		Form {
 			Section("App Behaviour") {
-				Toggle("Auto Quit", isOn: $autoQuit)
-					.settingDescription("Automatically quit the app when the last window is closed.")
+				Toggle(isOn: $autoQuit) {
+					Text("Auto Quit")
+					Text("Automatically quit the app when the last window is closed.")
+				}
 			}
 
 			Section("User Interface") {
 				Picker("Play Button", selection: $playButtonInArtwork) {
 					Label("In Artwork", systemImage: "play.rectangle")
 						.tag(true)
+
 					Label("As separate Button", systemImage: "play.square.fill")
 						.tag(false)
 				}
 
-				Toggle("Mini-Series", isOn: $useMiniSeries)
-					.settingDescription("If enabled, a new entry in the sidebar appears which allows to only show Mini-(or Limited) Series.")
+				Toggle(isOn: $useMiniSeries) {
+					Text("Mini-Series")
+					Text("If enabled, a new entry in the sidebar appears which allows to only show Mini-(or Limited) Series.")
+				}
 			}
 		}
 		.frame(height: 300)

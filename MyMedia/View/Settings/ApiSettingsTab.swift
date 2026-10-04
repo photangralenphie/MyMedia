@@ -3,6 +3,7 @@
 // Licensed under the MIT License.
 //
 
+import AwesomeSwiftyComponents
 import MyMediaAPI
 import SwiftUI
 
@@ -32,19 +33,23 @@ struct ApiSettingsTab: View {
 	var body: some View {
 		Form {
 			Section("Availability") {
-				Toggle("Enable API", isOn: $apiEnabled)
-					.settingDescription("Disabling the API stops the server and hides its configuration.")
+				Toggle(isOn: $apiEnabled) {
+					Text("Enable API")
+					Text("Disabling the API stops the server and hides its configuration.")
+				}
 			}
 
 			if apiEnabled {
 				Section("Server") {
 					Toggle("Start API when MyMedia launches", isOn: $startAtLaunch)
+
 					LabeledContent("Status", value: statusText)
+
 					LabeledContent("IP-Address", value: apiServer.localURL.absoluteString)
 
 					TextField("Port", value: $port, format: .number)
 						.multilineTextAlignment(.trailing)
-						.settingDescription("Use a port from 1024 through 65535. Restart the API after changing it.")
+						.formRowDescription(String(localized: "Use a port from 1024 through 65535. Restart the API after changing it."))
 
 					if !portIsValid {
 						Label("Port must be between 1024 and 65535.", systemImage: "exclamationmark.triangle.fill")

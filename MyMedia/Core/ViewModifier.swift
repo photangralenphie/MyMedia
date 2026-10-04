@@ -22,18 +22,6 @@ fileprivate struct SettingsDescriptionStyle: ViewModifier {
 	}
 }
 
-fileprivate struct SettingsDescription: ViewModifier {
-	let description: LocalizedStringKey
-	func body(content: Content) -> some View {
-		VStack(alignment: .leading) {
-			content
-			Text(description)
-				.font(.footnote)
-				.foregroundStyle(.secondary)
-		}
-	}
-}
-
 struct MediaItemDraggableModifier: ViewModifier {
 	private let mediaItem: any MediaItem
 
@@ -76,9 +64,5 @@ extension View {
 
 	func settingDescriptionTextStyle() -> some View {
 		self.modifier(SettingsDescriptionStyle())
-	}
-
-	func settingDescription(_ description: LocalizedStringKey) -> some View {
-		self.modifier(SettingsDescription(description: description))
 	}
 }

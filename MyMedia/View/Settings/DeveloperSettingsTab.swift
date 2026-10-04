@@ -26,25 +26,25 @@ struct DeveloperSettingsTab: View {
 				Button("Open API Documentation", systemImage: "network") {
 					openURL(apiServer.localURL.appending(path: "api-docs"))
 				}
-				.settingDescription("Open the interactive Scalar API reference in your browser.")
+				.formRowDescription(String(localized: "Open the interactive Scalar API reference in your browser."))
 
 				Button("Open DocC Documentation", systemImage: "book.pages") {
 					openURL(apiServer.localURL.appending(path: "docs"))
 				}
-				.settingDescription("Open the web export of the API's DocC documentation.")
+				.formRowDescription(String(localized: "Open the web export of the API's DocC documentation."))
 			}
 
 			Section {
 				Button("Delete all Content", systemImage: "trash", role: .destructive) {
 					showDeletionAlert.toggle()
 				}
-				.settingDescription("This will delete all imported Movies, TV Shows and created Collections! The files on your device will not be deleted.")
+				.formRowDescription(String(localized: "This will delete all imported Movies, TV Shows and created Collections! The files on your device will not be deleted."))
 				.confirmationDialog("Danger!", isPresented: $showDeletionAlert) {
 					Button("Cancel", role: .cancel) {
 						showDeletionAlert.toggle()
 					}
 					.keyboardShortcut(.cancelAction)
-					
+
 					Button("Yes", role: .destructive) {
 						deleteAllContent()
 						showDeletionAlert.toggle()
@@ -68,7 +68,7 @@ struct DeveloperSettingsTab: View {
 					settingsTab = SettingsTab.general
 					developerMode.toggle()
 				}
-				.settingDescription("This will hide this tab.")
+				.formRowDescription(String(localized: "This will hide this tab."))
 			}
 		}
 		.frame(height: 360)

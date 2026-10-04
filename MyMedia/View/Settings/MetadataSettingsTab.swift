@@ -16,8 +16,11 @@ struct MetadataSettingsTab: View {
     var body: some View {
 		Form {
 			Toggle("Show Languages as Flags", isOn: $showLanguageFlags)
-			Toggle("Prefer short Description", isOn: $preferShortDescription)
-				.settingDescription("If available show the short description of the media item.")
+
+			Toggle(isOn: $preferShortDescription) {
+				Text("Prefer short Description")
+				Text("If available show the short description of the media item.")
+			}
 
 			Section("Artwork") {
 				ImageDownsizeToggle(isOn: $downSizeArtwork.animation())
@@ -28,7 +31,9 @@ struct MetadataSettingsTab: View {
 							TextField("Width", value: $downSizeArtworkWidth, format: .number)
 								.labelsHidden()
 								.frame(width: 50)
+
 							Text("x")
+
 							TextField("Height", value: $downSizeArtworkHeight, format: .number)
 								.labelsHidden()
 								.frame(width: 50)
