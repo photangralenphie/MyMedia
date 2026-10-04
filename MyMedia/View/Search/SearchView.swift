@@ -82,7 +82,10 @@ struct SearchView: View {
 				Text(text)
 					.lineLimit(nil)
 					.padding()
-					.toolbar { CloseButton { searchVm.expandedText = nil } }
+					.toolbar {
+						CloseButton { searchVm.expandedText = nil }
+							.keyboardShortcut(.cancelAction)
+					}
 			}
 		}
 		.onAppear {

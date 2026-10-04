@@ -44,7 +44,9 @@ struct AboutView: View {
 						licence = .mit(name: "MyMedia", author: "Jonas Helmer", year: currentYear)
 					}
 					.buttonStyle(.plain)
+
 					WikiLink()
+
 					GitHubLink()
 				}
 				.frame(width: aboutLeftWidth)
@@ -79,8 +81,10 @@ struct AboutView: View {
 				VStack {
 					LicenceView(licence: sheetLicence)
 						.scenePadding()
+
 					Button("Close") { licence = nil }
 						.padding(.bottom)
+						.keyboardShortcut(.cancelAction)
 				}
 				.frame(minHeight: 400)
 			}
@@ -93,6 +97,7 @@ struct AboutView: View {
 
 					Button("Close") { showCmarkGfmLicense.toggle() }
 						.padding(.bottom)
+						.keyboardShortcut(.cancelAction)
 				}
 				.frame(minHeight: 400)
 			}

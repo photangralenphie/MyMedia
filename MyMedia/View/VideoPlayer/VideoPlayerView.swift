@@ -33,6 +33,7 @@ struct VideoPlayerView: View {
 						Text(vm.errorText)
 					} actions: {
 						Button("Close Player") { dismiss() }
+							.keyboardShortcut(.defaultAction)
 					}
 				}
 			}

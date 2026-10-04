@@ -54,7 +54,10 @@ struct HomeView: View {
 		.tabViewSidebarBottomBar { ImportingView() }
 		.alert(commandResource.errorTitle, isPresented: .constant(commandResource.errorMessage != nil)) {
 			Button("OK") { commandResource.clearError() }
+				.keyboardShortcut(.cancelAction)
+
 			Button("Get Help") { openURL(URL(string: "https://github.com/photangralenphie/MyMedia/wiki/Help-%E2%80%90-Error-Codes")!) }
+				.keyboardShortcut(.defaultAction)
 		} message: {
 			commandResource.errorMessage ?? Text("Unknown Error")
 		}

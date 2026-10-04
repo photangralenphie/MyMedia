@@ -79,17 +79,20 @@ struct CollectionEditView: View {
 
 			HStack {
 				Button("Cancel", role: .cancel) { dismiss() }
+					.keyboardShortcut(.cancelAction)
 
 				Spacer()
 
 				Button(vm.sheetMainActionButtonTitle, action: saveCollection)
 					.tint(.accentColor)
 					.disabled(!vm.canSaveCollection)
+					.keyboardShortcut(.defaultAction)
 			}
 		}
 		.scenePadding()
 		.alert("Error loading image: \(vm.imageLoadError ?? "Unknown Error")", isPresented: Bindable(vm).imageLoadError.isNotNil()) {
 			Button("OK") { vm.imageLoadError = nil	 }
+				.keyboardShortcut(.defaultAction)
 		}
     }
 

@@ -43,10 +43,13 @@ struct DeveloperSettingsTab: View {
 					Button("Cancel", role: .cancel) {
 						showDeletionAlert.toggle()
 					}
+					.keyboardShortcut(.cancelAction)
+					
 					Button("Yes", role: .destructive) {
 						deleteAllContent()
 						showDeletionAlert.toggle()
 					}
+					.keyboardShortcut(.defaultAction)
 				} message: {
 					Text("Do you really want to delete all content?")
 				}
