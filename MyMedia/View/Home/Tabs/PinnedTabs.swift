@@ -27,6 +27,7 @@ struct PinnedTabs: TabContent {
 			TabSection("Pinned") {
 				ForEach(pinnedItems, id: \.id) { pinnedItem in
 					let unpinButton = Button("Unpin", systemImage: "pin.slash") { unpinItem(pinnedItem) }
+						.labelStyle(.titleAndIcon)
 
 					if let collection = pinnedItem as? MediaCollection {
 						Tab(collection.title, systemImage: collection.systemImageName, value: collection.id.uuidString) {

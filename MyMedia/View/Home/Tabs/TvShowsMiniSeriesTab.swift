@@ -31,6 +31,7 @@ struct TvShowsMiniSeriesTab: TabContent {
 			Button("Hide", systemImage: "eye.slash") {
 				withAnimation { useMiniSeries = false }
 			}
+			.labelStyle(.titleAndIcon)
 		}
 	}
 }
