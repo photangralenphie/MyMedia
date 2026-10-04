@@ -1453,6 +1453,16 @@
         }
       }
     },
+    "No Collections" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Sammlungen"
+          }
+        }
+      }
+    },
     "No metadata found in file:\n\n%@\n\nPlease add metadata before importing." : {
       "localizations" : {
         "de" : {

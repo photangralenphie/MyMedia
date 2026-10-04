@@ -30,27 +30,39 @@ struct CollectionsView: View {
 	}
 
 	var body: some View {
+		let createButton = Button("Create Collection", systemImage: "plus", action: createCollection)
 
 		NavigationStack {
-			ScrollView {
-				LazyVGrid(columns: LayoutConstants.gridLayout, pinnedViews: [.sectionHeaders]) {
-					ForEach(Array(groupedCollections.keys), id: \.self) { section in
-						Section {
-							ForEach(groupedCollections[section] ?? [], id: \.id) { collection in
-								LayoutCellView(collection: collection, layout: .grid)
-							}
-						} header: {
-							LayoutSectionHeader(section: section)
-						}
+			Group {
+				if collections.isEmpty {
+					ContentUnavailableView {
+						Label("No Collections", systemImage: "plus")
+					} actions: {
+						createButton
+							.buttonStyle(.bordered)
+							.labelStyle(.titleOnly)
+							.keyboardShortcut(.defaultAction)
 					}
+				} else {
+					ScrollView {
+						LazyVGrid(columns: LayoutConstants.gridLayout, pinnedViews: [.sectionHeaders]) {
+							ForEach(Array(groupedCollections.keys), id: \.self) { section in
+								Section {
+									ForEach(groupedCollections[section] ?? [], id: \.id) { collection in
+										LayoutCellView(collection: collection, layout: .grid)
+									}
+								} header: {
+									LayoutSectionHeader(section: section)
+								}
+							}
+						}
+						.padding(.horizontal, LayoutConstants.gridSpacing)
+					}
+					.searchable(text: $searchText, placement: .automatic, prompt: "Search")
 				}
-				.padding(.horizontal, LayoutConstants.gridSpacing)
 			}
-			.searchable(text: $searchText, placement: .automatic, prompt: "Search")
 			.navigationTitle("Collections")
-			.toolbar {
-				Button("Create Collection", systemImage: "plus", action: createCollection)
-			}
+			.toolbar { createButton }
 			.sheet(item: Bindable(commandResource).collectionEditVm) { vm in
 				CollectionEditView(vm: vm)
 			}
