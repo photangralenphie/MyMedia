@@ -1203,7 +1203,7 @@
         }
       }
     },
-    "Importing a larger artwork will consume more memory, and increase loading times." : {
+    "Importing a larger artwork will consume more memory, and increases loading times." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {

@@ -13,7 +13,7 @@ struct ImageDownsizeToggle: View {
 		HStack {
 			Toggle("Downsize Artwork", isOn: $isOn)
 			Image(systemName: "info.circle")
-				.help("Importing a larger artwork will consume more memory, and increase loading times.")
+				.help("Importing a larger artwork will consume more memory, and increases loading times.")
 		}
     }
 }

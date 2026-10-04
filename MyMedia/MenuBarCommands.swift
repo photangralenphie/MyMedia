@@ -41,7 +41,7 @@ struct MenuBarCommands: Commands {
 			Menu("Sidebar Entries", systemImage: "checklist") {
 				Toggle("Mini-Series", systemImage: "rectangle.stack.badge.play", isOn: $useMiniSeries.animation())
 			}
-			
+
 			Divider()
 		}
 
