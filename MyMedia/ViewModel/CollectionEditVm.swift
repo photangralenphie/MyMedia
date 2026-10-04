@@ -63,6 +63,10 @@ class CollectionEditVm: Identifiable {
 		didSet { loadTransferableImage() }
 	}
 
+	var canSaveCollection: Bool {
+		!title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+	}
+
 	var sheetTitle: LocalizedStringKey { collection == nil ? "New Collection" : "Edit Collection" }
 	var sheetMainActionButtonTitle: LocalizedStringKey { collection == nil ? "Create" : "Save" }
 	var imageSizeDescription: LocalizedStringKey = ""

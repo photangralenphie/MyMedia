@@ -17,7 +17,6 @@ struct CollectionEditView: View {
 	@Environment(\.modelContext) private var moc
 
     var body: some View {
-
 		Form {
 			Text(vm.sheetTitle)
 				.font(.title)
@@ -46,7 +45,9 @@ struct CollectionEditView: View {
 				LabeledContent("Image Size") {
 					HStack {
 						Text(vm.imageSizeDescription)
+
 						Spacer()
+
 						if vm.canDownsize {
 							ImageDownsizeToggle(isOn: Bindable(vm).downSizeImage)
 						}
@@ -83,6 +84,7 @@ struct CollectionEditView: View {
 
 				Button(vm.sheetMainActionButtonTitle, action: saveCollection)
 					.tint(.accentColor)
+					.disabled(!vm.canSaveCollection)
 			}
 		}
 		.scenePadding()
@@ -92,6 +94,8 @@ struct CollectionEditView: View {
     }
 
 	func saveCollection() {
+		if !vm.canSaveCollection { return }
+
 		let finalImageData = vm.getFinalImageData()
 		if let collection = vm.collection {
 			collection.title = vm.title
