@@ -11,7 +11,7 @@ struct MovieDetailView: View {
 	let movie: Movie
 	private let titleAndData: String
 
-	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
+	@AppStorage(PreferenceKeys.showLanguageFlags, store: LibrarySettings.store) private var showLanguageFlags: Bool = true
 	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
 
 	@Environment(\.modelContext) private var moc

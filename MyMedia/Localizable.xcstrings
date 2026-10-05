@@ -514,6 +514,16 @@
         }
       }
     },
+    "Built-in Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingebaute Mediathek"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "de" : {
@@ -530,6 +540,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Besetzung"
+          }
+        }
+      }
+    },
+    "Choose a Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediathek auswählen"
+          }
+        }
+      }
+    },
+    "Choose a MyMedia library." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine MyMedia-Mediathek."
+          }
+        }
+      }
+    },
+    "Choose where to save the new library." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle, wo die neue Mediathek gespeichert werden soll."
           }
         }
       }
@@ -593,6 +633,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auf die Datei konnte nicht zugegriffen werden."
+          }
+        }
+      }
+    },
+    "Could not open the library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Mediathek konnte nicht geöffnet werden"
           }
         }
       }
@@ -1430,6 +1480,46 @@
         }
       }
     },
+    "MyMedia can open one library at a time. Quit and reopen to use this library." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MyMedia kann nur eine Mediathek gleichzeitig öffnen. Beende MyMedia und öffne es erneut, um diese Mediathek zu verwenden."
+          }
+        }
+      }
+    },
+    "MyMedia could not access the selected library." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MyMedia konnte nicht auf die ausgewählte Mediathek zugreifen."
+          }
+        }
+      }
+    },
+    "MyMedia could not remember this library. The built-in library will open on the next launch." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MyMedia konnte sich diese Mediathek nicht merken. Beim nächsten Start wird die eingebaute Mediathek geöffnet."
+          }
+        }
+      }
+    },
+    "MyMedia could not store settings for this library." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MyMedia konnte die Einstellungen für diese Mediathek nicht speichern."
+          }
+        }
+      }
+    },
     "NetworkImage" : {
       "shouldTranslate" : false
     },
@@ -1439,6 +1529,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neue Sammlung"
+          }
+        }
+      }
+    },
+    "New..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu..."
           }
         }
       }
@@ -1534,6 +1634,26 @@
         }
       }
     },
+    "Open Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediathek öffnen"
+          }
+        }
+      }
+    },
+    "Open an existing MyMedia library, create a new one, or use the built-in library." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne eine vorhandene MyMedia-Mediathek, erstelle eine neue oder verwende die eingebaute Mediathek."
+          }
+        }
+      }
+    },
     "Open in Subler" : {
       "localizations" : {
         "de" : {
@@ -1560,6 +1680,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öffnet den Web-Export der DocC-Dokumentation der API."
+          }
+        }
+      }
+    },
+    "Open..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnen..."
+          }
+        }
+      }
+    },
+    "Opening Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediathek wird geöffnet"
           }
         }
       }
@@ -1750,6 +1890,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geschützte Mediendatei"
+          }
+        }
+      }
+    },
+    "Quit and Reopen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beenden und erneut öffnen"
           }
         }
       }

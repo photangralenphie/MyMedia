@@ -9,7 +9,7 @@ struct EpisodeDetailView: View {
 
 	let episode: Episode
 
-	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
+	@AppStorage(PreferenceKeys.showLanguageFlags, store: LibrarySettings.store) private var showLanguageFlags: Bool = true
 	@AppStorage(PreferenceKeys.playButtonInArtwork) private var playButtonInArtwork: Bool = true
 
 	var body: some View {

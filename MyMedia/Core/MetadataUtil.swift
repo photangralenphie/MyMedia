@@ -33,7 +33,7 @@ struct MetadataUtil {
 	}
 
 	public static func getDescription(mediaItem: any MediaItem) -> String? {
-		let preferShortDescription = UserDefaults.standard.bool(forKey: PreferenceKeys.preferShortDescription)
+		let preferShortDescription = LibrarySettings.store.bool(forKey: PreferenceKeys.preferShortDescription)
 
 		switch mediaItem {
 			case let tvShow as TvShow:
@@ -54,8 +54,8 @@ struct MetadataUtil {
 	}
 
 	public static func getMaxImageSize() -> CGSize {
-		let width = UserDefaults.standard.integer(forKey: PreferenceKeys.downSizeArtworkWidth)
-		let height = UserDefaults.standard.integer(forKey: PreferenceKeys.downSizeArtworkHeight)
+		let width = LibrarySettings.store.integer(forKey: PreferenceKeys.downSizeArtworkWidth)
+		let height = LibrarySettings.store.integer(forKey: PreferenceKeys.downSizeArtworkHeight)
 		return CGSize(width: width, height: height)
 	}
 

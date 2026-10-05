@@ -12,6 +12,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			PreferenceKeys.downSizeArtworkHeight: 1_000,
 			PreferenceKeys.downSizeArtworkWidth: 1_000
 		])
+		MainActor.assumeIsolated {
+			LibrarySession.shared.resolveAtLaunch()
+		}
+	}
+
+	func application(_: NSApplication, open urls: [URL]) {
+		MainActor.assumeIsolated {
+			if let url = urls.first(where: LibraryPackage.isLibraryFile) {
+				LibrarySession.shared.noteOpenedFile(url)
+			}
+		}
 	}
 
 	func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {

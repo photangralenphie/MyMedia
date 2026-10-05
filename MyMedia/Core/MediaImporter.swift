@@ -403,7 +403,7 @@ actor MediaImporter {
 			return nil
 		}
 
-		let doDownsize = UserDefaults.standard.bool(forKey: PreferenceKeys.downSizeArtwork)
+		let doDownsize = LibrarySettings.store.bool(forKey: PreferenceKeys.downSizeArtwork)
 		if let imageData, doDownsize, let image = NSImage(data: imageData) {
 			let maxSize = MetadataUtil.getMaxImageSize()
 			let newSize = MetadataUtil.getDownSizedImageSize(originalSize: image.size, maxSize: maxSize)

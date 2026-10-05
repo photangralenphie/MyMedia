@@ -7,11 +7,11 @@ import SwiftUI
 
 struct MetadataSettingsTab: View {
 
-	@AppStorage(PreferenceKeys.showLanguageFlags) private var showLanguageFlags: Bool = true
-	@AppStorage(PreferenceKeys.preferShortDescription) private var preferShortDescription: Bool = false
-	@AppStorage(PreferenceKeys.downSizeArtwork) private var downSizeArtwork: Bool = true
-	@AppStorage(PreferenceKeys.downSizeArtworkWidth) private var downSizeArtworkWidth: Int = 1_000
-	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1_000
+	@AppStorage(PreferenceKeys.showLanguageFlags, store: LibrarySettings.store) private var showLanguageFlags: Bool = true
+	@AppStorage(PreferenceKeys.preferShortDescription, store: LibrarySettings.store) private var preferShortDescription: Bool = false
+	@AppStorage(PreferenceKeys.downSizeArtwork, store: LibrarySettings.store) private var downSizeArtwork: Bool = true
+	@AppStorage(PreferenceKeys.downSizeArtworkWidth, store: LibrarySettings.store) private var downSizeArtworkWidth: Int = 1_000
+	@AppStorage(PreferenceKeys.downSizeArtworkHeight, store: LibrarySettings.store) private var downSizeArtworkHeight: Int = 1_000
 
     var body: some View {
 		Form {

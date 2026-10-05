@@ -44,13 +44,13 @@ class CollectionEditVm: Identifiable {
 	@ObservationIgnored
 	private var maxResolution: CGSize = { MetadataUtil.getMaxImageSize() }()
 	@ObservationIgnored
-	private var _downSizeImage: Bool = { UserDefaults.standard.bool(forKey: PreferenceKeys.downSizeCollectionArtwork) }()
+	private var _downSizeImage: Bool = { LibrarySettings.store.bool(forKey: PreferenceKeys.downSizeCollectionArtwork) }()
 
 	var downSizeImage: Bool {
 		get { _downSizeImage }
 		set {
 			if _downSizeImage != newValue {
-				UserDefaults.standard.set(newValue, forKey: PreferenceKeys.downSizeCollectionArtwork)
+				LibrarySettings.store.set(newValue, forKey: PreferenceKeys.downSizeCollectionArtwork)
 			}
 			_downSizeImage = newValue
 			self.setMaxAndDownsizedResolution()

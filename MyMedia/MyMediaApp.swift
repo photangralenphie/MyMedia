@@ -8,56 +8,57 @@ import SwiftData
 import SwiftUI
 
 @main
+@MainActor
 struct MyMediaApp: App {
-	private let sharedModelContainer: ModelContainer
-	private let apiServer: ApiServerManager
+	// Created before the delegate so the Option key is recorded before the open-document event.
+	@State private var session = LibrarySession.shared
 
 	@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-	@MainActor
-	init() {
-		let schema = Schema(versionedSchema: MyMediaSchemaV2.self)
-
-        do {
-			let container = try ModelContainer(
-				for: schema,
-				migrationPlan: MyMediaMigrationPlan.self,
-				configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)]
-			)
-			sharedModelContainer = container
-        } catch {
-			fatalError("Could not create ModelContainer: \(error.localizedDescription)")
-        }
-
-		apiServer = ApiServerManager(repository: SwiftDataMediaApiRepository(modelContainer: sharedModelContainer))
-		BookmarkStore.migrateLegacyBookmarksFromUserDefaultsIfNeeded()
-	}
-
 	private var commandResource = CommandResource.shared
 
-    var body: some Scene {
-        WindowGroup {
-			HomeView()
+	var body: some Scene {
+		WindowGroup {
+			LibraryRootView()
 				.environment(commandResource)
-				.environment(apiServer)
-				.onAppear { NSWindow.allowsAutomaticWindowTabbing = false }
-				.task { await apiServer.startIfEnabled() }
-				.onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { _ in
-					try? sharedModelContainer.mainContext.save()
-				}
-        }
+		}
 		.defaultSize(width: 1_200, height: 700)
-		.modelContainer(sharedModelContainer)
 		.commands { MenuBarCommands(commandResource: commandResource) }
 
-		VideoPlayerWindow(context: sharedModelContainer.mainContext)
+		VideoPlayerWindow()
 
 		AboutWindow()
 
 		Settings {
-			SettingsView()
-				.modelContainer(sharedModelContainer)
-				.environment(apiServer)
+			if let container = session.container, let apiServer = session.apiServer {
+				SettingsView()
+					.modelContainer(container)
+					.environment(apiServer)
+			} else {
+				ProgressView("Opening Library")
+			}
 		}
-    }
+	}
+}
+
+private struct LibraryRootView: View {
+	@State private var session = LibrarySession.shared
+
+	var body: some View {
+		if let container = session.container, let apiServer = session.apiServer {
+			Group {
+				HomeView()
+					.environment(apiServer)
+					.onAppear { NSWindow.allowsAutomaticWindowTabbing = false }
+					.task { await apiServer.startIfEnabled() }
+					.onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { _ in
+						try? container.mainContext.save()
+					}
+			}
+			.modelContainer(container)
+		} else {
+			ProgressView("Opening Library")
+				.frame(maxWidth: .infinity, maxHeight: .infinity)
+		}
+	}
 }
