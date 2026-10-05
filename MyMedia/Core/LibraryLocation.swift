@@ -174,7 +174,7 @@ enum LibraryAppleEvent {
 	}
 
 	private static func libraryURL(from descriptor: NSAppleEventDescriptor) -> URL? {
-		guard let url = descriptor.fileURL else { return nil }
+		guard let url = descriptor.fileURLValue else { return nil }
 		guard LibraryPackage.isLibraryFile(url) else { return nil }
 		return url
 	}
