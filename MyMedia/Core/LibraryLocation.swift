@@ -6,7 +6,6 @@
 import AppKit
 import CoreServices
 import Foundation
-import Synchronization
 import UniformTypeIdentifiers
 
 extension UTType {
@@ -76,15 +75,16 @@ enum LibraryError: LocalizedError {
 
 /// Metadata and artwork choices that change what a library stores or how that library is shown.
 /// The built-in library keeps UserDefaults.standard so existing settings stay where they are.
+/// UserDefaults is thread-safe. The reference is swapped once, at launch, before other work reads it.
 enum LibrarySettings {
-	private static let active = Mutex(UserDefaults.standard)
+	nonisolated(unsafe) private static var active = UserDefaults.standard
 
 	static var store: UserDefaults {
-		active.withLock { $0 }
+		active
 	}
 
 	static func useBuiltInLibrary() {
-		active.withLock { $0 = .standard }
+		active = .standard
 	}
 
 	static func useLibrary(id: UUID) throws {
@@ -100,7 +100,7 @@ enum LibrarySettings {
 			PreferenceKeys.preferShortDescription: false,
 			PreferenceKeys.showLanguageFlags: true
 		])
-		active.withLock { $0 = suite }
+		active = suite
 	}
 }
 
