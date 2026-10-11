@@ -56,8 +56,8 @@ These features are currently planned (not in a particular order):
  - [x] ~~Episode Detail: A nice detail page for a single episode of a TV show.~~ (V2.0)
  - [x] ~~List and List-Detail Views.~~ (V2.0)
  - [x] ~~Library Search: Searching the complete library including descriptions, cast and crew.~~ (V3.0)
+ - [ ] better support for vertical amd square artwork (planned for V3.1)
  - [ ] Recent Tab: A view to show recently added Movies, TV Shows and episodes.
- - [ ] better support for vertical artwork
  - [ ] Support for more file types.
 
 

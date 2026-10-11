@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD1788E330755B38003E3511 /* MarkdownEngine in Frameworks */ = {isa = PBXBuildFile; productRef = DD1788E230755B38003E3511 /* MarkdownEngine */; };
 		DD42F35C2DD9EC5B000EE9C8 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */; };
 		DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = DD8065622DB2960200B6A629 /* OrderedCollections */; };
-		DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */; };
 		DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD95FB962DC7E88900149619 /* AVKit.framework */; };
+		DD97ACF7307BD59F00A2F407 /* AwesomeSwiftyComponents in Frameworks */ = {isa = PBXBuildFile; productRef = DD97ACF6307BD59F00A2F407 /* AwesomeSwiftyComponents */; };
 		DDA200552DD8C21A00C1F7F8 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = DDA200542DD8C21A00C1F7F8 /* MarkdownUI */; };
 		DDBB11003100000000000001 /* MyMediaAPI in Frameworks */ = {isa = PBXBuildFile; productRef = DDBB11003100000000000002 /* MyMediaAPI */; };
 /* End PBXBuildFile section */
@@ -39,10 +40,11 @@
 			files = (
 				DDBB11003100000000000001 /* MyMediaAPI in Frameworks */,
 				DD95FB9A2DC7E8B200149619 /* AVKit.framework in Frameworks */,
-				DD95FB942DC7ACE100149619 /* AwesomeSwiftyComponents in Frameworks */,
+				DD97ACF7307BD59F00A2F407 /* AwesomeSwiftyComponents in Frameworks */,
 				DD8065632DB2960200B6A629 /* OrderedCollections in Frameworks */,
 				DD42F35C2DD9EC5B000EE9C8 /* SwiftUIIntrospect in Frameworks */,
 				DDA200552DD8C21A00C1F7F8 /* MarkdownUI in Frameworks */,
+				DD1788E330755B38003E3511 /* MarkdownEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,9 +104,10 @@
 			packageProductDependencies = (
 				DDBB11003100000000000002 /* MyMediaAPI */,
 				DD8065622DB2960200B6A629 /* OrderedCollections */,
-				DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */,
 				DDA200542DD8C21A00C1F7F8 /* MarkdownUI */,
 				DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */,
+				DD1788E230755B38003E3511 /* MarkdownEngine */,
+				DD97ACF6307BD59F00A2F407 /* AwesomeSwiftyComponents */,
 			);
 			productName = MyMedia;
 			productReference = DD956C812D95D6EA0033A363 /* MyMedia.app */;
@@ -138,9 +141,10 @@
 			packageReferences = (
 				DDBB11003100000000000003 /* XCLocalSwiftPackageReference "MyMediaAPI" */,
 				DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */,
-				DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */,
 				DDA200532DD8C21A00C1F7F8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				DD42F35A2DD9EC5B000EE9C8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				DD1788E130755B38003E3511 /* XCRemoteSwiftPackageReference "swift-markdown-engine" */,
+				DD97ACF5307BD59F00A2F407 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DD956C822D95D6EA0033A363 /* Products */;
@@ -455,6 +459,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DD1788E130755B38003E3511 /* XCRemoteSwiftPackageReference "swift-markdown-engine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nodes-app/swift-markdown-engine";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.14.0;
+			};
+		};
 		DD42F35A2DD9EC5B000EE9C8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/swiftui-introspect";
@@ -471,12 +483,12 @@
 				minimumVersion = 1.1.4;
 			};
 		};
-		DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */ = {
+		DD97ACF5307BD59F00A2F407 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/photangralenphie/AwesomeSwiftyComponents";
+			repositoryURL = "https://github.com/photangralenphie/AwesomeSwiftyComponents.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.14;
+				minimumVersion = 2.2.0;
 			};
 		};
 		DDA200532DD8C21A00C1F7F8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
@@ -490,6 +502,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DD1788E230755B38003E3511 /* MarkdownEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD1788E130755B38003E3511 /* XCRemoteSwiftPackageReference "swift-markdown-engine" */;
+			productName = MarkdownEngine;
+		};
 		DD42F35B2DD9EC5B000EE9C8 /* SwiftUIIntrospect */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DD42F35A2DD9EC5B000EE9C8 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
@@ -500,9 +517,9 @@
 			package = DD8065612DB2960200B6A629 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
 		};
-		DD95FB932DC7ACE100149619 /* AwesomeSwiftyComponents */ = {
+		DD97ACF6307BD59F00A2F407 /* AwesomeSwiftyComponents */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DD95FB922DC7ACE100149619 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */;
+			package = DD97ACF5307BD59F00A2F407 /* XCRemoteSwiftPackageReference "AwesomeSwiftyComponents" */;
 			productName = AwesomeSwiftyComponents;
 		};
 		DDA200542DD8C21A00C1F7F8 /* MarkdownUI */ = {

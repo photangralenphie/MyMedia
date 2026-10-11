@@ -6,6 +6,7 @@
 public struct PreferenceKeys {
 	public static let autoPlay: String = "autoPlay"
 	public static let autoQuit: String = "autoQuit"
+	public static let artworkAspectRatio: String = "artworAspectRatio"
 	public static let downSizeArtwork: String = "downSizeArtwork"
 	public static let downSizeArtworkWidth: String = "downSizeArtworkWidth"
 	public static let downSizeArtworkHeight: String = "downSizeArtworkHeight"

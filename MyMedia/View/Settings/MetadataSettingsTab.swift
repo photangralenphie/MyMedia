@@ -3,6 +3,7 @@
 // Licensed under the MIT License.
 //
 
+import AwesomeSwiftyComponents
 import SwiftUI
 
 struct MetadataSettingsTab: View {
@@ -12,6 +13,7 @@ struct MetadataSettingsTab: View {
 	@AppStorage(PreferenceKeys.downSizeArtwork) private var downSizeArtwork: Bool = true
 	@AppStorage(PreferenceKeys.downSizeArtworkWidth) private var downSizeArtworkWidth: Int = 1_000
 	@AppStorage(PreferenceKeys.downSizeArtworkHeight) private var downSizeArtworkHeight: Int = 1_000
+	@AppStorage(PreferenceKeys.artworkAspectRatio) private var artworkAspectRatio: ArtworkAspectRadio = .horizontal
 
     var body: some View {
 		Form {
@@ -23,6 +25,12 @@ struct MetadataSettingsTab: View {
 			}
 
 			Section("Artwork") {
+				IconRadioGroup(
+					selection: $artworkAspectRatio,
+					distribution: .spaceEvenly,
+					items: ArtworkAspectRadio.allCases
+				)
+
 				ImageDownsizeToggle(isOn: $downSizeArtwork.animation())
 
 				if downSizeArtwork {

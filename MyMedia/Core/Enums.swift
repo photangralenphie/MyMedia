@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import AwesomeSwiftyComponents
 
 enum BadgeStyle {
 	case outlined
@@ -139,5 +140,29 @@ enum ImportError: LocalizedError {
 
 	private func metadataError(metadataType: String) -> LocalizedStringKey {
 		"No \(metadataType) found in metadata."
+	}
+}
+
+enum ArtworkAspectRadio: String, Codable, CaseIterable, Identifiable, IconRadioGroupItem {
+	case horizontal
+	case square
+	case vertical
+	
+	public var id: Self { self }
+	
+	public var title: String {
+		switch self {
+			case .horizontal: String(localized: "Horizontal")
+			case .square: String(localized: "Square")
+			case .vertical: String(localized: "Vertical")
+		}
+	}
+	
+	public var icon: String {
+		switch self {
+			case .horizontal: "rectangle.ratio.16.to.9"
+			case .square: "square"
+			case .vertical: "rectangle.portrait"
+		}
 	}
 }
