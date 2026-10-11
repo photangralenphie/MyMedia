@@ -12,6 +12,7 @@ struct MenuBarCommands: Commands {
 	@Environment(\.openWindow) private var openWindow
 	@AppStorage(PreferenceKeys.useMiniSeries) private var useMiniSeries: Bool = true
 	@AppStorage(InterfaceStateKeys.selectedTab) private var selectedTab: String = Tabs.unwatched.id
+	@AppStorage(PreferenceKeys.artworkAspectRatio) private var artworkAspectRatio: ArtworkAspectRadio = .horizontal
 
     var body: some Commands {
 		CommandGroup(replacing: .undoRedo) { EmptyView() }
@@ -40,6 +41,15 @@ struct MenuBarCommands: Commands {
 
 			Menu("Sidebar Entries", systemImage: "checklist") {
 				Toggle("Mini-Series", systemImage: "rectangle.stack.badge.play", isOn: $useMiniSeries.animation())
+			}
+
+			Divider()
+
+			Picker("Artwork", selection: $artworkAspectRatio) {
+				ForEach(ArtworkAspectRadio.allCases) { type in
+					Label(type.title, systemImage: type.icon)
+						.tag(type)
+				}
 			}
 
 			Divider()
